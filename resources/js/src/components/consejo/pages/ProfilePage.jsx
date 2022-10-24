@@ -1,0 +1,168 @@
+import {
+    Badge,
+    Card,
+    Divider,
+    Grid,
+    Group,
+    Progress,
+    Text,
+} from "@mantine/core";
+import { IconBadge } from "@tabler/icons";
+import React from "react";
+import { useAuthStore } from "../../../hooks/useAuthStore";
+
+export const ProfilePage = () => {
+    const { profile } = useAuthStore();
+
+    return (
+        <Group position="center">
+            <Card
+                withBorder
+                shadow="sm"
+                radius="md"
+                mt="lg"
+                mb="lg"
+                sx={{ position: "static", width: 400 }}
+            >
+                <Card.Section withBorder inheritPadding py="lg">
+                    <Group position="apart">
+                        <Text
+                            component="span"
+                            weight={600}
+                            style={{
+                                fontFamily: "Greycliff CF, sans-serif",
+                                fontSize: 20,
+                            }}
+                        >
+                            Perfil
+                        </Text>
+                    </Group>
+                </Card.Section>
+                <Card.Section withBorder inheritPadding py="lg">
+                    <Text
+                        size="xs"
+                        transform="uppercase"
+                        weight={700}
+                        color="dimmed"
+                    >
+                        Cédula
+                    </Text>
+                    <Text size="lg" weight={500}>
+                        {profile.dni}
+                    </Text>
+                    <Text
+                        size="xs"
+                        transform="uppercase"
+                        weight={700}
+                        color="dimmed"
+                        mt={12}
+                    >
+                        Nombres
+                    </Text>
+                    <Text size="lg" weight={500}>
+                        {profile.first_name + " " + profile.last_name}
+                    </Text>
+                    <Text
+                        size="xs"
+                        transform="uppercase"
+                        weight={700}
+                        color="dimmed"
+                        mt={12}
+                    >
+                        Role
+                    </Text>
+                    <Badge
+                        sx={{ paddingLeft: 3 }}
+                        size="lg"
+                        radius="xl"
+                        color="teal"
+                        leftSection={<IconBadge size={12} />}
+                    >
+                        {profile.roles?.map((role) => role)}
+                    </Badge>
+                    <Divider my="sm" variant="dashed" />
+                    <Grid grow>
+                        <Grid.Col span={6}>
+                            <Text
+                                size="xs"
+                                transform="uppercase"
+                                weight={700}
+                                color="dimmed"
+                                mt={12}
+                            >
+                                Cantón
+                            </Text>
+                            <Text size="lg" weight={500}>
+                                {profile.canton}
+                            </Text>
+                        </Grid.Col>
+                        <Grid.Col span={6}>
+                            <Text
+                                size="xs"
+                                transform="uppercase"
+                                weight={700}
+                                color="dimmed"
+                                mt={12}
+                            >
+                                Parroquia
+                            </Text>
+                            <Text size="lg" weight={500}>
+                                {profile.parroquias?.map((parr) => parr)}
+                            </Text>
+                        </Grid.Col>
+                    </Grid>
+
+                    <Text
+                        size="xs"
+                        transform="uppercase"
+                        weight={700}
+                        color="dimmed"
+                        mt={12}
+                    >
+                        Recinto
+                    </Text>
+                    <Text size="lg" weight={500}>
+                        {profile.recintos?.map((rec) => rec)}
+                    </Text>
+                    <Divider my="sm" variant="dashed" />
+                    {profile.roles?.includes("Coordinador") ? (
+                        <>
+                            <Text
+                                size="xs"
+                                transform="uppercase"
+                                weight={700}
+                                color="dimmed"
+                                mt={12}
+                            >
+                                Supervisor
+                            </Text>
+                            <Text size="lg" weight={500}>
+                                { profile.responsable }
+                            </Text>
+                            <Divider my="sm" variant="dashed" />
+                        </>
+                    ) : (
+                        ""
+                    )}
+                    <Text
+                        size="xs"
+                        transform="uppercase"
+                        weight={700}
+                        color="dimmed"
+                        mt={12}
+                    >
+                        Progreso
+                    </Text>
+                    <Progress
+                        animate
+                        color="yellow"
+                        value={75}
+                        label="75%"
+                        size="xl"
+                        radius="xl"
+                    />
+                </Card.Section>
+            </Card>
+        </Group>
+    );
+};
