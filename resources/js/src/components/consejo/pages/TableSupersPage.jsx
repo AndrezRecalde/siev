@@ -49,7 +49,7 @@ export const TableSupersPage = () => {
             <td>{element.phone}</td>
             <td>{element.canton?.nombre_canton}</td>
             <td>{element.parroquias?.map((parr) => parr.nombre_parroquia)}</td>
-            <td>
+            {/* <td>
                 {(
                 <RingProgress
                     size={90}
@@ -61,7 +61,7 @@ export const TableSupersPage = () => {
                     }
                 />
                 )}
-            </td>
+            </td> */}
             <td>
                 <Grid>
                     <Grid.Col span={3}>
@@ -130,7 +130,7 @@ export const TableSupersPage = () => {
                                         <th>Telefono</th>
                                         <th>Canton</th>
                                         <th>Parroquia</th>
-                                        <th>Progreso</th>
+                                        {/* <th>Progreso</th> */}
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
