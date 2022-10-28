@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Veedor extends Model
 {
@@ -28,7 +29,7 @@ class Veedor extends Model
 
     public static function create(array $attributes = [])
     {
-        $attributes['user_id'] = 1;   /** cambiar por: auth()->id() */
+        $attributes['user_id'] = Auth::user()->id;   /** cambiar por: auth()->id() */
 
 
         $veedor = static::query()->create($attributes);

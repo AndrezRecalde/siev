@@ -2,6 +2,7 @@ import { Button, Card, Group, Table, Text } from "@mantine/core";
 import { IconPencilPlus } from "@tabler/icons";
 import React from "react";
 import { useAuthStore } from "../../../hooks/useAuthStore";
+import { useStatesStore } from "../../../hooks/useStatesStore";
 import { useUiStore } from "../../../hooks/useUiStore";
 import { ModalCreateAdmin } from "./ui/ModalCreateAdmin";
 
@@ -9,10 +10,13 @@ export const TableAdminsPage = () => {
 
     const { modalActionAdmin } = useUiStore();
     const { administradores } = useAuthStore();
+    const { startLoadCantones, startLoadRoles } = useStatesStore();
 
-    const handleCreateAdmin = (e) => {
+    const handleOpenModalAdmin = async(e) => {
         e.preventDefault();
         modalActionAdmin("open");
+        await startLoadCantones();
+        await startLoadRoles();
     };
 
 
@@ -51,7 +55,7 @@ export const TableAdminsPage = () => {
                     </Card.Section>
                     <Card.Section withBorder inheritPadding py="lg">
                         <Button
-                            onClick={handleCreateAdmin}
+                            onClick={handleOpenModalAdmin}
                             leftIcon={<IconPencilPlus />}
                             variant="white"
                         >

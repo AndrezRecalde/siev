@@ -1,114 +1,218 @@
 import { Button, Divider, Grid, Modal, Select, TextInput } from "@mantine/core";
+import { useForm } from "@mantine/form";
 import {
     Icon123,
     IconAt,
     IconBrandTelegram,
     IconPhonePlus,
 } from "@tabler/icons";
-import React from "react";
+import React, { useEffect } from "react";
+import { useAuthStore } from "../../../../hooks/useAuthStore";
+import { useConsejoStore } from "../../../../hooks/useConsejoStore";
+import { useStatesStore } from "../../../../hooks/useStatesStore";
 import { useUiStore } from "../../../../hooks/useUiStore";
 
 export const ModalCreateVeed = () => {
     const { isOpenModalCreateVeedor, modalActionVeedor } = useUiStore();
+    const { activateVeedor, setClearActivateVeedor, startSavingVeedor } = useConsejoStore();
+
+    const {
+        allParroquias,
+        recintos,
+        allRecintos,
+        startLoadParroquias,
+        startLoadRecintos,
+        startClearStates,
+    } = useStatesStore();
+
+    const { startProfile } = useAuthStore();
+
+
+    const form = useForm({
+        initialValues: {
+            first_name: "",
+            last_name: "",
+            dni: "",
+            phone: "",
+            email: "",
+            observacion: "",
+            parroquia_id: 0,
+            recinto_id: 0,
+            recinto__id: 0,
+        },
+        validate: {
+            first_name: (value) =>
+                value.length < 3 ? "El nombre es requerido" : null,
+            last_name: (value) =>
+                value.length < 3 ? "El apellido es requerido" : null,
+            dni: (value) =>
+                value.length < 9 ? "Ingrese la cédula correctamente" : null,
+            phone: (value) =>
+                value.length < 9 ? "Ingrese el número correctamente" : null,
+            email: (value) =>
+                /^\S+@\S+$/.test(value) ? null : "Invalid email",
+            parroquia_id: (value) =>
+                value === 0 ? "Ingrese la parroquia" : null,
+            recinto_id: (value) =>
+                value === 0 ? "Ingrese el recinto donde vota" : null,
+            recinto__id: (value) =>
+                value === 0 ? "Ingrese el recinto donde cuida voto" : null,
+        },
+    });
+
+    const { parroquia_id } = form.values;
+
+
+    useEffect(() => {
+        form.setFieldValue("recinto_id", 0);
+        startLoadRecintos({ parroquia_id });
+    }, [parroquia_id]);
+
+    useEffect(() => {
+        if (activateVeedor !== null) {
+            form.setValues({
+                ...activateVeedor,
+            });
+            return;
+        }
+
+        form.reset();
+
+    }, [activateVeedor]);
+
+    const handleCreateVeed = async(e) => {
+        e.preventDefault();
+        const { errors } = form.validate();
+        if (
+            !errors.hasOwnProperty("first_name") &&
+            !errors.hasOwnProperty("last_name") &&
+            !errors.hasOwnProperty("dni") &&
+            !errors.hasOwnProperty("phone") &&
+            !errors.hasOwnProperty("email") &&
+            !errors.hasOwnProperty("parroquia_id") &&
+            !errors.hasOwnProperty("recinto_id") &&
+            !errors.hasOwnProperty("recinto__id")
+        ) {
+            await startSavingVeedor(form.values);
+            modalActionVeedor("close");
+            await startProfile();
+            form.reset();
+            console.log(form.values);
+        } else {
+            console.log("Error");
+        }
+    };
+
+    const handleCloseModal = () => {
+        modalActionVeedor("close");
+        startClearStates();
+        setClearActivateVeedor();
+        form.reset();
+    };
 
     return (
         <Modal
             opened={isOpenModalCreateVeedor}
-            onClose={() => modalActionVeedor("close")}
+            onClose={handleCloseModal}
             title="Crear Veedor"
         >
-            <Grid grow>
-                <Grid.Col span={6}>
-                    <TextInput
-                        placeholder="Nombres"
-                        label="Nombres"
-                        withAsterisk
-                    />
-                </Grid.Col>
-                <Grid.Col span={6}>
-                    <TextInput
-                        placeholder="Apellidos"
-                        label="Apellidos"
-                        withAsterisk
-                    />
-                </Grid.Col>
-            </Grid>
-            <Grid grow>
-                <Grid.Col span={6}>
-                    <TextInput
-                        placeholder="Cédula"
-                        label="Cédula"
-                        icon={<Icon123 size={14} />}
-                        mt={16}
-                        withAsterisk
-                    />
-                </Grid.Col>
-                <Grid.Col span={6}>
-                    <TextInput
-                        placeholder="Teléfono"
-                        label="Teléfono"
-                        icon={<IconPhonePlus size={14} />}
-                        mt={16}
-                        withAsterisk
-                    />
-                </Grid.Col>
-            </Grid>
+            <form onSubmit={handleCreateVeed}>
+                <Grid grow>
+                    <Grid.Col span={6}>
+                        <TextInput
+                            placeholder="Nombres"
+                            label="Nombres"
+                            withAsterisk
+                            {...form.getInputProps("first_name")}
+                        />
+                    </Grid.Col>
+                    <Grid.Col span={6}>
+                        <TextInput
+                            placeholder="Apellidos"
+                            label="Apellidos"
+                            withAsterisk
+                            {...form.getInputProps("last_name")}
+                        />
+                    </Grid.Col>
+                </Grid>
+                <Grid grow>
+                    <Grid.Col span={6}>
+                        <TextInput
+                            placeholder="Cédula"
+                            label="Cédula"
+                            icon={<Icon123 size={14} />}
+                            mt={16}
+                            withAsterisk
+                            {...form.getInputProps("dni")}
+                        />
+                    </Grid.Col>
+                    <Grid.Col span={6}>
+                        <TextInput
+                            placeholder="Teléfono"
+                            label="Teléfono"
+                            icon={<IconPhonePlus size={14} />}
+                            mt={16}
+                            withAsterisk
+                            {...form.getInputProps("phone")}
+                        />
+                    </Grid.Col>
+                </Grid>
 
-            <TextInput
-                placeholder="Email"
-                label="Email"
-                mt={16}
-                icon={<IconAt size={14} />}
-                withAsterisk
-            />
-            <Select
-                label="Cantón"
-                placeholder="Cantón"
-                mt={16}
-                data={[
-                    { value: "react", label: "React" },
-                    { value: "ng", label: "Angular" },
-                    { value: "svelte", label: "Svelte" },
-                    { value: "vue", label: "Vue" },
-                ]}
-            />
-            <Select
-                label="Parroquia"
-                placeholder="Parroquia"
-                mt={16}
-                data={[
-                    { value: "react", label: "React" },
-                    { value: "ng", label: "Angular" },
-                    { value: "svelte", label: "Svelte" },
-                    { value: "vue", label: "Vue" },
-                ]}
-            />
-            <Select
-                label="Recinto donde vota"
-                placeholder="Recinto donde vota"
-                mt={16}
-                data={[
-                    { value: "react", label: "React" },
-                    { value: "ng", label: "Angular" },
-                    { value: "svelte", label: "Svelte" },
-                    { value: "vue", label: "Vue" },
-                ]}
-            />
-            <Select
-                label="Recinto donde cuidará el voto"
-                placeholder="Recinto donde cuidará el voto"
-                mt={16}
-                data={[
-                    { value: "react", label: "React" },
-                    { value: "ng", label: "Angular" },
-                    { value: "svelte", label: "Svelte" },
-                    { value: "vue", label: "Vue" },
-                ]}
-            />
-            <Divider my="sm" variant="dashed" />
-            <Button fullWidth leftIcon={<IconBrandTelegram />} color="yellow">
-                Crear
-            </Button>
+                <TextInput
+                    placeholder="Email"
+                    label="Email"
+                    mt={16}
+                    icon={<IconAt size={14} />}
+                    withAsterisk
+                    {...form.getInputProps("email")}
+                />
+                <Select
+                    label="Parroquia de residencia del Veedor"
+                    placeholder="Parroquia de residencia del veedor"
+                    mt={16}
+                    {...form.getInputProps("parroquia_id")}
+                    data={allParroquias.map((parroquia) => {
+                        return {
+                            value: parroquia.id,
+                            label: parroquia.nombre_parroquia,
+                        };
+                    })}
+                />
+                <Select
+                    label="Recinto donde vota"
+                    placeholder="Recinto donde vota"
+                    mt={16}
+                    {...form.getInputProps("recinto_id")}
+                    data={recintos.map((recinto) => {
+                        return {
+                            value: recinto.id,
+                            label: recinto.nombre_recinto,
+                        };
+                    })}
+                />
+                <Select
+                    label="Recinto donde cuidará el voto"
+                    placeholder="Recinto donde cuidará el voto"
+                    searchable
+                    mt={16}
+                    {...form.getInputProps("recinto__id")}
+                    data={allRecintos.map((recinto) => {
+                        return {
+                            value: recinto.id,
+                            label: recinto.nombre_recinto,
+                        };
+                    })}
+                />
+                <Divider my="sm" variant="dashed" />
+                <Button
+                    onClick={handleCreateVeed}
+                    fullWidth
+                    leftIcon={<IconBrandTelegram />}
+                    color="yellow"
+                >
+                    Crear
+                </Button>
+            </form>
         </Modal>
     );
 };

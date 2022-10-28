@@ -38,6 +38,7 @@ class VeedorUpdateRequest extends FormRequest
         ];
     }
 
+
     protected function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(response()->json(['errores' => $validator->errors()],422));

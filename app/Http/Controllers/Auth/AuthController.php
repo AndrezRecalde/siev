@@ -97,115 +97,173 @@ class AuthController extends Controller
                 $query->select('id', 'nombre_parroquia');
             },
             'recintos' => function ($query) {
-                $query->select('id', 'nombre_recinto');
+                $query->select('id', 'nombre_recinto', 'num_juntas');
             },
             'roles' => function ($query) {
                 $query->select('id', 'name');
+            },
+            'user'  =>  function ($query) {
+                $query->select('id', 'first_name');
             }
         ])->where('id', Auth::user()->id)
             ->first();
 
         $roles = $profile['roles'];
 
-        foreach ($roles as $role) {
-            if ($role->name === 'Administrador') {
+        if ($roles[0]->name === 'Administrador') {
 
-                $administradores = User::with([
-                    'canton' => function ($query) {
-                        $query->select('id', 'nombre_canton');
-                    },
-                    'parroquias' => function ($query) {
-                        $query->select('id', 'nombre_parroquia');
-                    },
-                    'recintos' => function ($query) {
-                        $query->select('id', 'nombre_recinto');
-                    },
-                    'roles' => function ($query) {
-                        $query->select('id', 'name');
-                    }
-                ])->join('model_has_roles as mhr', 'mhr.model_id', 'users.id')
-                    ->where('mhr.role_id', 1)
-                    ->get();
+            $administradores = User::with([
+                'canton' => function ($query) {
+                    $query->select('id', 'nombre_canton');
+                },
+                'parroquias' => function ($query) {
+                    $query->select('id', 'nombre_parroquia');
+                },
+                'recintos' => function ($query) {
+                    $query->select('id', 'nombre_recinto');
+                },
+                'roles' => function ($query) {
+                    $query->select('id', 'name');
+                }
+            ])->join('model_has_roles as mhr', 'mhr.model_id', 'users.id')
+                ->where('mhr.role_id', 1)
+                ->get();
 
-                $supervisores = User::with([
-                    'canton' => function ($query) {
-                        $query->select('id', 'nombre_canton');
-                    },
-                    'parroquias' => function ($query) {
-                        $query->select('id', 'nombre_parroquia');
-                    },
-                    'recintos' => function ($query) {
-                        $query->select('id', 'nombre_recinto');
-                    },
-                    'roles' => function ($query) {
-                        $query->select('id', 'name');
-                    }
-                ])->join('model_has_roles as mhr', 'mhr.model_id', 'users.id')
-                    ->where('mhr.role_id', 2)
-                    ->get();
+            $supervisores = User::with([
+                'canton' => function ($query) {
+                    $query->select('id', 'nombre_canton');
+                },
+                'parroquias' => function ($query) {
+                    $query->select('id', 'nombre_parroquia');
+                },
+                'recintos' => function ($query) {
+                    $query->select('id', 'nombre_recinto');
+                },
+                'roles' => function ($query) {
+                    $query->select('id', 'name');
+                }
+            ])->join('model_has_roles as mhr', 'mhr.model_id', 'users.id')
+                ->where('mhr.role_id', 2)
+                ->get();
 
-                $coordinadores = User::with([
-                    'canton' => function ($query) {
-                        $query->select('id', 'nombre_canton');
-                    },
-                    'parroquias' => function ($query) {
-                        $query->select('id', 'nombre_parroquia');
-                    },
-                    'recintos' => function ($query) {
-                        $query->select('id', 'nombre_recinto');
-                    },
-                    'roles' => function ($query) {
-                        $query->select('id', 'name');
-                    }
-                ])->join('model_has_roles as mhr', 'mhr.model_id', 'users.id')
-                    ->where('mhr.role_id', 3)
-                    ->get();
+            $coordinadores = User::with([
+                'canton' => function ($query) {
+                    $query->select('id', 'nombre_canton');
+                },
+                'parroquias' => function ($query) {
+                    $query->select('id', 'nombre_parroquia');
+                },
+                'recintos' => function ($query) {
+                    $query->select('id', 'nombre_recinto', 'num_juntas');
+                },
+                'roles' => function ($query) {
+                    $query->select('id', 'name');
+                },
+                'veedores'
+            ])->join('model_has_roles as mhr', 'mhr.model_id', 'users.id')
+                ->where('mhr.role_id', 3)
+                ->get();
 
-                return response()->json([
-                    'status'    => 'success',
-                    'profile'   =>  $profile,
-                    'administradores' =>    $administradores,
-                    'supervisores'  =>  $supervisores,
-                    'coordinadores' =>  $coordinadores
-                ]);
-            } else if ($role->name === 'Supervisor') {
+            $veedores = Veedor::from('veedores as v')
+                ->select(DB::raw('v.id, v.dni, v.first_name, v.last_name, v.phone, v.email, v.observacion,
+                              p.nombre_parroquia as parroquia, users.first_name as responsable, r.nombre_recinto as origen, re.nombre_recinto as destino,
+                              p.id as parroquia_id, r.id as recinto_id, re.id as recinto__id'))
+                ->join('parroquias as p', 'p.id', 'v.parroquia_id')
+                ->join('recintos as r', 'r.id', 'v.recinto_id')
+                ->join('recintos as re', 're.id', 'v.recinto_id')
+                ->join('users', 'users.id', 'v.user_id')
+                ->get();
 
-                $coordinadores = User::with([
-                    'canton' => function ($query) {
-                        $query->select('id', 'nombre_canton');
-                    },
-                    'parroquias' => function ($query) {
-                        $query->select('id', 'nombre_parroquia');
-                    },
-                    'recintos' => function ($query) {
-                        $query->select('id', 'nombre_recinto');
-                    },
-                    'roles' => function ($query) {
-                        $query->select('id', 'name');
-                    }
-                ])->where('user_id', Auth::user()->id)
-                    ->get();
+            $juntas = DB::table('recintos')->select(DB::raw('SUM(recintos.num_juntas) as total_juntas'))->first();
 
-                return response()->json([
-                    'status'    =>  'success',
-                    'profile'   =>  $profile,
-                    'coordinadores' =>  $coordinadores
-                ]);
-            } else {
-                $veedores = Veedor::from('veedores as v')
-                    ->select(DB::raw('v.id, v.dni, v.first_name, v.last_name, v.phone, v.email, v.observacion,
-                              p.nombre_parroquia as parroquia, r.nombre_recinto as origen, re.nombre_recinto as destino'))
-                    ->join('parroquias as p', 'p.id', 'v.parroquia_id')
-                    ->join('recintos as r', 'r.id', 'v.recinto_id')
-                    ->join('recintos as re', 're.id', 'v.recinto_id')
-                    ->where('user_id', Auth::user()->id)
-                    ->get();
-                return response()->json([
-                    'status'    =>  'success',
-                    'profile'   =>  $profile,
-                    'veedores'  =>  $veedores
-                ]);
+
+            return response()->json([
+                'status'    => 'success',
+                'profile'   =>  $profile,
+                'administradores' =>    $administradores,
+                'supervisores'  =>  $supervisores,
+                'coordinadores' =>  $coordinadores,
+                'veedores'      =>  $veedores,
+                'juntas'    =>  (int)$juntas->total_juntas
+            ]);
+        } else if ($roles[0]->name === 'Supervisor') {
+
+            $coordinadores = User::with([
+                'canton' => function ($query) {
+                    $query->select('id', 'nombre_canton');
+                },
+                'parroquias' => function ($query) {
+                    $query->select('id', 'nombre_parroquia');
+                },
+                'recintos' => function ($query) {
+                    $query->select('id', 'nombre_recinto', 'num_juntas');
+                },
+                'roles' => function ($query) {
+                    $query->select('id', 'name');
+                },
+                'veedores'
+            ])->join('model_has_roles as mhr', 'mhr.model_id', 'users.id')
+                ->where('user_id', Auth::user()->id)
+                ->get();
+
+            $totales = [];
+            $index = 0;
+
+            foreach ($profile->parroquias as $parroquiatotal) {
+                $totales[$index] = $parroquiatotal->id;
+                $index += 1;
             }
+
+            $juntas = DB::table('recintos')->select(DB::raw('SUM(recintos.num_juntas) as total_juntas'))->whereIn('recintos.parroquia_id', $totales)->first();
+
+            $veedores = Veedor::from('veedores as v')
+                ->select(DB::raw('v.id, v.dni, v.first_name, v.last_name, v.phone,
+                                    v.email, v.observacion, p.nombre_parroquia as parroquia,
+                                    p.id as parroquia_id,
+                                    r.nombre_recinto as origen, re.nombre_recinto as destino,
+                                    r.id as recinto_id, re.id as recinto__id,
+                                    users.first_name as responsable'))
+                ->join('recintos as r', 'r.id', 'v.recinto_id')     //DONDE VIVE
+                ->join('recintos as re', 're.id', 'v.recinto__id')  //DONDE VOTA
+                ->join('parroquias as p', 're.parroquia_id', 'p.id')
+                ->join('cantones as c', 'p.canton_id', 'c.id')
+                ->join('users', 'users.id', 'v.user_id')
+                ->where('c.id', $profile->canton->id)->get();
+
+            return response()->json([
+                'status'    =>  'success',
+                'profile'   =>  $profile,
+                'coordinadores' =>  $coordinadores,
+                'veedores'      =>  $veedores,
+                'juntas'    =>  (int)$juntas->total_juntas
+            ]);
+        } else {
+            $veedores = Veedor::from('veedores as v')
+                ->select(DB::raw('v.id, v.dni, v.first_name, v.last_name, v.phone, v.email, v.observacion,
+                              p.nombre_parroquia as parroquia, r.nombre_recinto as origen, re.nombre_recinto as destino,
+                              p.id as parroquia_id, r.id as recinto_id, re.id as recinto__id'))
+                ->join('parroquias as p', 'p.id', 'v.parroquia_id')
+                ->join('recintos as r', 'r.id', 'v.recinto_id')
+                ->join('recintos as re', 're.id', 'v.recinto__id')
+                ->where('user_id', Auth::user()->id)
+                ->get();
+
+            $totales = [];
+            $index = 0;
+
+            foreach ($profile->recintos as $recintototal) {
+                $totales[$index] = $recintototal->id;
+                $index += 1;
+            }
+
+            $juntas = DB::table('recintos')->select(DB::raw('SUM(recintos.num_juntas) as total_juntas'))->whereIn('recintos.id', $totales)->first();
+
+            return response()->json([
+                'status'    =>  'success',
+                'profile'   =>  $profile,
+                'veedores'  =>  $veedores,
+                'juntas'    =>  (int)$juntas->total_juntas
+            ]);
         }
 
         /*         return response()->json(['status' => 'success', 'profile' => $profile]);

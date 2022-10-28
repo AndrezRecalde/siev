@@ -34,7 +34,7 @@ class UserUpdateRequest extends FormRequest
             'email'         =>  'required',
             'canton_id'     =>  'required',
             'parroquia_id'  =>  'required',
-            'recinto_id'    =>  [ DB::table('roles')->find($this->roles)->name == 'Coordinador' ? 'required' : 'nullable'],
+            'recinto_id'    =>  '',
             'roles'         =>  'required'
 
         ];

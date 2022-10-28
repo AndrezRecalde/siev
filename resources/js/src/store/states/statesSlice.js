@@ -6,7 +6,10 @@ export const statesSlice = createSlice({
     initialState: {
         cantones: [],
         parroquias: [],
+        allParroquias: [],
         recintos: [],
+        allRecintos: [],
+        roles: [],
     },
     reducers: {
         onLoadCantones: (state, action) => {
@@ -15,10 +18,28 @@ export const statesSlice = createSlice({
         onLoadParroquias: (state, action) => {
             state.parroquias = action.payload;
         },
+        onLoadAllParroquias: (state, action) => {
+            state.allParroquias = action.payload;
+        },
         onLoadRecintos: (state, action) => {
             state.recintos = action.payload;
         },
+        onLoadAllRecintos: (state, action) => {
+            state.allRecintos = action.payload;
+        },
+        onClearStates: (state) => {
+            state.cantones = [];
+            state.parroquias = [];
+            state.allParroquias = [];
+            state.recintos = [];
+            state.allRecintos = [];
+            state.roles = [];
+        },
+        onLoadRoles: (state, action) => {
+            state.roles = action.payload;
+        },
+
     },
 });
 
-export const { onLoadCantones, onLoadParroquias, onLoadRecintos } = statesSlice.actions;
+export const { onLoadCantones, onLoadParroquias, onLoadAllParroquias, onLoadRecintos, onLoadAllRecintos, onClearStates, onLoadRoles } = statesSlice.actions;

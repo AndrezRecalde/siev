@@ -7,7 +7,12 @@ import { useAuthStore } from "../hooks/useAuthStore";
 import "../styles/index.css";
 
 export const AppRouter = () => {
-    const { status } = useAuthStore();
+    const { status, checkAuthToken } = useAuthStore();
+
+    useEffect(() => {
+        checkAuthToken();
+    }, [])
+
 
     if (status === "checking") {
         return <Loader color="yellow" size="lg" variant="dots" />;

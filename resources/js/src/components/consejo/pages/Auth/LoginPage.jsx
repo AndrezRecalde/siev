@@ -15,7 +15,7 @@ import { useAuthStore } from "../../../../hooks/useAuthStore";
 
 export const LoginPage = () => {
 
-    const { startLogin, errorMessage, startProfile } = useAuthStore();
+    const { startLogin, errorMessage } = useAuthStore();
 
     const form = useForm({
         initialValues: {
@@ -37,9 +37,8 @@ export const LoginPage = () => {
         const { errors } = form.validate();
 
         if(!errors.hasOwnProperty('dni') || !errors.hasOwnProperty('password')){
-            startLogin(form.values);
-            form.clearErrors();
-            await startProfile();
+            await startLogin(form.values);
+
         }
     };
 
@@ -71,7 +70,7 @@ export const LoginPage = () => {
                                         fontSize: 20,
                                     }}
                                 >
-                                    Sistema
+                                    Sistema de Veedores
                                 </Text>
                             </Group>
                         </Card.Section>
@@ -94,6 +93,7 @@ export const LoginPage = () => {
                                 variant="filled"
                                 size="md"
                                 autoComplete="nope"
+                                withAsterisk
                                 icon={<IconInfoCircle size={14} />}
                                 {...form.getInputProps("dni")}
                             />
@@ -104,6 +104,7 @@ export const LoginPage = () => {
                                 variant="filled"
                                 size="md"
                                 autoComplete="nope"
+                                withAsterisk
                                 {...form.getInputProps("password")}
                             />
                         </Card.Section>

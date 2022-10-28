@@ -1,7 +1,7 @@
 export const getEnv = () => {
-    import.meta.env;
+
 
     return {
-        ...import.meta.env,
+        VITE_APP_URL: import.meta.env.VITE_APP_URL,
     };
 };

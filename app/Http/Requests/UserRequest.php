@@ -32,10 +32,10 @@ class UserRequest extends FormRequest
             'last_name'     =>  'required',
             'phone'         =>  '',
             'email'         =>  'required|unique:users',
-            'password'      =>  'required',
+            /* 'password'      =>  '', */
             'canton_id'     =>  'required',
             'parroquia_id'  =>  'required',
-            'recinto_id'    =>  [ DB::table('roles')->find($this->roles)->name == 'Coordinador' ? 'required' : 'nullable'],
+            'recinto_id'    =>  '',
             'roles'         =>  'required'
         ];
     }

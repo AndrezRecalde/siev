@@ -3,12 +3,20 @@ import { IconPencilPlus } from "@tabler/icons";
 import React from "react";
 import { useUiStore } from "../../../hooks/useUiStore";
 import { ModalCreateCoord } from "./ui/ModalCreateCoord";
+import { GridTableCoord } from "./ui/GridTableCoord";
+import { useStatesStore } from "../../../hooks/useStatesStore";
+import { useConsejoStore } from "../../../hooks/useConsejoStore";
 
 export const TableCoordsPage = () => {
     const { modalActionCoord } = useUiStore();
+    const { startLoadCantones, startLoadRoles } = useStatesStore();
+    const { setClearActivateUser } = useConsejoStore();
 
-    const handleCreateCoord = (e) => {
+    const handleCreateCoord = async (e) => {
         e.preventDefault();
+        startLoadCantones();
+        startLoadRoles();
+        setClearActivateUser();
         modalActionCoord("open");
     };
 
@@ -45,6 +53,9 @@ export const TableCoordsPage = () => {
                         >
                             Crear Coordinador
                         </Button>
+                    </Card.Section>
+                    <Card.Section withBorder inheritPadding py="lg">
+                        <GridTableCoord />
                     </Card.Section>
                 </Card>
             </Group>

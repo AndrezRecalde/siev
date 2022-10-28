@@ -22,20 +22,17 @@ import {
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import {
-    IconNotification,
     IconCode,
-    IconBook,
-    IconChartPie3,
-    IconFingerprint,
-    IconCoin,
     IconChevronDown,
     IconLogout,
     IconUser,
 } from "@tabler/icons";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
-import logo from "../../../../assets/logos/logox.png";
+import logo from "../../../../assets/logos/logo.png";
 import { useAuthStore } from "../../../../hooks/useAuthStore";
+import { useConsejoStore } from "../../../../hooks/useConsejoStore";
 
 const useStyles = createStyles((theme) => ({
     link: {
@@ -111,10 +108,11 @@ const useStyles = createStyles((theme) => ({
 const mockdata = [
     {
         icon: IconCode,
-        title: "Open source",
-        description: "This Pokémon’s cry is very loud and distracting",
+        title: "Exportar Veedores",
+        description: "Exportar todos los veedores",
+        to: "/api/pdf/veedores",
     },
-    {
+    /* {
         icon: IconCoin,
         title: "Free for everyone",
         description: "The fluid of Smeargle’s tail secretions changes",
@@ -138,12 +136,12 @@ const mockdata = [
         icon: IconNotification,
         title: "Notifications",
         description: "Combusken battles with the intensely hot flames it spews",
-    },
+    }, */
 ];
 
 export const NavBar = () => {
-
-    const { user, startLogout } = useAuthStore();
+    const { user, startLogout } = useAuthStore();
+    const { exportPDF } = useConsejoStore();
 
     const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
         useDisclosure(false);
@@ -161,12 +159,15 @@ export const NavBar = () => {
                     <item.icon size={22} color={theme.fn.primaryColor()} />
                 </ThemeIcon>
                 <div>
-                    <Text size="sm" weight={500}>
-                        {item.title}
-                    </Text>
-                    <Text size="xs" color="dimmed">
-                        {item.description}
-                    </Text>
+                    <Link to={item.to} target="_blank" className={classes.link}>
+                        <Text size="sm" weight={500}>
+                            {item.title}
+                        </Text>
+                    </Link>
+
+                        <Text size="xs" color="dimmed">
+                            {item.description}
+                        </Text>
                 </div>
             </Group>
         </UnstyledButton>
@@ -183,9 +184,9 @@ export const NavBar = () => {
                         spacing={0}
                         className={classes.hiddenMobile}
                     >
-                        <a href="#" className={classes.link}>
+                        <Link to="/" className={classes.link}>
                             Home
-                        </a>
+                        </Link>
                         <HoverCard
                             width={600}
                             position="bottom"
@@ -197,7 +198,7 @@ export const NavBar = () => {
                                 <a href="#" className={classes.link}>
                                     <Center inline>
                                         <Box component="span" mr={5}>
-                                            Features
+                                            Exportar
                                         </Box>
                                         <IconChevronDown
                                             size={16}
@@ -229,31 +230,16 @@ export const NavBar = () => {
                                     {links}
                                 </SimpleGrid>
 
-                                <div className={classes.dropdownFooter}>
-                                    <Group position="apart">
-                                        <div>
-                                            <Text weight={500} size="sm">
-                                                Get started
-                                            </Text>
-                                            <Text size="xs" color="dimmed">
-                                                Their food sources have
-                                                decreased, and their numbers
-                                            </Text>
-                                        </div>
-                                        <Button variant="default">
-                                            Get started
-                                        </Button>
-                                    </Group>
-                                </div>
+
                             </HoverCard.Dropdown>
                         </HoverCard>
 
-                        <a href="#" className={classes.link}>
+                        {/* <a href="#" className={classes.link}>
                             Learn
                         </a>
                         <a href="#" className={classes.link}>
                             Academy
-                        </a>
+                        </a> */}
                     </Group>
 
                     <Group className={classes.hiddenMobile}>
@@ -276,7 +262,9 @@ export const NavBar = () => {
                                             size="lg"
                                             radius="xl"
                                             color="yellow"
-                                            leftSection={<IconUser height={15} />}
+                                            leftSection={
+                                                <IconUser height={15} />
+                                            }
                                         >
                                             {user.first_name}
                                         </Badge>
@@ -333,7 +321,7 @@ export const NavBar = () => {
                     >
                         <Center inline>
                             <Box component="span" mr={5}>
-                                Features
+                                Exportar
                             </Box>
                             <IconChevronDown
                                 size={16}
@@ -357,7 +345,9 @@ export const NavBar = () => {
                     />
 
                     <Group position="center" grow pb="xl" px="md">
-                        <Button onClick={startLogout} color="red">Salir</Button>
+                        <Button onClick={startLogout} color="red">
+                            Salir
+                        </Button>
                     </Group>
                 </ScrollArea>
             </Drawer>

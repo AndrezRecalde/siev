@@ -1,5 +1,5 @@
 import { Container } from "@mantine/core";
-import React from "react";
+import React, { useEffect } from "react";
 import { NavBar } from "./ui/NavBar";
 import { Paper, Tabs } from "@mantine/core";
 import { ProfilePage } from "./ProfilePage";
@@ -7,9 +7,17 @@ import { TableAdminsPage } from "./TableAdminsPage";
 import { TableSupersPage } from "./TableSupersPage";
 import { TableCoordsPage } from "./TableCoordsPage";
 import { TableVeedsPage } from "./TableVeedsPage";
+import { useAuthStore } from "../../../hooks/useAuthStore";
+import { Footer } from "./ui/Footer";
 
 
 export const HomePage = () => {
+
+    const { user, startProfile } = useAuthStore();
+
+    useEffect(() => {
+         startProfile();
+    }, [])
 
 
     return (
@@ -26,11 +34,13 @@ export const HomePage = () => {
 
                 <Tabs defaultValue="profile">
                     <Tabs.List grow position="center">
-                    <Tabs.Tab value="profile">Perfil</Tabs.Tab>
+
+                        <Tabs.Tab value="profile">Perfil</Tabs.Tab>
                         <Tabs.Tab value="administradores">Ver Admins</Tabs.Tab>
                         <Tabs.Tab value="supervisores">Ver Supervisores</Tabs.Tab>
                         <Tabs.Tab value="coordinadores">Ver Coordinadores</Tabs.Tab>
                         <Tabs.Tab value="veedores">Ver Veedores</Tabs.Tab>
+
                     </Tabs.List>
 
                     <Tabs.Panel value="profile" pt="xs">
@@ -50,6 +60,8 @@ export const HomePage = () => {
                     </Tabs.Panel>
                 </Tabs>
             </Paper>
+
+            <Footer />
         </Container>
     );
 };

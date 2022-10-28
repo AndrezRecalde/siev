@@ -10,9 +10,22 @@ import {
 import { IconBadge } from "@tabler/icons";
 import React from "react";
 import { useAuthStore } from "../../../hooks/useAuthStore";
+import { useConsejoStore } from "../../../hooks/useConsejoStore";
 
 export const ProfilePage = () => {
-    const { profile } = useAuthStore();
+    const { profile, veedores } = useAuthStore();
+    const { juntas } = useConsejoStore();
+
+    const porcentajeJuntas = () => {
+        let total;
+        total = (veedores.length * 100) / juntas;
+        return [
+            {
+                value: total.toFixed(2),
+                tooltip: total.toFixed(2) + "%",
+            },
+        ];
+    };
 
     return (
         <Group position="center">
@@ -34,7 +47,7 @@ export const ProfilePage = () => {
                                 fontSize: 20,
                             }}
                         >
-                            Perfil
+                            Bienvenido
                         </Text>
                     </Group>
                 </Card.Section>
@@ -107,7 +120,7 @@ export const ProfilePage = () => {
                                 Parroquia
                             </Text>
                             <Text size="lg" weight={500}>
-                                {profile.parroquias?.map((parr) => parr)}
+                                {profile.parroquias?.map((parr) => parr )}
                             </Text>
                         </Grid.Col>
                     </Grid>
@@ -121,9 +134,15 @@ export const ProfilePage = () => {
                     >
                         Recinto
                     </Text>
-                    <Text size="lg" weight={500}>
-                        {profile.recintos?.map((rec) => rec)}
-                    </Text>
+
+                    {profile.recintos?.map((rec) => {
+                        return(
+                        <Text key={rec[0]} size="lg" weight={500}>
+
+                            <li key={rec[0]}>{rec[1] +" -   " + rec[2]}</li>
+                        </Text>)
+                    })}
+
                     <Divider my="sm" variant="dashed" />
                     {profile.roles?.includes("Coordinador") ? (
                         <>
@@ -137,7 +156,7 @@ export const ProfilePage = () => {
                                 Supervisor
                             </Text>
                             <Text size="lg" weight={500}>
-                                { profile.responsable }
+                                {profile.responsable}
                             </Text>
                             <Divider my="sm" variant="dashed" />
                         </>
@@ -156,8 +175,7 @@ export const ProfilePage = () => {
                     <Progress
                         animate
                         color="yellow"
-                        value={75}
-                        label="75%"
+                        sections={porcentajeJuntas()}
                         size="xl"
                         radius="xl"
                     />

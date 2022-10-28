@@ -41,6 +41,13 @@ class VeedorRequest extends FormRequest
         ];
     }
 
+    public function messages()
+    {
+        return [
+            'dni.unique'  => 'La cedula ya se encuentra registrada',
+        ];
+    }
+
     protected function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(response()->json(['errores' => $validator->errors()],422));

@@ -7,6 +7,7 @@ use App\Http\Requests\UserUpdateRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -120,6 +121,7 @@ class UserController extends Controller
     {
         try {
             $user = User::create($request->validated());
+            $user->password = $request->dni;
             $user->assignRole($request->roles);
             $user->parroquias()->attach($request->parroquia_id);
 
@@ -148,8 +150,8 @@ class UserController extends Controller
 
             $user->parroquias()->sync($request->parroquia_id);
 
-            if ($request->filled('recintos_id')) {
-                $user->recintos()->sync($request->parroquia_id);
+            if ($request->filled('recinto_id')) {
+                $user->recintos()->sync($request->recinto_id);
             }
 
             $user->save();
@@ -161,9 +163,9 @@ class UserController extends Controller
     }
 
 
-    public function destroy(Request $request)
+    public function destroy($id)
     {
-        $user = User::find($request->id);
+        $user = User::find($id);
 
         if ($user) {
             $user->roles()->detach();

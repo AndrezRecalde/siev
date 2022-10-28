@@ -111,14 +111,14 @@ class VeedorController extends Controller
             } else {
 
                 if (!$request->filled('cedula_frontal')) {
-                    if($veedor->cedula_frontal) {
+                    if ($veedor->cedula_frontal) {
                         Storage::disk('public')->delete($veedor->cedula_frontal);
                         $veedor->cedula_frontal = '';
                     }
                 }
 
                 if (!$request->filled('cedula_reverso')) {
-                    if($veedor->cedula_reverso) {
+                    if ($veedor->cedula_reverso) {
                         Storage::disk('public')->delete($veedor->cedula_reverso);
                         $veedor->cedula_reverso = '';
                     }
@@ -139,9 +139,9 @@ class VeedorController extends Controller
     public function show(Request $request)
     {
         $veedor = DB::select('CALL sp_view_veedor(?)', [$request->id]);
-        if($veedor){
+        if ($veedor) {
             return response()->json(['status' => 'success', 'veedor' => $veedor[0]]);
-        }else {
+        } else {
             return response()->json(['status' => 'error', 'msg' => 'No Existe el veedor']);
         }
     }

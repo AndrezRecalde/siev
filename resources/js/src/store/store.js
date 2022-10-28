@@ -7,6 +7,6 @@ export const store = configureStore({
     reducer: {
         auth: authSlice.reducer,
         ui: uiSlice.reducer,
-        states: statesSlice.reducer
+        states: statesSlice.reducer,
     }
 });

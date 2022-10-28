@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
@@ -44,12 +45,19 @@ class User extends Authenticatable
 
     public static function create(array $attributes = [])
     {
-        $attributes['user_id'] = 1;   /** cambiar por: auth()->id() */
-
+        $attributes['user_id'] = Auth::user()->id;
+        /** cambiar por: auth()->id() */
+        /* $attributes['password'] = Hash::make('a123456'); */
 
         $user = static::query()->create($attributes);
 
         return $user;
+    }
+
+    //Me permite encriptar las password de los usuarios creados
+    public function setPasswordAttribute($password)
+    {
+        return $this->attributes['password'] = Hash::needsRehash($password) ? Hash::make($password) : $password;
     }
 
     /**
@@ -86,5 +94,13 @@ class User extends Authenticatable
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::deleting(function ($user) {
+            $user->veedores()->delete();
+        });
     }
 }
