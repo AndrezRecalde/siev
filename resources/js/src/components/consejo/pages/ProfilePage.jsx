@@ -120,27 +120,31 @@ export const ProfilePage = () => {
                                 Parroquia
                             </Text>
                             <Text size="lg" weight={500}>
-                                {profile.parroquias?.map((parr) => parr )}
+                                {profile.parroquias?.map((parr) => parr)}
                             </Text>
                         </Grid.Col>
                     </Grid>
 
-                    <Text
-                        size="xs"
-                        transform="uppercase"
-                        weight={700}
-                        color="dimmed"
-                        mt={12}
-                    >
-                        Recinto
-                    </Text>
-
                     {profile.recintos?.map((rec) => {
-                        return(
-                        <Text key={rec[0]} size="lg" weight={500}>
-
-                            <li key={rec[0]}>{rec[1] +" -   " + rec[2]}</li>
-                        </Text>)
+                        return (
+                            <>
+                                <Text
+                                    size="xs"
+                                    transform="uppercase"
+                                    weight={700}
+                                    color="dimmed"
+                                    mt={12}
+                                    key={rec[1]}
+                                >
+                                    Recinto
+                                </Text>
+                                <Text key={rec[0]} size="lg" weight={500}>
+                                    <li key={rec[0]}>
+                                        {rec[1] + " -   " + rec[2]}
+                                    </li>
+                                </Text>
+                            </>
+                        );
                     })}
 
                     <Divider my="sm" variant="dashed" />

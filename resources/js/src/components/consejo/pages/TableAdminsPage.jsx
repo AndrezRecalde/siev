@@ -2,6 +2,7 @@ import { Button, Card, Group, Table, Text } from "@mantine/core";
 import { IconPencilPlus } from "@tabler/icons";
 import React from "react";
 import { useAuthStore } from "../../../hooks/useAuthStore";
+import { useConsejoStore } from "../../../hooks/useConsejoStore";
 import { useStatesStore } from "../../../hooks/useStatesStore";
 import { useUiStore } from "../../../hooks/useUiStore";
 import { ModalCreateAdmin } from "./ui/ModalCreateAdmin";
@@ -12,11 +13,12 @@ export const TableAdminsPage = () => {
     const { administradores } = useAuthStore();
     const { startLoadCantones, startLoadRoles } = useStatesStore();
 
+
     const handleOpenModalAdmin = async(e) => {
         e.preventDefault();
-        modalActionAdmin("open");
         await startLoadCantones();
         await startLoadRoles();
+        modalActionAdmin("open");
     };
 
 

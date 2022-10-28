@@ -68,10 +68,24 @@ export const useConsejoStore = () => {
             if (user.id) {
                 await consejoApi.post(`/update/usuarios/${user.id}`, user);
                 dispatch(onUpdateAdmin({ ...user }));
+                Swal.fire({
+                    icon: "success",
+                    title: "Actualizado con éxito!",
+                    showConfirmButton: false,
+                    timer: 1000,
+                });
                 return;
             }
-            await consejoApi.post(`/create/usuarios/`, user);
+
+            await consejoApi.post(`/create/usuarios`, user);
             dispatch(onAddNewAdmin({ ...user }));
+            Swal.fire({
+                icon: "success",
+                title: "Creado con éxito!",
+                showConfirmButton: false,
+                timer: 1000,
+            });
+
         } catch (error) {
             console.log(error);
             Swal.fire(

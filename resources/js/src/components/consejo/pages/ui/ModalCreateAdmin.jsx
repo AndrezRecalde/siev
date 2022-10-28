@@ -1,4 +1,4 @@
-import { Button, Divider, Grid, Modal, Select, TextInput } from "@mantine/core";
+import { Button, Divider, Grid, Modal, MultiSelect, Select, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import {
     Icon123,
@@ -7,6 +7,7 @@ import {
     IconPhonePlus,
 } from "@tabler/icons";
 import React, { useEffect } from "react";
+import { useAuthStore } from "../../../../hooks/useAuthStore";
 import { useConsejoStore } from "../../../../hooks/useConsejoStore";
 import { useStatesStore } from "../../../../hooks/useStatesStore";
 import { useUiStore } from "../../../../hooks/useUiStore";
@@ -22,7 +23,9 @@ export const ModalCreateAdmin = () => {
         startClearStates,
     } = useStatesStore();
 
-    const { setClearActivateUser } = useConsejoStore();
+    const { startProfile } = useAuthStore();
+
+    const { setClearActivateUser, startSavingAdmin } = useConsejoStore();
 
     const form = useForm({
         initialValues: {
@@ -31,7 +34,7 @@ export const ModalCreateAdmin = () => {
             dni: "",
             phone: "",
             email: "",
-            role: 1,
+            roles: [1],
             canton_id: 0,
             parroquia_id: 0,
         },
@@ -61,7 +64,7 @@ export const ModalCreateAdmin = () => {
     }, [canton_id]);
 
 
-    const handleCreateAdmin = (e) => {
+    const handleCreateAdmin = async(e) => {
         e.preventDefault();
         const { errors } = form.validate();
         if (
@@ -73,7 +76,9 @@ export const ModalCreateAdmin = () => {
             !errors.hasOwnProperty('canton_id') &&
             !errors.hasOwnProperty('parroquia_id')
         ) {
-            console.log(form.values);
+            await startSavingAdmin(form.values);
+            modalActionAdmin("close");
+            await startProfile();
         }else {
             console.log('Error')
         }
@@ -133,13 +138,13 @@ export const ModalCreateAdmin = () => {
                         />
                     </Grid.Col>
                 </Grid>
-                <Select
+                <MultiSelect
                     label="Role"
                     mt={16}
                     withAsterisk
                     readOnly
                     variant="filled"
-                    {...form.getInputProps("role")}
+                    {...form.getInputProps("roles")}
                     data={roles.map(role => {
                         return {
                             value: role.id,

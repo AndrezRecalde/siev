@@ -17,6 +17,7 @@ export const HomePage = () => {
 
     useEffect(() => {
          startProfile();
+         console.log(user)
     }, [])
 
 
@@ -34,12 +35,28 @@ export const HomePage = () => {
 
                 <Tabs defaultValue="profile">
                     <Tabs.List grow position="center">
+                        { user.roles.includes("Administrador") ?
+                        <>
+                            <Tabs.Tab value="profile">Perfil</Tabs.Tab>
+                            <Tabs.Tab value="administradores">Ver Admins</Tabs.Tab>
+                            <Tabs.Tab value="supervisores">Ver Supervisores</Tabs.Tab>
+                            <Tabs.Tab value="coordinadores">Ver Coordinadores</Tabs.Tab>
+                            <Tabs.Tab value="veedores">Ver Veedores</Tabs.Tab>
+                            </> :
+                            user.roles.includes("Supervisor") ?
+                            <>
+                            <Tabs.Tab value="profile">Perfil</Tabs.Tab>
+                            <Tabs.Tab value="coordinadores">Ver Coordinadores</Tabs.Tab>
+                            <Tabs.Tab value="veedores">Ver Veedores</Tabs.Tab>
+                            </> :
+                            user.roles.includes("Coordinador") ?
+                            <>
+                            <Tabs.Tab value="profile">Perfil</Tabs.Tab>
+                            <Tabs.Tab value="veedores">Ver Veedores</Tabs.Tab>
+                            </> :
+                            null
+                    }
 
-                        <Tabs.Tab value="profile">Perfil</Tabs.Tab>
-                        <Tabs.Tab value="administradores">Ver Admins</Tabs.Tab>
-                        <Tabs.Tab value="supervisores">Ver Supervisores</Tabs.Tab>
-                        <Tabs.Tab value="coordinadores">Ver Coordinadores</Tabs.Tab>
-                        <Tabs.Tab value="veedores">Ver Veedores</Tabs.Tab>
 
                     </Tabs.List>
 
