@@ -46,11 +46,11 @@ export const ModalCreateVeed = () => {
             last_name: (value) =>
                 value.length < 3 ? "El apellido es requerido" : null,
             dni: (value) =>
-                value.length < 9 ? "Ingrese la cédula correctamente" : null,
+                value.length < 9 ? "Ingrese la cédula correctamente (deben ser 10 dígitos)" :
+                value.length > 10 ? "Ingrese el número correctamente (deben ser 10 dígitos)": null,
             phone: (value) =>
-                value.length < 9 ? "Ingrese el número correctamente" : null,
-            email: (value) =>
-                /^\S+@\S+$/.test(value) ? null : "Invalid email",
+                value.length < 10 ? "Ingrese el número correctamente (deben ser 10 dígitos)" :
+                value.length > 10 ? "Ingrese el número correctamente (deben ser 10 dígitos)": null,
             parroquia_id: (value) =>
                 value === 0 ? "Ingrese la parroquia" : null,
             recinto_id: (value) =>
@@ -158,16 +158,17 @@ export const ModalCreateVeed = () => {
                 </Grid>
 
                 <TextInput
-                    placeholder="Email"
+                    placeholder="Email (Opcional)"
                     label="Email"
                     mt={16}
                     icon={<IconAt size={14} />}
-                    withAsterisk
                     {...form.getInputProps("email")}
                 />
                 <Select
                     label="Parroquia de residencia del Veedor"
                     placeholder="Parroquia de residencia del veedor"
+                    searchable
+                    withAsterisk
                     mt={16}
                     {...form.getInputProps("parroquia_id")}
                     data={allParroquias.map((parroquia) => {
@@ -180,6 +181,8 @@ export const ModalCreateVeed = () => {
                 <Select
                     label="Recinto donde vota"
                     placeholder="Recinto donde vota"
+                    searchable
+                    withAsterisk
                     mt={16}
                     {...form.getInputProps("recinto_id")}
                     data={recintos.map((recinto) => {
@@ -193,6 +196,7 @@ export const ModalCreateVeed = () => {
                     label="Recinto donde cuidará el voto"
                     placeholder="Recinto donde cuidará el voto"
                     searchable
+                    withAsterisk
                     mt={16}
                     {...form.getInputProps("recinto__id")}
                     data={allRecintos.map((recinto) => {

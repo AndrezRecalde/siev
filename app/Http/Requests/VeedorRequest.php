@@ -31,7 +31,7 @@ class VeedorRequest extends FormRequest
             'first_name'    =>  'required',
             'last_name'     =>  'required',
             'phone'         =>  'required',
-            'email'         =>  'required|unique:veedores',
+            'email'         =>  '',
             'observacion'   =>  '',
             'parroquia_id'     =>  'required',
             'recinto_id'    =>  'required',  //Donde vota

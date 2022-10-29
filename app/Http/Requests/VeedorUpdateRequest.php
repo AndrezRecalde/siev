@@ -30,7 +30,7 @@ class VeedorUpdateRequest extends FormRequest
             'first_name'    =>  'required',
             'last_name'     =>  'required',
             'phone'         =>  'required',
-            'email'         =>  'required',
+            'email'         =>  '',
             'observacion'   =>  '',
             'parroquia_id'  =>  'required',
             'recinto_id'    =>  'required',

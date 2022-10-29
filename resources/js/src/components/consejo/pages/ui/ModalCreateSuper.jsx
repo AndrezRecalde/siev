@@ -42,9 +42,11 @@ export const ModalCreateSuper = () => {
             last_name: (value) =>
                 value.length < 3 ? "El apellido es requerido" : null,
             dni: (value) =>
-                value.length < 9 ? "Ingrese la cédula correctamente" : null,
+                value.length < 9 ? "Ingrese la cédula correctamente (deben ser 10 dígitos)" :
+                value.length > 10 ? "Ingrese el número correctamente (deben ser 10 dígitos)": null,
             phone: (value) =>
-                value.length < 9 ? "Ingrese el telefono correctamente" : null,
+                value.length < 10 ? "Ingrese el telefono correctamente (deben ser 10 dígitos)" :
+                value.length > 10 ? "Ingrese el número correctamente (deben ser 10 dígitos)": null,
             email: (value) =>
                 /^\S+@\S+$/.test(value) ? null : "Invalid email",
             canton_id: (value) => (value === 0 ? "Ingrese el cantón" : null),
