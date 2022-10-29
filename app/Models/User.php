@@ -55,10 +55,10 @@ class User extends Authenticatable
     }
 
     //Me permite encriptar las password de los usuarios creados
-    public function setPasswordAttribute($password)
+    /* public function setPasswordAttribute($password)
     {
         return $this->attributes['password'] = Hash::needsRehash($password) ? Hash::make($password) : $password;
-    }
+    } */
 
     /**
      * The attributes that should be cast.
