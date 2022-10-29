@@ -129,7 +129,7 @@ class UserController extends Controller
                 $user->recintos()->attach($request->recinto_id);
             }
 
-            $user->save();
+            $user->update();
             return response()->json(['status' => 'success', 'msg' => 'Guardado con éxito']);
         } catch (\Throwable $th) {
             DB::rollback();
