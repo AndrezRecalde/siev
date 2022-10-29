@@ -32,7 +32,7 @@ class UserRequest extends FormRequest
             'last_name'     =>  'required',
             'phone'         =>  '',
             'email'         =>  'required|unique:users',
-            /* 'password'      =>  '', */
+            'password'      =>  '',
             'canton_id'     =>  'required',
             'parroquia_id'  =>  'required',
             'recinto_id'    =>  '',
