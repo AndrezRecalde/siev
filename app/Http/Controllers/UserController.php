@@ -121,7 +121,7 @@ class UserController extends Controller
     {
         try {
             $user = User::create($request->validated());
-            $user->password = Hash::make($request->dni);
+            /* $user->password = Hash::make($request->dni); */
             $user->assignRole($request->roles);
             $user->parroquias()->attach($request->parroquia_id);
 
@@ -129,7 +129,7 @@ class UserController extends Controller
                 $user->recintos()->attach($request->recinto_id);
             }
 
-            $user->update();
+            $user->save();
             return response()->json(['status' => 'success', 'msg' => 'Guardado con éxito']);
         } catch (\Throwable $th) {
             DB::rollback();

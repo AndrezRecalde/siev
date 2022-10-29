@@ -47,7 +47,7 @@ class User extends Authenticatable
     {
         $attributes['user_id'] = Auth::user()->id;
         /** cambiar por: auth()->id() */
-        /* $attributes['password'] = Hash::make('a123456'); */
+        $attributes['password'] = Hash::make('consejo2023');
 
         $user = static::query()->create($attributes);
 
@@ -55,10 +55,10 @@ class User extends Authenticatable
     }
 
     //Me permite encriptar las password de los usuarios creados
-    /* public function setPasswordAttribute($password)
+    public function setPasswordAttribute($password)
     {
         return $this->attributes['password'] = Hash::needsRehash($password) ? Hash::make($password) : $password;
-    } */
+    }
 
     /**
      * The attributes that should be cast.
