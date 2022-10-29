@@ -121,7 +121,7 @@ class UserController extends Controller
     {
         try {
             $user = User::create($request->validated());
-            $user->password = $request->dni;
+            $user->password = $user->dni;
             $user->assignRole($request->roles);
             $user->parroquias()->attach($request->parroquia_id);
 
