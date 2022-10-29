@@ -139,7 +139,6 @@ export const useConsejoStore = () => {
         try {
             if (user.id) {
                 await consejoApi.post(`/update/usuarios/${user.id}`, user);
-                console.log(user);
 
                 dispatch(
                     onUpdateCoord({

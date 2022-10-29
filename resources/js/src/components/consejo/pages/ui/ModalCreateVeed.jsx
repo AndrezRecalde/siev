@@ -97,7 +97,6 @@ export const ModalCreateVeed = () => {
             modalActionVeedor("close");
             await startProfile();
             form.reset();
-            console.log(form.values);
         } else {
             console.log("Error");
         }

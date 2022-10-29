@@ -79,6 +79,7 @@ export const ModalCreateAdmin = () => {
             await startSavingAdmin(form.values);
             modalActionAdmin("close");
             await startProfile();
+            form.reset();
         }else {
             console.log('Error')
         }

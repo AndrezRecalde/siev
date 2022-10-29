@@ -67,7 +67,6 @@ const TableCoord = (props) => {
                 let total = totalJuntas?.reduce((a,b) => a + b, 0);
 
                 let totales = ((totalxVeedor * 100)/total);
-                console.log(totalxVeedor)
                 return(
                     <RingProgress
                     size={90}
@@ -79,7 +78,7 @@ const TableCoord = (props) => {
                             align="center"
                             size="xs"
                         >
-                            {totales !== NaN ? `${totales.toFixed(1)}%` : `${0}%`}
+                            {totales ? `${totales.toFixed(1)}%` : `${0}%`}
                         </Text>
                     }
                 />

@@ -50,7 +50,6 @@ export const useAuthStore = () => {
                 })
             );
         } catch (error) {
-            console.log(error);
             dispatch(onLogout("Credenciales incorrectas"));
             setTimeout(() => {
                 dispatch(clearErrorMessage());
@@ -59,7 +58,6 @@ export const useAuthStore = () => {
     };
 
     const startProfile = async () => {
-        console.log(localStorage.getItem("token"));
         try {
             const { data } = await consejoApi.get("/profile");
             dispatch(
@@ -125,7 +123,6 @@ export const useAuthStore = () => {
             );
             startProfile();
         } catch (error) {
-            console.log(error);
             localStorage.clear();
             dispatch(onLogout());
         }

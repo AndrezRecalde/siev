@@ -17,7 +17,6 @@ export const HomePage = () => {
 
     useEffect(() => {
          startProfile();
-         console.log(user)
     }, [])
 
 
