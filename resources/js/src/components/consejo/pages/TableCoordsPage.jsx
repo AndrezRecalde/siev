@@ -6,18 +6,21 @@ import { ModalCreateCoord } from "./ui/ModalCreateCoord";
 import { GridTableCoord } from "./ui/GridTableCoord";
 import { useStatesStore } from "../../../hooks/useStatesStore";
 import { useConsejoStore } from "../../../hooks/useConsejoStore";
+import { useAuthStore } from "../../../hooks/useAuthStore";
+import { ModalCreateCoordxAdmin } from "./ui/ModalCreateCoordxAdmin";
 
 export const TableCoordsPage = () => {
-    const { modalActionCoord } = useUiStore();
-    const { startLoadCantones, startLoadRoles } = useStatesStore();
-    const { setClearActivateUser } = useConsejoStore();
+    const { user } = useAuthStore();
+    const { modalActionCoord, modalActionCoordxAdmin } = useUiStore();
 
     const handleCreateCoord = async (e) => {
         e.preventDefault();
-        startLoadCantones();
-        startLoadRoles();
-        setClearActivateUser();
-        modalActionCoord("open");
+
+        if (user.roles?.includes("Administrador")) {
+            modalActionCoordxAdmin("open"); //cuando lo crea un Admin
+        } else {
+            modalActionCoord("open"); //Cuando lo crea un Supervidor
+        }
     };
 
     return (
@@ -60,6 +63,8 @@ export const TableCoordsPage = () => {
                 </Card>
             </Group>
             <ModalCreateCoord />
+            <ModalCreateCoordxAdmin />
+
         </>
     );
 };

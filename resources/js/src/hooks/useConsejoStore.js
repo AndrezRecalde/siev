@@ -8,9 +8,6 @@ import {
     onAddNewCoord,
     onAddNewSuper,
     onAddNewVeedor,
-    onDeleteCoord,
-    onDeleteSuper,
-    onDeleteVeedor,
     onSetActivateUser,
     onSetActivateVeedor,
     onUpdateCoord,
@@ -46,6 +43,26 @@ export const useConsejoStore = () => {
         );
     };
 
+    const setActiveCoordxAdmin = (user) => {
+        console.log(user.parroquias[0].id);
+        dispatch(
+            onSetActivateUser({
+                id: user.id,
+                first_name: user.first_name,
+                last_name: user.last_name,
+                dni: user.dni,
+                phone: user.phone,
+                user_id: user.user_id,
+                canton_id: user.canton_id,
+                role_id: user.role_id,
+                email: user.email,
+                canton_id: user.canton_id,
+                parroquia_id: user.parroquias[0].id,
+                recinto_id: 0,
+            })
+        );
+    };
+
     const setActiveVeedor = (veedor) => {
         dispatch(
             onSetActivateVeedor({
@@ -54,6 +71,24 @@ export const useConsejoStore = () => {
                 last_name: veedor.last_name,
                 dni: veedor.dni,
                 phone: veedor.phone,
+                email: veedor.email,
+                observacion: veedor.observacion,
+                parroquia_id: veedor.parroquia_id,
+                recinto_id: veedor.recinto_id,
+                recinto__id: veedor.recinto__id,
+            })
+        );
+    };
+
+    const setActiveVeedorGrant = (veedor) => {
+        dispatch(
+            onSetActivateVeedor({
+                id: veedor.id,
+                first_name: veedor.first_name,
+                last_name: veedor.last_name,
+                dni: veedor.dni,
+                phone: veedor.phone,
+                user_id: veedor.user_id,
                 email: veedor.email,
                 observacion: veedor.observacion,
                 parroquia_id: veedor.parroquia_id,
@@ -85,7 +120,6 @@ export const useConsejoStore = () => {
                 showConfirmButton: false,
                 timer: 1000,
             });
-
         } catch (error) {
             console.log(error);
             Swal.fire(
@@ -176,6 +210,52 @@ export const useConsejoStore = () => {
         }
     };
 
+    //Para cuando el admin cree un Coordinador
+    const startSavingCoordxAdmin = async (user) => {
+        /* console.log(user); */
+        try {
+            if (user.id) {
+                await consejoApi.post(
+                    `/update/admin/coordinador/${user.id}`,
+                    user
+                );
+
+                dispatch(
+                    onUpdateCoord({
+                        ...user,
+                    })
+                );
+                Swal.fire({
+                    icon: "success",
+                    title: "Actualizado con éxito!",
+                    showConfirmButton: false,
+                    timer: 1000,
+                });
+                return;
+            }
+            await consejoApi.post(`/create/admin/coordinador`, user);
+            console.log(user);
+            dispatch(
+                onAddNewCoord({
+                    ...user,
+                })
+            );
+            Swal.fire({
+                icon: "success",
+                title: "Guardado con éxito!",
+                showConfirmButton: false,
+                timer: 1000,
+            });
+        } catch (error) {
+            console.log(error);
+            Swal.fire(
+                "Error",
+                JSON.stringify(error.response.data.errores),
+                "error"
+            );
+        }
+    };
+
     const startSavingVeedor = async (veedor) => {
         try {
             if (veedor.id) {
@@ -214,6 +294,45 @@ export const useConsejoStore = () => {
             );
         }
     };
+
+    const startSavingVeedorGrant = async (veedor) => {
+        try {
+            if (veedor.id) {
+                await consejoApi.post(`/update/veed/${veedor.id}`, veedor);
+                dispatch(
+                    onUpdateVeedor({
+                        ...veedor,
+                    })
+                );
+                Swal.fire({
+                    icon: "success",
+                    title: "Actualizado con éxito!",
+                    showConfirmButton: false,
+                    timer: 1000,
+                });
+                return;
+            }
+            await consejoApi.post(`/create/veed/`, veedor);
+            dispatch(
+                onAddNewVeedor({
+                    ...veedor,
+                })
+            );
+            Swal.fire({
+                icon: "success",
+                title: "Creado con éxito!",
+                showConfirmButton: false,
+                timer: 1000,
+            });
+        } catch (error) {
+            console.log(error);
+            Swal.fire(
+                "Error",
+                JSON.stringify(error.response.data.errores),
+                "error"
+            );
+        }
+    }
 
     const startDeleteUser = async (user) => {
         Swal.fire({
@@ -289,7 +408,7 @@ export const useConsejoStore = () => {
     //PDF:
     const exportPDF = async () => {
         const response = await consejoApi.get("/pdf/veedores");
-        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const url = window.URL.createObjectURL(new Blob([response.data],{type:'application/pdf'}));
         window.open(url, "_blank");
     };
 
@@ -299,13 +418,17 @@ export const useConsejoStore = () => {
         juntas,
 
         setActiveUser,
+        setActiveCoordxAdmin,
         setActiveVeedor,
+        setActiveVeedorGrant,
         setClearActivateUser,
         setClearActivateVeedor,
         startSavingAdmin,
         startSavingSuper,
         startSavingCoord,
+        startSavingCoordxAdmin,
         startSavingVeedor,
+        startSavingVeedorGrant,
 
         startDeleteUser,
         /*  startDeleteCoord, */

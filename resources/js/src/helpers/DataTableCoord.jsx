@@ -10,47 +10,38 @@ import { useUiStore } from "../hooks/useUiStore";
 import FilterComponent from "./FilterComponent";
 
 const TableCoord = (props) => {
-    const { modalActionCoord } = useUiStore();
-    const { startLoadCantones, startLoadAllRecintos, startLoadRoles } =
-        useStatesStore();
-    const { setActiveUser, startDeleteUser } = useConsejoStore();
-    const { startProfile } = useAuthStore();
+    const { modalActionCoord, modalActionCoordxAdmin } = useUiStore();
 
+    const { setActiveUser, startDeleteUser, setActiveCoordxAdmin } =
+        useConsejoStore();
+    const { user } = useAuthStore();
 
-    const getTotalChart = (param) => {
-        let total_juntas =  param.recintos?.map( r => r.num_juntas);
-        let total_veedor = param.veedores?.length;
-
-
-
-    }
-
-
-    const handleSelect = (user) => {
-        startLoadCantones();
-        startLoadAllRecintos();
-        startLoadRoles();
-        setActiveUser(user);
-        modalActionCoord("open");
+    const handleSelect = (selected) => {
+        if (user.roles?.includes("Administrador")) {
+            setActiveCoordxAdmin(selected);
+            modalActionCoordxAdmin("open");
+        } else {
+            setActiveCoordxAdmin(selected);         //Revisar
+            modalActionCoord("open");
+        }
     };
 
     const handleSelectDelete = (user) => {
         startDeleteUser(user);
-    }
-
+    };
 
     const columns = [
         {
             name: "Nombres",
             selector: (row) => row.first_name + " " + row.last_name,
             sortable: true,
-            grow: 1,
+            width: "200px"
         },
         {
             name: "Telefono",
             selector: (row) => row.phone,
             sortable: true,
-            hide: "sm",
+            width: "150px"
         },
         /* {
             name: "Cantón",
@@ -62,27 +53,29 @@ const TableCoord = (props) => {
             name: "Progreso",
             button: true,
             cell: (row) => {
-                let totalJuntas = row.recintos?.map(r => r.num_juntas);
-                let totalxVeedor = row.veedores?.length ? row.veedores?.length : 0 ;
-                let total = totalJuntas?.reduce((a,b) => a + b, 0);
+                let totalJuntas = row.recintos?.map((r) => r.num_juntas);
+                let totalxVeedor = row.veedores?.length
+                    ? row.veedores?.length
+                    : 0;
+                let total = totalJuntas?.reduce((a, b) => a + b, 0);
 
-                let totales = ((totalxVeedor * 100)/total);
-                return(
+                let totales = (totalxVeedor * 100) / total;
+                return (
                     <RingProgress
-                    size={90}
-                    sections={[{ value: totales, color: "cyan" }]}
-                    label={
-                        <Text
-                            color="blue"
-                            weight={30}
-                            align="center"
-                            size="xs"
-                        >
-                            {totales ? `${totales.toFixed(1)}%` : `${0}%`}
-                        </Text>
-                    }
-                />
-                )
+                        size={90}
+                        sections={[{ value: totales, color: "cyan" }]}
+                        label={
+                            <Text
+                                color="blue"
+                                weight={30}
+                                align="center"
+                                size="xs"
+                            >
+                                {totales ? `${totales.toFixed(1)}%` : `${0}%`}
+                            </Text>
+                        }
+                    />
+                );
             },
         },
         /* {
@@ -96,7 +89,7 @@ const TableCoord = (props) => {
             name: "Recinto",
             selector: (row) => row.recintos?.map((rec) => rec.nombre_recinto),
             sortable: true,
-            grow: 3,
+            width: "400px"
         },
         {
             name: "Acciones",
@@ -111,7 +104,11 @@ const TableCoord = (props) => {
                     >
                         <IconEdit size={20} />
                     </ActionIcon>
-                    <ActionIcon onClick={() => handleSelectDelete(row)} color="red" variant="light">
+                    <ActionIcon
+                        onClick={() => handleSelectDelete(row)}
+                        color="red"
+                        variant="light"
+                    >
                         <IconTrash size={20} />
                     </ActionIcon>
                 </>

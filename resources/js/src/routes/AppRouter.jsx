@@ -1,10 +1,14 @@
 import { Loader } from "@mantine/core";
 import React, { useEffect } from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { LoginPage } from "../components/consejo/pages/Auth/LoginPage";
-import { HomePage } from "../components/consejo/pages/HomePage";
 import { useAuthStore } from "../hooks/useAuthStore";
+import { ConsejoRoutes } from "./consejo/ConsejoRoutes";
+import { PrivateRoute } from "./PrivateRoute";
+import { PublicRoute } from "./PublicRoute";
+
 import "../styles/index.css";
+
 
 export const AppRouter = () => {
     const { status, checkAuthToken } = useAuthStore();
@@ -20,18 +24,21 @@ export const AppRouter = () => {
 
     return (
         <Routes>
-            {status === "not-authenticated" ? (
-                <>
-                    <Route path="/auth/*" element={<LoginPage />} />
-                    <Route path="/*" element={<Navigate to="/auth/login" />} />
-                </>
-            ) : (
-                <>
-                    <Route path="/" element={<HomePage />} />
-                    <Route path="/*" element={<Navigate to="/" />} />
 
-                </>
-            )}
+            <Route path="auth/login/*" element={
+                <PublicRoute>
+                    <Routes>
+                        <Route path="/*" element={<LoginPage />} />
+                    </Routes>
+                </PublicRoute>
+            }
+            />
+
+            <Route path="/*" element={
+                <PrivateRoute>
+                    <ConsejoRoutes />
+                </PrivateRoute>
+            } />
         </Routes>
     );
 };

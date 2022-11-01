@@ -29,8 +29,8 @@ class Veedor extends Model
 
     public static function create(array $attributes = [])
     {
-        $attributes['user_id'] = Auth::user()->id;   /** cambiar por: auth()->id() */
-
+        $attributes['user_id'] = Auth::user()->id;
+        /** cambiar por: auth()->id() */
 
         $veedor = static::query()->create($attributes);
 
@@ -40,5 +40,38 @@ class Veedor extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function coordinador()
+    {
+        return $this->belongsTo(Coordinador::class);
+    }
+
+    public function scopeRecinto($query, $recinto)
+    {
+        if ($recinto > 0) {
+            return $query->where('re.id', $recinto);
+        }
+    }
+
+    public function scopeParroquia($query, $parroquia)
+    {
+        if ($parroquia > 0) {
+            return $query->where('p.id', $parroquia);
+        }
+    }
+
+    public function scopeCanton($query, $canton)
+    {
+        if ($canton > 0) {
+            return $query->where('c.id', $canton);
+        }
+    }
+
+    public function scopeUsuario($query, $usuario)
+    {
+        if ($usuario > 0) {
+            return $query->where('us.id', $usuario);
+        }
     }
 }

@@ -6,20 +6,22 @@ import { useStatesStore } from "../../../hooks/useStatesStore";
 import { useUiStore } from "../../../hooks/useUiStore";
 import { GridTableVeed } from "./ui/GridTableVeed";
 import { ModalCreateVeed } from "./ui/ModalCreateVeed";
+import { ModalCreateVeedGrant } from "./ui/ModalCreateVeedGrant";
 
 
 export const TableVeedsPage = () => {
 
-    const { juntas, veedores } = useAuthStore();
-    const { modalActionVeedor } = useUiStore();
-    const { startLoadAllParroquias, startLoadAllRecintos, startLoadRoles } = useStatesStore();
+    const { user, juntas, veedores } = useAuthStore();
+    const { modalActionVeedor, modalActionVeedorGrant } = useUiStore();
 
     const handleCreateVeedor = (e) => {
         e.preventDefault();
-        modalActionVeedor("open")
-        startLoadAllParroquias();
-        startLoadAllRecintos();
-        startLoadRoles();
+
+        if (user.roles?.includes("Administrador")) {
+            modalActionVeedorGrant("open")
+        }else {
+            modalActionVeedor("open")
+        }
     }
 
     return (
@@ -58,6 +60,7 @@ export const TableVeedsPage = () => {
             </Card>
         </Group>
         <ModalCreateVeed />
+        <ModalCreateVeedGrant />
         </>
     );
 };

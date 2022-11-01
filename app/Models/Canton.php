@@ -15,4 +15,10 @@ class Canton extends Model
     {
         return $this->hasOne(User::class);
     }
+
+    public function coordinador()
+    {
+        return $this->hasOne(Coordinador::class);
+    }
+
 }

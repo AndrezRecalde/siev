@@ -1,6 +1,5 @@
 import { Container } from "@mantine/core";
 import React, { useEffect } from "react";
-import { NavBar } from "./ui/NavBar";
 import { Paper, Tabs } from "@mantine/core";
 import { ProfilePage } from "./ProfilePage";
 import { TableAdminsPage } from "./TableAdminsPage";
@@ -8,55 +7,70 @@ import { TableSupersPage } from "./TableSupersPage";
 import { TableCoordsPage } from "./TableCoordsPage";
 import { TableVeedsPage } from "./TableVeedsPage";
 import { useAuthStore } from "../../../hooks/useAuthStore";
-import { Footer } from "./ui/Footer";
-
+import { useStatesStore } from "../../../hooks/useStatesStore";
 
 export const HomePage = () => {
+    const { status, user, startProfile } = useAuthStore();
+    const { startLoadCantones, startLoadAllParroquias, startLoadAllRecintos, startLoadRoles } = useStatesStore();
 
-    const { user, startProfile } = useAuthStore();
 
     useEffect(() => {
-         startProfile();
-    }, [])
+        startProfile();
+    }, []);
+
+    useEffect(() => {
+        startLoadCantones();
+        startLoadAllParroquias();
+        startLoadAllRecintos();
+        startLoadRoles();
+    }, [status])
 
 
     return (
         <Container>
-            <NavBar />
-
             <Paper
-                sx={{ height: 'auto', width: 'auto' }}
+                sx={{ height: "auto", width: "auto" }}
                 shadow="sm"
                 radius="md"
                 p="md"
                 mb={20}
             >
-
                 <Tabs defaultValue="profile">
                     <Tabs.List grow position="center">
-                        { user.roles.includes("Administrador") ?
-                        <>
-                            <Tabs.Tab value="profile">Perfil</Tabs.Tab>
-                            <Tabs.Tab value="administradores">Ver Admins</Tabs.Tab>
-                            <Tabs.Tab value="supervisores">Ver Supervisores</Tabs.Tab>
-                            <Tabs.Tab value="coordinadores">Ver Coordinadores</Tabs.Tab>
-                            <Tabs.Tab value="veedores">Ver Veedores</Tabs.Tab>
-                            </> :
-                            user.roles.includes("Supervisor") ?
+                        {user.roles.includes("Administrador") ? (
                             <>
-                            <Tabs.Tab value="profile">Perfil</Tabs.Tab>
-                            <Tabs.Tab value="coordinadores">Ver Coordinadores</Tabs.Tab>
-                            <Tabs.Tab value="veedores">Ver Veedores</Tabs.Tab>
-                            </> :
-                            user.roles.includes("Coordinador") ?
+                                <Tabs.Tab value="profile">Perfil</Tabs.Tab>
+                                <Tabs.Tab value="administradores">
+                                    Ver Admins
+                                </Tabs.Tab>
+                                <Tabs.Tab value="supervisores">
+                                    Ver Supervisores
+                                </Tabs.Tab>
+                                <Tabs.Tab value="coordinadores">
+                                    Ver Coordinadores
+                                </Tabs.Tab>
+                                <Tabs.Tab value="veedores">
+                                    Ver Veedores
+                                </Tabs.Tab>
+                            </>
+                        ) : user.roles.includes("Supervisor") ? (
                             <>
-                            <Tabs.Tab value="profile">Perfil</Tabs.Tab>
-                            <Tabs.Tab value="veedores">Ver Veedores</Tabs.Tab>
-                            </> :
-                            null
-                    }
-
-
+                                <Tabs.Tab value="profile">Perfil</Tabs.Tab>
+                                <Tabs.Tab value="coordinadores">
+                                    Ver Coordinadores
+                                </Tabs.Tab>
+                                <Tabs.Tab value="veedores">
+                                    Ver Veedores
+                                </Tabs.Tab>
+                            </>
+                        ) : user.roles.includes("Coordinador") ? (
+                            <>
+                                <Tabs.Tab value="profile">Perfil</Tabs.Tab>
+                                <Tabs.Tab value="veedores">
+                                    Ver Veedores
+                                </Tabs.Tab>
+                            </>
+                        ) : null}
                     </Tabs.List>
 
                     <Tabs.Panel value="profile" pt="xs">
@@ -77,7 +91,6 @@ export const HomePage = () => {
                 </Tabs>
             </Paper>
 
-            <Footer />
         </Container>
     );
 };

@@ -28,12 +28,8 @@ export const statesSlice = createSlice({
             state.allRecintos = action.payload;
         },
         onClearStates: (state) => {
-            state.cantones = [];
             state.parroquias = [];
-            state.allParroquias = [];
             state.recintos = [];
-            state.allRecintos = [];
-            state.roles = [];
         },
         onLoadRoles: (state, action) => {
             state.roles = action.payload;

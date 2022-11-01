@@ -111,32 +111,17 @@ const mockdata = [
         title: "Exportar Veedores",
         description: "Exportar todos los veedores",
         to: "/api/pdf/veedores",
-    },
-    /* {
-        icon: IconCoin,
-        title: "Free for everyone",
-        description: "The fluid of Smeargle’s tail secretions changes",
+        target: "_blank"
     },
     {
-        icon: IconBook,
-        title: "Documentation",
-        description: "Yanma is capable of seeing 360 degrees without",
+        icon: IconCode,
+        title: "Filtrar Exportación",
+        description: "Filtrar exportaciones a traves de campos especificos",
+        to: "/search/veedores",
+        target: ""
+
     },
-    {
-        icon: IconFingerprint,
-        title: "Security",
-        description: "The shell’s rounded shape and the grooves on its.",
-    },
-    {
-        icon: IconChartPie3,
-        title: "Analytics",
-        description: "This Pokémon uses its flying ability to quickly chase",
-    },
-    {
-        icon: IconNotification,
-        title: "Notifications",
-        description: "Combusken battles with the intensely hot flames it spews",
-    }, */
+
 ];
 
 export const NavBar = () => {
@@ -152,6 +137,11 @@ export const NavBar = () => {
 
     const [userMenuOpened, setUserMenuOpened] = useState(false);
 
+    const handleExportPdf = (e) => {
+        e.preventDefault();
+        exportPDF();
+    }
+
     const links = mockdata.map((item) => (
         <UnstyledButton className={classes.subLink} key={item.title}>
             <Group noWrap align="flex-start">
@@ -159,7 +149,7 @@ export const NavBar = () => {
                     <item.icon size={22} color={theme.fn.primaryColor()} />
                 </ThemeIcon>
                 <div>
-                    <Link to={item.to} target="_blank" className={classes.link}>
+                    <Link to={item.to} target={item.target} className={classes.link}>
                         <Text size="sm" weight={500}>
                             {item.title}
                         </Text>
@@ -210,9 +200,9 @@ export const NavBar = () => {
 
                             <HoverCard.Dropdown sx={{ overflow: "hidden" }}>
                                 <Group position="apart" px="md">
-                                    <Text weight={500}>Features</Text>
+                                    <Text weight={500}>Exportaciones</Text>
                                     <Anchor href="#" size="xs">
-                                        View all
+                                        Detalle
                                     </Anchor>
                                 </Group>
 
@@ -234,10 +224,10 @@ export const NavBar = () => {
                             </HoverCard.Dropdown>
                         </HoverCard>
 
+                        <Link to="/search/veedores" className={classes.link}>
+                            Buscador
+                        </Link>
                         {/* <a href="#" className={classes.link}>
-                            Learn
-                        </a>
-                        <a href="#" className={classes.link}>
                             Academy
                         </a> */}
                     </Group>
@@ -312,9 +302,9 @@ export const NavBar = () => {
                         }
                     />
 
-                    <a href="#" className={classes.link}>
+                    <Link to="/" className={classes.link}>
                         Home
-                    </a>
+                    </Link>
                     <UnstyledButton
                         className={classes.link}
                         onClick={toggleLinks}
@@ -330,12 +320,12 @@ export const NavBar = () => {
                         </Center>
                     </UnstyledButton>
                     <Collapse in={linksOpened}>{links}</Collapse>
-                    <a href="#" className={classes.link}>
-                        Learn
-                    </a>
-                    <a href="#" className={classes.link}>
+                    <Link to="/search/veedores" className={classes.link}>
+                        Buscador
+                    </Link>
+                    {/* <a href="#" className={classes.link}>
                         Academy
-                    </a>
+                    </a> */}
 
                     <Divider
                         my="sm"

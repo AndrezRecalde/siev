@@ -20,7 +20,6 @@ export const ModalCreateVeed = () => {
         allParroquias,
         recintos,
         allRecintos,
-        startLoadParroquias,
         startLoadRecintos,
         startClearStates,
     } = useStatesStore();

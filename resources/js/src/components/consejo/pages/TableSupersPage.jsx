@@ -20,22 +20,17 @@ import { ModalCreateSuper } from "./ui/ModalCreateSuper";
 export const TableSupersPage = () => {
     const { modalActionSuper } = useUiStore();
     const { supervisores } = useAuthStore();
-    const { startLoadCantones, startLoadRoles } = useStatesStore();
     const { setActiveUser, setClearActivateUser, startDeleteUser } =
         useConsejoStore();
 
     const handleCreateSuper = async (e) => {
         e.preventDefault();
-        await startLoadCantones();
-        await startLoadRoles();
         setClearActivateUser();
         modalActionSuper("open");
     };
 
     const handleSelect = async (user) => {
         setActiveUser(user);
-        await startLoadCantones();
-        await startLoadRoles();
         modalActionSuper("open");
     };
 

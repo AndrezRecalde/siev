@@ -159,18 +159,17 @@ class AuthController extends Controller
                 'roles' => function ($query) {
                     $query->select('id', 'name');
                 },
-                'veedores'
             ])->join('model_has_roles as mhr', 'mhr.model_id', 'users.id')
                 ->where('mhr.role_id', 3)
                 ->get();
 
             $veedores = Veedor::from('veedores as v')
-                ->select(DB::raw('v.id, v.dni, v.first_name, v.last_name, v.phone, v.email, v.observacion,
-                              p.nombre_parroquia as parroquia, users.first_name as responsable, r.nombre_recinto as origen, re.nombre_recinto as destino,
+                ->select(DB::raw('v.id, v.dni, v.first_name, v.last_name, v.phone, v.email, v.observacion, v.user_id,
+                              p.nombre_parroquia as parroquia, CONCAT(users.first_name," ",users.last_name) as responsable, r.nombre_recinto as origen, re.nombre_recinto as destino,
                               p.id as parroquia_id, r.id as recinto_id, re.id as recinto__id'))
                 ->join('parroquias as p', 'p.id', 'v.parroquia_id')
                 ->join('recintos as r', 'r.id', 'v.recinto_id')
-                ->join('recintos as re', 're.id', 'v.recinto_id')
+                ->join('recintos as re', 're.id', 'v.recinto__id')
                 ->join('users', 'users.id', 'v.user_id')
                 ->get();
 
@@ -218,11 +217,11 @@ class AuthController extends Controller
 
             $veedores = Veedor::from('veedores as v')
                 ->select(DB::raw('v.id, v.dni, v.first_name, v.last_name, v.phone,
-                                    v.email, v.observacion, p.nombre_parroquia as parroquia,
+                                    v.email, v.observacion, v.user_id, p.nombre_parroquia as parroquia,
                                     p.id as parroquia_id,
                                     r.nombre_recinto as origen, re.nombre_recinto as destino,
                                     r.id as recinto_id, re.id as recinto__id,
-                                    users.first_name as responsable'))
+                                    CONCAT(users.first_name," ",users.last_name) as responsable'))
                 ->join('recintos as r', 'r.id', 'v.recinto_id')     //DONDE VIVE
                 ->join('recintos as re', 're.id', 'v.recinto__id')  //DONDE VOTA
                 ->join('parroquias as p', 're.parroquia_id', 'p.id')
@@ -239,13 +238,15 @@ class AuthController extends Controller
             ]);
         } else {
             $veedores = Veedor::from('veedores as v')
-                ->select(DB::raw('v.id, v.dni, v.first_name, v.last_name, v.phone, v.email, v.observacion,
+                ->select(DB::raw('v.id, v.dni, v.first_name, v.last_name, v.phone, v.email, v.observacion, v.user_id,
                               p.nombre_parroquia as parroquia, r.nombre_recinto as origen, re.nombre_recinto as destino,
-                              p.id as parroquia_id, r.id as recinto_id, re.id as recinto__id'))
+                              p.id as parroquia_id, r.id as recinto_id, re.id as recinto__id,
+                              CONCAT(users.first_name," ",users.last_name) as responsable'))
                 ->join('parroquias as p', 'p.id', 'v.parroquia_id')
                 ->join('recintos as r', 'r.id', 'v.recinto_id')
                 ->join('recintos as re', 're.id', 'v.recinto__id')
-                ->where('user_id', Auth::user()->id)
+                ->join('users', 'users.id', 'v.user_id')
+                ->where('v.user_id', Auth::user()->id)
                 ->get();
 
             $totales = [];

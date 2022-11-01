@@ -1,4 +1,4 @@
-import { Button, Divider, Grid, Modal, MultiSelect, Select, TextInput } from "@mantine/core";
+import { Button, Divider, Grid, Modal, Select, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import {
     Icon123,
@@ -12,19 +12,20 @@ import { useConsejoStore } from "../../../../hooks/useConsejoStore";
 import { useStatesStore } from "../../../../hooks/useStatesStore";
 import { useUiStore } from "../../../../hooks/useUiStore";
 
-export const ModalCreateAdmin = () => {
-    const { isOpenModalCreateAdmin, modalActionAdmin } = useUiStore();
+export const ModalCreateVeedGrant = () => {
+    const { isOpenModalCreateVeedorGrant, modalActionVeedorGrant } = useUiStore();
+    const { activateVeedor, setClearActivateVeedor, startSavingVeedorGrant } = useConsejoStore();
+
     const {
-        cantones,
-        parroquias,
-        roles,
-        startLoadParroquias,
+        allParroquias,
+        recintos,
+        allRecintos,
+        startLoadRecintos,
         startClearStates,
     } = useStatesStore();
 
-    const { startProfile } = useAuthStore();
+    const { startProfile, coordinadores } = useAuthStore();
 
-    const { setClearActivateUser, startSavingAdmin } = useConsejoStore();
 
     const form = useForm({
         initialValues: {
@@ -32,10 +33,12 @@ export const ModalCreateAdmin = () => {
             last_name: "",
             dni: "",
             phone: "",
+            user_id: 0,
             email: "",
-            roles: [1],
-            canton_id: 0,
+            observacion: "",
             parroquia_id: 0,
+            recinto_id: 0,
+            recinto__id: 0,
         },
         validate: {
             first_name: (value) =>
@@ -48,58 +51,74 @@ export const ModalCreateAdmin = () => {
             phone: (value) =>
                 value.length < 10 ? "Ingrese el número correctamente (deben ser 10 dígitos)" :
                 value.length > 10 ? "Ingrese el número correctamente (deben ser 10 dígitos)": null,
-            email: (value) =>
-                /^\S+@\S+$/.test(value) ? null : "Invalid email",
-            canton_id: (value) =>
-                value === 0 ? "Ingrese el cantón" : null,
+            user_id: (value) =>
+                value === 0 ? "Ingrese el coordinador" : null,
             parroquia_id: (value) =>
                 value === 0 ? "Ingrese la parroquia" : null,
+            recinto_id: (value) =>
+                value === 0 ? "Ingrese el recinto donde vota" : null,
+            recinto__id: (value) =>
+                value === 0 ? "Ingrese el recinto donde cuida voto" : null,
         },
     });
 
-    const { canton_id } = form.values;
+    const { parroquia_id } = form.values;
+
 
     useEffect(() => {
-        form.setFieldValue("parroquia_id", 0);
-        startLoadParroquias({ canton_id });
-    }, [canton_id]);
+        form.setFieldValue("recinto_id", 0);
+        startLoadRecintos({ parroquia_id });
+    }, [parroquia_id]);
 
+    useEffect(() => {
+        if (activateVeedor !== null) {
+            form.setValues({
+                ...activateVeedor,
+            });
+            return;
+        }
 
-    const handleCreateAdmin = async(e) => {
+        form.reset();
+
+    }, [activateVeedor]);
+
+    const handleCreateVeed = async(e) => {
         e.preventDefault();
         const { errors } = form.validate();
         if (
             !errors.hasOwnProperty("first_name") &&
             !errors.hasOwnProperty("last_name") &&
             !errors.hasOwnProperty("dni") &&
-            !errors.hasOwnProperty("email") &&
             !errors.hasOwnProperty("phone") &&
-            !errors.hasOwnProperty('canton_id') &&
-            !errors.hasOwnProperty('parroquia_id')
+            !errors.hasOwnProperty("user_id") &&
+            !errors.hasOwnProperty("email") &&
+            !errors.hasOwnProperty("parroquia_id") &&
+            !errors.hasOwnProperty("recinto_id") &&
+            !errors.hasOwnProperty("recinto__id")
         ) {
-            await startSavingAdmin(form.values);
-            modalActionAdmin("close");
+            await startSavingVeedorGrant(form.values);
+            modalActionVeedorGrant("close");
             await startProfile();
             form.reset();
-        }else {
-            console.log('Error')
+        } else {
+            console.log("Error");
         }
     };
 
     const handleCloseModal = () => {
-        modalActionAdmin("close");
+        modalActionVeedorGrant("close");
         startClearStates();
-        setClearActivateUser();
+        setClearActivateVeedor();
         form.reset();
     };
 
     return (
         <Modal
-            opened={isOpenModalCreateAdmin}
+            opened={isOpenModalCreateVeedorGrant}
             onClose={handleCloseModal}
-            title="Crear Administrador"
+            title="Crear Veedor"
         >
-            <form onSubmit={handleCreateAdmin}>
+            <form onSubmit={handleCreateVeed}>
                 <Grid grow>
                     <Grid.Col span={6}>
                         <TextInput
@@ -140,57 +159,74 @@ export const ModalCreateAdmin = () => {
                         />
                     </Grid.Col>
                 </Grid>
-                <MultiSelect
-                    label="Role"
-                    mt={16}
+
+                <Select
+                    label="Coordinador"
+                    placeholder="Ingrese el Coordinador"
+                    searchable
                     withAsterisk
-                    readOnly
-                    variant="filled"
-                    {...form.getInputProps("roles")}
-                    data={roles.map(role => {
+                    mt={16}
+                    {...form.getInputProps("user_id")}
+                    data={coordinadores.map((coordinador) => {
                         return {
-                            value: role.id,
-                            label: role.name
-                        }
+                            value: coordinador.id,
+                            label: coordinador.first_name + " " +coordinador.last_name,
+                        };
                     })}
                 />
+
                 <TextInput
-                    placeholder="Email"
+                    placeholder="Email (Opcional)"
                     label="Email"
                     mt={16}
                     icon={<IconAt size={14} />}
-                    withAsterisk
                     {...form.getInputProps("email")}
                 />
                 <Select
-                    label="Cantón"
-                    placeholder="Cantón"
-                    mt={16}
+                    label="Parroquia de residencia del Veedor"
+                    placeholder="Parroquia de residencia del veedor"
+                    searchable
                     withAsterisk
-                    {...form.getInputProps("canton_id")}
-                    data={cantones.map((canton) => {
+                    mt={16}
+                    {...form.getInputProps("parroquia_id")}
+                    data={allParroquias.map((parroquia) => {
                         return {
-                            value: canton.id,
-                            label: canton.nombre_canton,
+                            value: parroquia.id,
+                            label: parroquia.nombre_parroquia,
                         };
                     })}
                 />
                 <Select
-                    label="Parroquia"
-                    placeholder="Parroquia"
+                    label="Recinto donde vota"
+                    placeholder="Recinto donde vota"
+                    searchable
                     withAsterisk
                     mt={16}
-                    {...form.getInputProps("parroquia_id")}
-                    data={parroquias.map(parroquia => {
+                    {...form.getInputProps("recinto_id")}
+                    data={recintos.map((recinto) => {
                         return {
-                            value: parroquia.id,
-                            label: parroquia.nombre_parroquia
-                        }
+                            value: recinto.id,
+                            label: recinto.nombre_recinto,
+                        };
+                    })}
+                />
+                <Select
+                    label="Recinto donde cuidará el voto"
+                    placeholder="Recinto donde cuidará el voto"
+                    searchable
+                    withAsterisk
+                    mt={16}
+                    {...form.getInputProps("recinto__id")}
+                    data={allRecintos.map((recinto) => {
+                        return {
+                            value: recinto.id,
+                            label: recinto.nombre_recinto,
+                        };
                     })}
                 />
                 <Divider my="sm" variant="dashed" />
                 <Button
-                    onClick={handleCreateAdmin}
+                    onClick={handleCreateVeed}
                     fullWidth
                     leftIcon={<IconBrandTelegram />}
                     color="yellow"

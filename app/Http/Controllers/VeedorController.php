@@ -163,4 +163,29 @@ class VeedorController extends Controller
             return response()->json(['status' => 'error', 'msg' => 'Veedor no encontrado']);
         }
     }
+
+    public function search(Request $request)
+    {
+        $search = Veedor::from('veedores as v')
+            ->select(DB::raw('v.id, v.dni, v.phone, CONCAT(v.first_name, " ", v.last_name) as nombres,
+                    re.nombre_recinto, p.nombre_parroquia, c.nombre_canton,
+                    CONCAT(u.first_name, " ", u.last_name) as coordinador,
+                    CONCAT(us.first_name, " ", us.last_name) as supervisor'))
+            ->join('recintos as re', 're.id', 'v.recinto__id')
+            ->join('parroquias as p', 'p.id', 're.parroquia_id')
+            ->join('cantones as c', 'c.id', 'p.canton_id')
+            ->join('users as u', 'u.id', 'v.user_id')
+            ->join('users as us', 'us.id', 'u.user_id')
+            ->canton($request->canton_id)
+            ->parroquia($request->parroquia_id)
+            ->recinto($request->recinto__id)
+            ->usuario($request->user_id)
+            ->get();
+
+        if (sizeof($search) >= 1) {
+            return response()->json(['status' => 'success', 'search' => $search]);
+        } else {
+            return response()->json(['status' => 'error', 'msg' => 'No existen veedores en esa zona']);
+        }
+    }
 }

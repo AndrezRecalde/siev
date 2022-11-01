@@ -8,8 +8,12 @@ import {
     onCloseModalCreateVeedor,
     onOpenModalCreateAdmin,
     onOpenModalCreateCoord,
+    onOpenModalCreateCoordxAdmin,
+    onCloseModalCreateCoordxAdmin,
     onOpenModalCreateSuper,
     onOpenModalCreateVeedor,
+    onOpenModalCreateVeedorGrant,
+    onCloseModalCreateVeedorGrant,
 } from "../store/ui/uiSlice";
 
 export const useUiStore = () => {
@@ -17,7 +21,9 @@ export const useUiStore = () => {
         isOpenModalCreateAdmin,
         isOpenModalCreateSuper,
         isOpenModalCreateCoord,
-        isOpenModalCreateVeedor
+        isOpenModalCreateCoordxAdmin,
+        isOpenModalCreateVeedor,
+        isOpenModalCreateVeedorGrant
 
     } = useSelector((state) => state.ui);
 
@@ -47,6 +53,14 @@ export const useUiStore = () => {
         }
     };
 
+    const modalActionCoordxAdmin = (behavior) => {
+        if(behavior === "open") {
+            dispatch(onOpenModalCreateCoordxAdmin());
+        }else if(behavior === "close") {
+            dispatch(onCloseModalCreateCoordxAdmin());
+        }
+    }
+
     const modalActionVeedor = (behavior) => {
         if (behavior === "open") {
             dispatch(onOpenModalCreateVeedor());
@@ -55,15 +69,27 @@ export const useUiStore = () => {
         }
     }
 
+    const modalActionVeedorGrant = (behavior) => {
+        if(behavior === "open") {
+            dispatch(onOpenModalCreateVeedorGrant());
+        }else if(behavior === "close") {
+            dispatch(onCloseModalCreateVeedorGrant());
+        }
+    }
+
     return {
         isOpenModalCreateAdmin,
         isOpenModalCreateSuper,
         isOpenModalCreateCoord,
+        isOpenModalCreateCoordxAdmin,
         isOpenModalCreateVeedor,
+        isOpenModalCreateVeedorGrant,
 
         modalActionAdmin,
         modalActionSuper,
         modalActionCoord,
+        modalActionCoordxAdmin,
         modalActionVeedor,
+        modalActionVeedorGrant,
     };
 };

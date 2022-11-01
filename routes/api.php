@@ -8,6 +8,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StatesController;
 use App\Http\Controllers\SupervisorController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VeedController;
 use App\Http\Controllers\VeedorController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -40,6 +41,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/update/usuarios/{id}', [UserController::class, 'update']);
     Route::post('/delete/usuario/{id}', [UserController::class, 'destroy']);
 
+    Route::post('/create/admin/coordinador', [CoordinadorController::class, 'store']);
+    Route::post('/update/admin/coordinador/{id}', [CoordinadorController::class, 'update']);
 
     Route::get('/show/supervisor', [SupervisorController::class, 'index']);
     Route::get('/show/coordinador', [CoordinadorController::class, 'index']);
@@ -50,7 +53,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/show/veedor/{id}', [VeedorController::class, 'show']);
     Route::post('/delete/veedor/{id}', [VeedorController::class, 'destroy']);
 
-
+    Route::post('/create/veed', [VeedController::class, 'store']);
+    Route::post('/update/veed/{id}', [VeedController::class, 'update']);
 
     Route::get('cantones', [StatesController::class, 'loadCantones']);
     Route::post('parroquias', [StatesController::class, 'loadParroquias']);
@@ -67,9 +71,14 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('prueba2', [PruebaController::class, 'getVeedoresParr']);
     Route::get('prueba3', [PruebaController::class, 'getSupers']);
 
+    Route::post('search', [VeedorController::class, 'search']);
 
+    Route::post('/pdf/exportacion/veedores', [PDFController::class, 'filterExportacion']);
 
 });
 
-    Route::get('/pdf/veedores', [PDFController::class, 'getVeedores']);
+Route::get('/pdf/veedores', [PDFController::class, 'getVeedores']);
+
+
+
 

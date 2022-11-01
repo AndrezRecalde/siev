@@ -12,19 +12,21 @@ import { useConsejoStore } from "../../../../hooks/useConsejoStore";
 import { useStatesStore } from "../../../../hooks/useStatesStore";
 import { useUiStore } from "../../../../hooks/useUiStore";
 
-export const ModalCreateAdmin = () => {
-    const { isOpenModalCreateAdmin, modalActionAdmin } = useUiStore();
+export const ModalCreateCoordxAdmin = () => {
+    const { isOpenModalCreateCoordxAdmin, modalActionCoordxAdmin } = useUiStore();
+    const { activateUser, setClearActivateUser, startSavingCoordxAdmin } =
+        useConsejoStore();
+    const { startProfile, supervisores } = useAuthStore();
+
     const {
         cantones,
         parroquias,
+        recintos,
         roles,
         startLoadParroquias,
+        startLoadRecintos,
         startClearStates,
     } = useStatesStore();
-
-    const { startProfile } = useAuthStore();
-
-    const { setClearActivateUser, startSavingAdmin } = useConsejoStore();
 
     const form = useForm({
         initialValues: {
@@ -32,10 +34,12 @@ export const ModalCreateAdmin = () => {
             last_name: "",
             dni: "",
             phone: "",
+            user_id: 0,
             email: "",
-            roles: [1],
+            roles: [3],
             canton_id: 0,
             parroquia_id: 0,
+            recinto_id: 0,
         },
         validate: {
             first_name: (value) =>
@@ -44,62 +48,83 @@ export const ModalCreateAdmin = () => {
                 value.length < 3 ? "El apellido es requerido" : null,
             dni: (value) =>
                 value.length < 9 ? "Ingrese la cédula correctamente (deben ser 10 dígitos)" :
-                value.length > 10 ? "Ingrese el número correctamente (deben ser 10 dígitos)": null,
+                value.length > 10 ? "Ingrese el número correctamente (deben ser 10 dígitos)":  null,
             phone: (value) =>
                 value.length < 10 ? "Ingrese el número correctamente (deben ser 10 dígitos)" :
                 value.length > 10 ? "Ingrese el número correctamente (deben ser 10 dígitos)": null,
+            user_id: (value) => (value === 0 ? "Ingrese el responsable" : null),
             email: (value) =>
                 /^\S+@\S+$/.test(value) ? null : "Invalid email",
-            canton_id: (value) =>
-                value === 0 ? "Ingrese el cantón" : null,
+            canton_id: (value) => (value === 0 ? "Ingrese el cantón" : null),
             parroquia_id: (value) =>
                 value === 0 ? "Ingrese la parroquia" : null,
+            recinto_id: (value) => (value === 0 ? "Ingrese el recinto" : null),
         },
     });
 
-    const { canton_id } = form.values;
+    const { canton_id, parroquia_id } = form.values;
 
     useEffect(() => {
         form.setFieldValue("parroquia_id", 0);
         startLoadParroquias({ canton_id });
     }, [canton_id]);
 
+    useEffect(() => {
+        form.setFieldValue("recinto_id", 0);
+        startLoadRecintos({ parroquia_id });
+    }, [parroquia_id]);
 
-    const handleCreateAdmin = async(e) => {
+    useEffect(() => {
+        if (activateUser !== null) {
+            form.setValues({
+                ...activateUser,
+            });
+            return;
+        }
+        form.reset();
+
+    }, [activateUser]);
+
+
+
+
+    const handleCreateCoordxAdmin = async (e) => {
         e.preventDefault();
         const { errors } = form.validate();
         if (
             !errors.hasOwnProperty("first_name") &&
             !errors.hasOwnProperty("last_name") &&
             !errors.hasOwnProperty("dni") &&
-            !errors.hasOwnProperty("email") &&
             !errors.hasOwnProperty("phone") &&
-            !errors.hasOwnProperty('canton_id') &&
-            !errors.hasOwnProperty('parroquia_id')
+            !errors.hasOwnProperty("user_id") &&
+            !errors.hasOwnProperty("email") &&
+            !errors.hasOwnProperty("canton_id") &&
+            !errors.hasOwnProperty("parroquia_id") &&
+            !errors.hasOwnProperty("recinto_id")
         ) {
-            await startSavingAdmin(form.values);
-            modalActionAdmin("close");
+            await startSavingCoordxAdmin(form.values);
+            modalActionCoordxAdmin("close");
             await startProfile();
             form.reset();
-        }else {
-            console.log('Error')
+        } else {
+            console.log("Error");
         }
     };
 
     const handleCloseModal = () => {
-        modalActionAdmin("close");
-        startClearStates();
+        modalActionCoordxAdmin("close");
         setClearActivateUser();
+        startClearStates();
         form.reset();
     };
 
     return (
         <Modal
-            opened={isOpenModalCreateAdmin}
+            opened={isOpenModalCreateCoordxAdmin}
             onClose={handleCloseModal}
-            title="Crear Administrador"
+            title="Crear Coordinador"
         >
-            <form onSubmit={handleCreateAdmin}>
+            <form onSubmit={handleCreateCoordxAdmin}>
                 <Grid grow>
                     <Grid.Col span={6}>
                         <TextInput
@@ -140,6 +165,19 @@ export const ModalCreateAdmin = () => {
                         />
                     </Grid.Col>
                 </Grid>
+                <Select
+                    label="Responsable"
+                    placeholder="Asigna al responsable de este coordinador"
+                    mt={16}
+                    withAsterisk
+                    {...form.getInputProps("user_id")}
+                    data={supervisores.map(supervisor => {
+                        return {
+                            value: supervisor.id,
+                            label: supervisor.first_name + " " + supervisor.last_name
+                        }
+                    })}
+                />
                 <MultiSelect
                     label="Role"
                     mt={16}
@@ -147,11 +185,11 @@ export const ModalCreateAdmin = () => {
                     readOnly
                     variant="filled"
                     {...form.getInputProps("roles")}
-                    data={roles.map(role => {
+                    data={roles.map((role) => {
                         return {
                             value: role.id,
-                            label: role.name
-                        }
+                            label: role.name,
+                        };
                     })}
                 />
                 <TextInput
@@ -178,19 +216,32 @@ export const ModalCreateAdmin = () => {
                 <Select
                     label="Parroquia"
                     placeholder="Parroquia"
-                    withAsterisk
                     mt={16}
+                    withAsterisk
                     {...form.getInputProps("parroquia_id")}
-                    data={parroquias.map(parroquia => {
+                    data={parroquias.map((parroquia) => {
                         return {
                             value: parroquia.id,
-                            label: parroquia.nombre_parroquia
-                        }
+                            label: parroquia.nombre_parroquia,
+                        };
+                    })}
+                />
+                <Select
+                    label="Recinto"
+                    placeholder="Recinto"
+                    mt={16}
+                    withAsterisk
+                    {...form.getInputProps("recinto_id")}
+                    data={recintos.map((recinto) => {
+                        return {
+                            value: recinto.id,
+                            label: recinto.nombre_recinto,
+                        };
                     })}
                 />
                 <Divider my="sm" variant="dashed" />
                 <Button
-                    onClick={handleCreateAdmin}
+                    onClick={handleCreateCoordxAdmin}
                     fullWidth
                     leftIcon={<IconBrandTelegram />}
                     color="yellow"

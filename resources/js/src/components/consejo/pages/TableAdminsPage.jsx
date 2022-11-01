@@ -11,13 +11,10 @@ export const TableAdminsPage = () => {
 
     const { modalActionAdmin } = useUiStore();
     const { administradores } = useAuthStore();
-    const { startLoadCantones, startLoadRoles } = useStatesStore();
 
 
     const handleOpenModalAdmin = async(e) => {
         e.preventDefault();
-        await startLoadCantones();
-        await startLoadRoles();
         modalActionAdmin("open");
     };
 

@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CoordinadorRequest;
+use App\Http\Requests\CoordinadorUpdateRequest;
+use App\Models\Coordinador;
 use App\Models\User;
 use App\Models\Veedor;
 use Illuminate\Http\Request;
@@ -36,5 +39,50 @@ class CoordinadorController extends Controller
             ->where('user_id', 5)
             ->get();
         return response()->json(['status' => 'success', 'coordinador' => $coordinador, 'veedores' => $veedores]);
+    }
+
+    public function store(CoordinadorRequest $request)
+    {
+        try {
+            $coordinador = Coordinador::create($request->validated());
+            $coordinador->assignRole($request->roles);
+
+            $coordinador->parroquias()->attach($request->parroquia_id);
+
+            if ($request->has('recinto_id')) {
+                $coordinador->recintos()->attach($request->recinto_id);
+            }
+
+            $coordinador->save();
+            return response()->json(['status' => 'success', 'msg' => 'Guardado con éxito']);
+        } catch (\Throwable $th) {
+            DB::rollback();
+            return response()->json([$th->getMessage()]);
+        }
+    }
+
+    public function update(CoordinadorUpdateRequest $request, $id)
+    {
+        $coordinador = Coordinador::find($id);
+        if ($coordinador) {
+            $coordinador->update($request->validated());
+
+            if ($request->filled('roles')) {
+                $coordinador->roles()->detach();
+                $coordinador->assignRole($request->roles);
+            }
+
+            $coordinador->parroquias()->sync($request->parroquia_id);
+
+            if ($request->filled('recinto_id')) {
+                $coordinador->recintos()->sync($request->recinto_id);
+            }
+
+            $coordinador->save();
+
+            return response()->json(['status' => 'success', 'msg' => 'Actualizado con éxito']);
+        } else {
+            return response()->json(['status' => 'error', 'msg' => 'Usuario No encontrado']);
+        }
     }
 }

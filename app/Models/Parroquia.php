@@ -15,4 +15,9 @@ class Parroquia extends Model
     {
         return $this->belongsToMany(User::class);
     }
+
+    public function coordinadores()
+    {
+        return $this->belongsToMany(Coordinador::class);
+    }
 }

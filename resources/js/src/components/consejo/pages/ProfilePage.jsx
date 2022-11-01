@@ -126,6 +126,7 @@ export const ProfilePage = () => {
                     </Grid>
 
                     {profile.recintos?.map((rec) => {
+                        console.log(rec)
                         return (
                             <>
                                 <Text

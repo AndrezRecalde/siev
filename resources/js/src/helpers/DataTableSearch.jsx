@@ -1,81 +1,50 @@
-import { ActionIcon } from "@mantine/core";
-import { IconEdit, IconTrash } from "@tabler/icons";
+
 import React, { useMemo } from "react";
 
 import DataTable from "react-data-table-component";
-import { useAuthStore } from "../hooks/useAuthStore";
-import { useConsejoStore } from "../hooks/useConsejoStore";
-import { useUiStore } from "../hooks/useUiStore";
+
 import FilterComponent from "./FilterComponent";
 
-const TableVeed = (props) => {
+const TableVeedSearch = (props) => {
 
-    const { user } = useAuthStore();
-    const { modalActionVeedor, modalActionVeedorGrant } = useUiStore();
-    const { setActiveVeedor, setActiveVeedorGrant, startDeleteVeedor } = useConsejoStore();
-
-
-    const handleSelect = (selected) => {
-        if (user.roles?.includes("Administrador")) {
-            console.log(selected)
-            setActiveVeedorGrant(selected);
-            modalActionVeedorGrant("open");
-        } else {
-            setActiveVeedor(selected);
-            modalActionVeedor("open");
-        }
-
-    }
-
-    const handleSelectDelete = (selected) => {
-        startDeleteVeedor(selected);
-    }
 
     const columns = [
         {
             name: "Nombres",
-            selector: (row) => row.first_name + " " + row.last_name,
+            selector: (row) => row.nombres,
             sortable: true,
             width: "200px"
+        },
+        {
+            name: "Cedula",
+            selector: (row) => row.dni,
+            sortable: true,
         },
         {
             name: "Telefono",
             selector: (row) => row.phone,
             sortable: true,
-            width: "150px"
         },
         {
             name: "Parroquia",
-            selector: (row) => row.parroquia,
+            selector: (row) => row.nombre_canton,
             sortable: true,
-            width: "150px"
+            width: "200px"
         },
         {
             name: "Recinto Donde Cuida",
-            selector: (row) => row.destino,
+            selector: (row) => row.nombre_recinto,
             sortable: true,
             width: "400px"
         },
         {
-            name: "Responsable",
-            selector: (row) => row.responsable,
+            name: "Supervisor",
+            selector: (row) => row.supervisor,
             sortable: true,
-            width: "150px"
+            width: "200px"
+
         },
-        {
-            name: "Acciones",
-            button: true,
-            cell: (row) => (
-                <>
-                    <ActionIcon onClick={() => handleSelect(row)} color="cyan" variant="light" sx={{ marginRight: 5 }}>
-                        <IconEdit size={20} />
-                    </ActionIcon>
-                    <ActionIcon onClick={() => handleSelectDelete(row)} color="red" variant="light" >
-                        <IconTrash size={20} />
-                    </ActionIcon>
-                </>
-            ),
-        },
+
     ];
 
     const [filterText, setFilterText] = React.useState("");
@@ -122,4 +91,4 @@ const TableVeed = (props) => {
     );
 };
 
-export default TableVeed;
+export default TableVeedSearch;
