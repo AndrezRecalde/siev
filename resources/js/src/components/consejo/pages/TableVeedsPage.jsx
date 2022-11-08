@@ -50,7 +50,7 @@ export const TableVeedsPage = () => {
                     </Group>
                 </Card.Section>
                 <Card.Section withBorder inheritPadding py="lg">
-                    <Button disabled={juntas === veedores?.length ? true : false} onClick={(e) => handleCreateVeedor(e)} leftIcon={<IconPencilPlus />} variant="white">
+                    <Button onClick={(e) => handleCreateVeedor(e)} leftIcon={<IconPencilPlus />} variant="white">
                         Crear Veedor
                     </Button>
                 </Card.Section>

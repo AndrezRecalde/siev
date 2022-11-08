@@ -1,4 +1,4 @@
-import { Button, Divider, Grid, Modal, Select, TextInput } from "@mantine/core";
+import { Button, Divider, Grid, Modal, Select, Textarea, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import {
     Icon123,
@@ -13,8 +13,10 @@ import { useStatesStore } from "../../../../hooks/useStatesStore";
 import { useUiStore } from "../../../../hooks/useUiStore";
 
 export const ModalCreateVeedGrant = () => {
-    const { isOpenModalCreateVeedorGrant, modalActionVeedorGrant } = useUiStore();
-    const { activateVeedor, setClearActivateVeedor, startSavingVeedorGrant } = useConsejoStore();
+    const { isOpenModalCreateVeedorGrant, modalActionVeedorGrant } =
+        useUiStore();
+    const { activateVeedor, setClearActivateVeedor, startSavingVeedorGrant } =
+        useConsejoStore();
 
     const {
         allParroquias,
@@ -25,7 +27,6 @@ export const ModalCreateVeedGrant = () => {
     } = useStatesStore();
 
     const { startProfile, coordinadores } = useAuthStore();
-
 
     const form = useForm({
         initialValues: {
@@ -46,13 +47,18 @@ export const ModalCreateVeedGrant = () => {
             last_name: (value) =>
                 value.length < 3 ? "El apellido es requerido" : null,
             dni: (value) =>
-                value.length < 9 ? "Ingrese la cédula correctamente (deben ser 10 dígitos)" :
-                value.length > 10 ? "Ingrese el número correctamente (deben ser 10 dígitos)": null,
+                value.length < 9
+                    ? "Ingrese la cédula correctamente (deben ser 10 dígitos)"
+                    : value.length > 10
+                    ? "Ingrese el número correctamente (deben ser 10 dígitos)"
+                    : null,
             phone: (value) =>
-                value.length < 10 ? "Ingrese el número correctamente (deben ser 10 dígitos)" :
-                value.length > 10 ? "Ingrese el número correctamente (deben ser 10 dígitos)": null,
-            user_id: (value) =>
-                value === 0 ? "Ingrese el coordinador" : null,
+                value.length < 10
+                    ? "Ingrese el número correctamente (deben ser 10 dígitos)"
+                    : value.length > 10
+                    ? "Ingrese el número correctamente (deben ser 10 dígitos)"
+                    : null,
+            user_id: (value) => (value === 0 ? "Ingrese el coordinador" : null),
             parroquia_id: (value) =>
                 value === 0 ? "Ingrese la parroquia" : null,
             recinto_id: (value) =>
@@ -63,7 +69,6 @@ export const ModalCreateVeedGrant = () => {
     });
 
     const { parroquia_id } = form.values;
-
 
     useEffect(() => {
         form.setFieldValue("recinto_id", 0);
@@ -79,10 +84,9 @@ export const ModalCreateVeedGrant = () => {
         }
 
         form.reset();
-
     }, [activateVeedor]);
 
-    const handleCreateVeed = async(e) => {
+    const handleCreateVeed = async (e) => {
         e.preventDefault();
         const { errors } = form.validate();
         if (
@@ -170,9 +174,20 @@ export const ModalCreateVeedGrant = () => {
                     data={coordinadores.map((coordinador) => {
                         return {
                             value: coordinador.id,
-                            label: coordinador.first_name + " " +coordinador.last_name,
+                            label:
+                                coordinador.first_name +
+                                " " +
+                                coordinador.last_name,
                         };
                     })}
+                />
+
+                <Textarea
+                    placeholder="Ingrese observación o detalles especificos del veedor"
+                    label="Detalles Especificos"
+                    mt={16}
+                    {...form.getInputProps("observacion")}
+
                 />
 
                 <TextInput
