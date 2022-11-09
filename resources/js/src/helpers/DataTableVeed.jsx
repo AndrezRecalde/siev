@@ -16,8 +16,7 @@ const TableVeed = (props) => {
 
 
     const handleSelect = (selected) => {
-        if (user.roles?.includes("Administrador")) {
-            console.log(selected)
+        if (user.roles?.includes("Administrador") || user.roles?.includes("Supervisor")) {
             setActiveVeedorGrant(selected);
             modalActionVeedorGrant("open");
         } else {

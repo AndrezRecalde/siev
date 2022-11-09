@@ -227,7 +227,7 @@ class AuthController extends Controller
                 ->join('parroquias as p', 're.parroquia_id', 'p.id')
                 ->join('cantones as c', 'p.canton_id', 'c.id')
                 ->join('users', 'users.id', 'v.user_id')
-                ->where('c.id', $profile->canton->id)->get();
+                ->where('p.id', $profile->parroquias[0]->id)->get();
 
             return response()->json([
                 'status'    =>  'success',

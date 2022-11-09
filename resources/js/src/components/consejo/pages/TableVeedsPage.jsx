@@ -17,7 +17,7 @@ export const TableVeedsPage = () => {
     const handleCreateVeedor = (e) => {
         e.preventDefault();
 
-        if (user.roles?.includes("Administrador")) {
+        if (user.roles?.includes("Administrador") || user.roles?.includes("Supervisor")) {
             modalActionVeedorGrant("open")
         }else {
             modalActionVeedor("open")
