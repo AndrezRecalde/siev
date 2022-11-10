@@ -159,6 +159,7 @@ class AuthController extends Controller
                 'roles' => function ($query) {
                     $query->select('id', 'name');
                 },
+                'veedores'
             ])->join('model_has_roles as mhr', 'mhr.model_id', 'users.id')
                 ->where('mhr.role_id', 3)
                 ->get();
