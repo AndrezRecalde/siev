@@ -5,6 +5,7 @@ import {
     clearErrorMessage,
     onAdministradores,
     onCoordinadores,
+    onCountVeed,
     onJuntas,
     onLogin,
     onLogout,
@@ -96,6 +97,7 @@ export const useAuthStore = () => {
             } else if (data.profile.roles[0].name === "Coordinador") {
                 dispatch(onVeedores(data.veedores));
                 dispatch(onJuntas(data.juntas));
+                dispatch(onCountVeed(data.count_veed));
             }
         } catch (error) {
             console.log(error);

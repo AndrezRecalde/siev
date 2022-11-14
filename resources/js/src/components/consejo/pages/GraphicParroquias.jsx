@@ -43,7 +43,7 @@ export const GraphicParroquias = () => {
                                 fontSize: 20,
                             }}
                         >
-                            Grafico por Cantón
+                            Grafico por Parroquias
                         </Text>
                     </Group>
                 </Card.Section>

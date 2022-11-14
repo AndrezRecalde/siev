@@ -201,9 +201,13 @@ class AuthController extends Controller
                 'roles' => function ($query) {
                     $query->select('id', 'name');
                 },
-                'veedores'
+                'veedores',
+                'veedores' => function($query) {
+                    $query->addSelect(DB::raw('COUNT(v.id)'))->from('veedores as v')
+                            ->where('v.recinto__id', Auth::user()->recintos[0]->id);
+                }
             ])->join('model_has_roles as mhr', 'mhr.model_id', 'users.id')
-                ->where('user_id', Auth::user()->id)
+                ->where('users.user_id', Auth::user()->id)
                 ->get();
 
             $totales = [];
@@ -250,6 +254,11 @@ class AuthController extends Controller
                 ->where('v.user_id', Auth::user()->id)
                 ->get();
 
+            $count_veeed = Veedor::from('veedores as v')
+                        ->select(DB::raw('COUNT(v.id) as count_veed'))
+                        ->where('v.recinto__id', $profile->recintos[0]->id)
+                        ->first();
+
             $totales = [];
             $index = 0;
 
@@ -264,7 +273,8 @@ class AuthController extends Controller
                 'status'    =>  'success',
                 'profile'   =>  $profile,
                 'veedores'  =>  $veedores,
-                'juntas'    =>  (int)$juntas->total_juntas
+                'juntas'    =>  (int)$juntas->total_juntas,
+                'count_veed'    =>  $count_veeed->count_veed
             ]);
         }
 

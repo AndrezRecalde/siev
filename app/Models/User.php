@@ -96,6 +96,11 @@ class User extends Authenticatable
         return $this->belongsTo(User::class);
     }
 
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
+
     protected static function boot()
     {
         parent::boot();

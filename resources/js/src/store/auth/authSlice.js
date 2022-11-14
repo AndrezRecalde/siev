@@ -11,6 +11,7 @@ export const authSlice = createSlice({
         coordinadores: [],
         veedores: [],
         juntas: null,
+        count_veed: null,
 
         activateUser: null,
         activateVeedor: null,
@@ -36,6 +37,7 @@ export const authSlice = createSlice({
             state.coordinadores = [];
             state.veedores = [];
             state.juntas = null;
+            state.count_veed = null;
             state.activateUser = null;
             state.activateVeedor = null;
             state.errorMessage = action.payload;
@@ -60,6 +62,10 @@ export const authSlice = createSlice({
         },
         onJuntas: (state, action) => {
             state.juntas = action.payload;
+        },
+
+        onCountVeed: (state, action) => {
+            state.count_veed = action.payload;
         },
 
         //Activacion de Usuario
@@ -161,6 +167,7 @@ export const {
     onCoordinadores,
     onVeedores,
     onJuntas,
+    onCountVeed,
 
     onSetActivateUser,
     onSetActivateVeedor,

@@ -85,4 +85,40 @@ class PruebaController extends Controller
             ->where('mhr.role_id', 2)
             ->get();
     }
+
+    public function getSupersWithVeeds()
+    {
+        $supervisores = User::with([
+            'canton' => function ($query) {
+                $query->select('id', 'nombre_canton');
+            },
+            'parroquias' => function ($query) {
+                $query->select('id', 'nombre_parroquia');
+            },
+            'recintos' => function ($query) {
+                $query->select('id', 'nombre_recinto');
+            },
+            'roles' => function ($query) {
+                $query->select('id', 'name');
+            },
+            'users' => function ($query) {
+                $query->with([
+                    'veedores',
+                    'recintos'  =>  function ($q) {
+                        $q->select('id', 'nombre_recinto', 'num_juntas');
+                    }
+                ]);
+            }
+        ])
+        ->join('model_has_roles as mhr', 'mhr.model_id', 'users.id')
+            ->where('mhr.role_id', 2)
+            ->get();
+
+
+        return response()
+                ->json([
+                        'status' => 'success',
+                        'supervisores' => $supervisores
+                        ]);
+    }
 }
