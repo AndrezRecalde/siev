@@ -21,12 +21,7 @@ import {
     Badge,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import {
-    IconCode,
-    IconChevronDown,
-    IconLogout,
-    IconUser,
-} from "@tabler/icons";
+import { IconCode, IconChevronDown, IconLogout, IconUser, IconChartDonut } from "@tabler/icons";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -111,17 +106,22 @@ const mockdata = [
         title: "Exportar Veedores",
         description: "Exportar todos los veedores",
         to: "/api/pdf/veedores",
-        target: "_blank"
+        target: "_blank",
     },
     {
-        icon: IconCode,
-        title: "Filtrar Exportación",
-        description: "Filtrar exportaciones a traves de campos especificos",
-        to: "/search/veedores",
-        target: ""
-
+        icon: IconChartDonut,
+        title: "Gráficos por Cantones",
+        description: "Muestra el porcentaje completado por cada cantón",
+        to: "/graficos/cantones",
+        target: "",
     },
-
+    {
+        icon: IconChartDonut,
+        title: "Gráficos por Parroquias",
+        description: "Muestra el porcentaje completado por cada parroquia",
+        to: "/graficos/parroquias",
+        target: "",
+    },
 ];
 
 export const NavBar = () => {
@@ -140,7 +140,7 @@ export const NavBar = () => {
     const handleExportPdf = (e) => {
         e.preventDefault();
         exportPDF();
-    }
+    };
 
     const links = mockdata.map((item) => (
         <UnstyledButton className={classes.subLink} key={item.title}>
@@ -149,15 +149,19 @@ export const NavBar = () => {
                     <item.icon size={22} color={theme.fn.primaryColor()} />
                 </ThemeIcon>
                 <div>
-                    <Link to={item.to} target={item.target} className={classes.link}>
+                    <Link
+                        to={item.to}
+                        target={item.target}
+                        className={classes.link}
+                    >
                         <Text size="sm" weight={500}>
                             {item.title}
                         </Text>
                     </Link>
 
-                        <Text size="xs" color="dimmed">
-                            {item.description}
-                        </Text>
+                    <Text size="xs" color="dimmed">
+                        {item.description}
+                    </Text>
                 </div>
             </Group>
         </UnstyledButton>
@@ -188,7 +192,7 @@ export const NavBar = () => {
                                 <a href="#" className={classes.link}>
                                     <Center inline>
                                         <Box component="span" mr={5}>
-                                            Exportar
+                                            Gráficos
                                         </Box>
                                         <IconChevronDown
                                             size={16}
@@ -199,37 +203,15 @@ export const NavBar = () => {
                             </HoverCard.Target>
 
                             <HoverCard.Dropdown sx={{ overflow: "hidden" }}>
-                                <Group position="apart" px="md">
-                                    <Text weight={500}>Exportaciones</Text>
-                                    <Anchor href="#" size="xs">
-                                        Detalle
-                                    </Anchor>
-                                </Group>
-
-                                <Divider
-                                    my="sm"
-                                    mx="-md"
-                                    color={
-                                        theme.colorScheme === "dark"
-                                            ? "dark.5"
-                                            : "gray.1"
-                                    }
-                                />
-
                                 <SimpleGrid cols={2} spacing={0}>
                                     {links}
                                 </SimpleGrid>
-
-
                             </HoverCard.Dropdown>
                         </HoverCard>
 
                         <Link to="/search/veedores" className={classes.link}>
                             Buscador
                         </Link>
-                        {/* <a href="#" className={classes.link}>
-                            Academy
-                        </a> */}
                     </Group>
 
                     <Group className={classes.hiddenMobile}>
@@ -323,10 +305,6 @@ export const NavBar = () => {
                     <Link to="/search/veedores" className={classes.link}>
                         Buscador
                     </Link>
-                    {/* <a href="#" className={classes.link}>
-                        Academy
-                    </a> */}
-
                     <Divider
                         my="sm"
                         color={

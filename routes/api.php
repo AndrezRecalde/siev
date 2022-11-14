@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\CoordinadorController;
+use App\Http\Controllers\EstadisticaController;
 use App\Http\Controllers\PDFController;
 use App\Http\Controllers\PruebaController;
 use App\Http\Controllers\RoleController;
@@ -69,7 +70,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('prueba', [PruebaController::class, 'getTotalJuntasCoords']);
     Route::get('prueba2', [PruebaController::class, 'getVeedoresParr']);
-    Route::get('prueba3', [PruebaController::class, 'getSupers']);
 
     Route::post('search', [VeedorController::class, 'search']);
 
@@ -78,6 +78,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
 });
 
 Route::get('/pdf/veedores', [PDFController::class, 'getVeedores']);
+
+Route::get('prueba3', [PruebaController::class, 'getSupersWithVeeds']);
+
+Route::get('getGraficoCantones', [EstadisticaController::class, 'getGraficoCantones']);
+Route::get('getGraficoParroquia', [EstadisticaController::class, 'getGraficoParroquia']);
+
+
 
 
 
