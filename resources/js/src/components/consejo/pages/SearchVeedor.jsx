@@ -35,7 +35,7 @@ export const SearchVeedor = () => {
         initialValues: {
             canton_id: 0,
             parroquia_id: 0,
-            recinto_id: 0,
+            recinto__id: 0,
             user_id: 0,
         },
     });
@@ -52,18 +52,18 @@ export const SearchVeedor = () => {
     }, [canton_id]);
 
     useEffect(() => {
-        form.setFieldValue("recinto_id", 0);
+        form.setFieldValue("recinto__id", 0);
         startLoadRecintos({ parroquia_id });
     }, [parroquia_id]);
 
     const handleSearch = (e) => {
         e.preventDefault();
-        startSearch(form.values);
+        /* startSearch(form.values); */
+        console.log(form.values)
     };
 
     const handleExport = (e) => {
         e.preventDefault();
-        console.log("hola");
         startExportFilter(form.values);
     };
 
@@ -143,7 +143,7 @@ export const SearchVeedor = () => {
                                     searchable
                                     clearable
                                     nothingFound="No options"
-                                    {...form.getInputProps("recinto_id")}
+                                    {...form.getInputProps("recinto__id")}
                                     data={recintos.map((recinto) => {
                                         return {
                                             value: recinto.id,

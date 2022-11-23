@@ -1,4 +1,5 @@
 import {
+    Badge,
     Card,
     Container,
     Grid,
@@ -51,10 +52,10 @@ export const GraphicParroquias = () => {
                     <Grid>
                         {grParroquias?.map((gr) => {
                             let totalJuntas = parseInt(gr.total_juntas);
-                            let totalxVeedor = gr.total_veed;
+                            let totalxVeedor = gr.total_veed !== null ? gr.total_veed : 0;
                             let totales = (totalxVeedor * 100) / totalJuntas;
                             return (
-                                <Grid.Col key={gr.id} span={4}>
+                                <Grid.Col key={gr.parroquia_id} span={4}>
                                     <Text
                                         size="xs"
                                         transform="uppercase"
@@ -63,9 +64,20 @@ export const GraphicParroquias = () => {
                                         mt={20}
                                         ml={15}
                                     >
-                                        {gr.parroquia_nombre}
+                                        {gr.nombre_canton} - {gr.nombre_parroquia}
                                     </Text>
-                                    <RingProgress
+                                    <Badge
+                                        size="lg"
+                                        radius="xl"
+                                        color="cyan"
+                                        ml={15}
+                                    >
+                                        {`${ gr.total_veed !== null
+                                                ? gr.total_veed
+                                                : 0 } / ${gr.total_juntas}`}
+                                    </Badge>
+                                    { totales !== 100 ?
+                                        <RingProgress
                                         sections={[
                                             {
                                                 value: totales,
@@ -86,7 +98,25 @@ export const GraphicParroquias = () => {
                                                 {`${totales.toFixed(2)}%`}
                                             </Text>
                                         }
-                                    />
+                                    /> :
+                                    <RingProgress
+                                            sections={[
+                                                { value: 100, color: "teal" },
+                                            ]}
+                                            label={
+                                                <Center>
+                                                    <ThemeIcon
+                                                        color="teal"
+                                                        variant="light"
+                                                        radius="xl"
+                                                        size="xl"
+                                                    >
+                                                        <IconCheck size={22} />
+                                                    </ThemeIcon>
+                                                </Center>
+                                            }
+                                        />
+                                    }
                                 </Grid.Col>
                             );
                         })}

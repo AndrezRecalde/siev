@@ -1,25 +1,28 @@
 import {
+    Badge,
     Card,
+    Center,
     Container,
     Grid,
     Group,
     RingProgress,
     Text,
+    ThemeIcon,
 } from "@mantine/core";
+import { IconCheck } from "@tabler/icons";
 import React, { useEffect } from "react";
 import { useGraphicStore } from "../../../hooks/useGraphicStore";
 
 export const GraphicCantones = () => {
-    const { grCantones, startLoadGraphicCanton, startClearGraphicCanton } = useGraphicStore();
-
+    const { grCantones, startLoadGraphicCanton, startClearGraphicCanton } =
+        useGraphicStore();
 
     useEffect(() => {
         startLoadGraphicCanton();
-      return () => {
-        startClearGraphicCanton();
-      }
-    }, [])
-
+        return () => {
+            startClearGraphicCanton();
+        };
+    }, []);
 
     return (
         <Container>
@@ -49,10 +52,11 @@ export const GraphicCantones = () => {
                     <Grid>
                         {grCantones?.map((gr) => {
                             let totalJuntas = parseInt(gr.total_juntas);
-                            let totalxVeedor = gr.total_veed;
+                            let totalxVeedor =
+                                gr.total_veed !== null ? gr.total_veed : 0;
                             let totales = (totalxVeedor * 100) / totalJuntas;
                             return (
-                                <Grid.Col key={gr.nombre_canton} span={4}>
+                                <Grid.Col key={gr.id} span={4}>
                                     <Text
                                         size="xs"
                                         transform="uppercase"
@@ -63,21 +67,60 @@ export const GraphicCantones = () => {
                                     >
                                         {gr.nombre_canton}
                                     </Text>
-                                    <RingProgress
-                                        sections={[
-                                            { value: totales, color: totales !== 100 ? "blue" : "teal", tooltip: totales.toFixed(2) },
-                                        ]}
-                                        label={
-                                            <Text
-                                                color="blue"
-                                                weight={700}
-                                                align="center"
-                                                size="xl"
-                                            >
-                                                {`${totales.toFixed(2)}%`}
-                                            </Text>
-                                        }
-                                    />
+                                    <Badge
+                                        size="lg"
+                                        radius="xl"
+                                        color="cyan"
+                                        ml={15}
+                                    >
+                                        {`${
+                                            gr.total_veed !== null
+                                                ? gr.total_veed
+                                                : 0
+                                        } / ${gr.total_juntas}`}
+                                    </Badge>
+                                    {totales !== 100 ? (
+                                        <RingProgress
+                                            sections={[
+                                                {
+                                                    value: totales,
+                                                    color:
+                                                        totales !== 100
+                                                            ? "blue"
+                                                            : "teal",
+                                                    tooltip: totales.toFixed(2),
+                                                },
+                                            ]}
+                                            label={
+                                                <Text
+                                                    color="blue"
+                                                    weight={700}
+                                                    align="center"
+                                                    size="xl"
+                                                >
+                                                    {`${totales.toFixed(2)}%`}
+                                                </Text>
+                                            }
+                                        />
+                                    ) : (
+                                        <RingProgress
+                                            sections={[
+                                                { value: 100, color: "teal" },
+                                            ]}
+                                            label={
+                                                <Center>
+                                                    <ThemeIcon
+                                                        color="teal"
+                                                        variant="light"
+                                                        radius="xl"
+                                                        size="xl"
+                                                    >
+                                                        <IconCheck size={22} />
+                                                    </ThemeIcon>
+                                                </Center>
+                                            }
+                                        />
+                                    )}
                                 </Grid.Col>
                             );
                         })}
