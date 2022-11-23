@@ -57,6 +57,11 @@ export const GraphicParroquias = () => {
                             let totalJuntas = parseInt(gr.total_juntas);
                             let totalxVeedor = gr.total_veed !== null ? gr.total_veed : 0;
                             let totales = (totalxVeedor * 100) / totalJuntas;
+
+                            if(totales > 100){
+                                totales = 100
+                            }
+
                             return (
                                 <Grid.Col key={gr.parroquia_id} span={4}>
                                     <Text
