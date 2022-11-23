@@ -7,7 +7,9 @@ import {
     Group,
     RingProgress,
     Text,
+    ThemeIcon,
 } from "@mantine/core";
+import { IconCheck } from "@tabler/icons";
 import React, { useEffect } from "react";
 import { useGraphicStore } from "../../../hooks/useGraphicStore";
 
