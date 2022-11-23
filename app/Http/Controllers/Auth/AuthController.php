@@ -201,11 +201,7 @@ class AuthController extends Controller
                 'roles' => function ($query) {
                     $query->select('id', 'name');
                 },
-                'veedores',
-                'veedores' => function($query) {
-                    $query->addSelect(DB::raw('COUNT(v.id)'))->from('veedores as v')
-                            ->where('v.recinto__id', Auth::user()->recintos[0]->id);
-                }
+                'veedores'
             ])->join('model_has_roles as mhr', 'mhr.model_id', 'users.id')
                 ->where('users.user_id', Auth::user()->id)
                 ->get();
