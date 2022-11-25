@@ -58,8 +58,8 @@ export const SearchVeedor = () => {
 
     const handleSearch = (e) => {
         e.preventDefault();
-        /* startSearch(form.values); */
-        console.log(form.values)
+        startSearch(form.values);
+        /* console.log(form.values) */
     };
 
     const handleExport = (e) => {

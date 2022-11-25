@@ -176,8 +176,8 @@ export const ModalCreateVeed = () => {
                 />
 
                 <Select
-                    label="Parroquia de residencia del Veedor"
-                    placeholder="Parroquia de residencia del veedor"
+                    label="Parroquia de votación del Veedor"
+                    placeholder="Parroquia de votación del veedor"
                     searchable
                     withAsterisk
                     mt={16}
