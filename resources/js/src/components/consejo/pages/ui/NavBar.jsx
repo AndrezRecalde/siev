@@ -19,10 +19,11 @@ import {
     Image,
     Menu,
     Badge,
+    Avatar,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { IconCode, IconChevronDown, IconLogout, IconUser, IconChartDonut } from "@tabler/icons";
-import { useState } from "react";
+import { IconCode, IconChevronDown, IconLogout, IconUser, IconChartDonut, IconChevronRight, IconUserCircle } from "@tabler/icons";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import logo from "../../../../assets/logos/logo.png";
@@ -223,25 +224,27 @@ export const NavBar = () => {
                             onOpen={() => setUserMenuOpened(true)}
                         >
                             <Menu.Target>
-                                <UnstyledButton
+                            <UnstyledButton
                                     className={cx(classes.user, {
                                         [classes.userActive]: userMenuOpened,
                                     })}
                                 >
-                                    <Group spacing={7}>
-                                        <Badge
-                                            sx={{ paddingLeft: 0 }}
-                                            size="lg"
-                                            radius="xl"
-                                            color="yellow"
-                                            leftSection={
-                                                <IconUser height={15} />
-                                            }
-                                        >
-                                            {user.first_name}
-                                        </Badge>
-                                        <IconChevronDown
-                                            size={12}
+                                    <Group>
+                                        <IconUserCircle
+                                            size={25}
+                                            stroke={1.5} />
+
+                                        <div style={{ flex: 1 }}>
+                                            <Text size="sm" weight={500}>
+                                                {user.first_name + " " + user.last_name}
+                                            </Text>
+
+                                            <Text color="dimmed" size="xs">
+                                                {user.roles[0] ? user.roles[0] : ""}
+                                            </Text>
+                                        </div>
+                                        <IconChevronRight
+                                            size={14}
                                             stroke={1.5}
                                         />
                                     </Group>
@@ -250,7 +253,7 @@ export const NavBar = () => {
                             <Menu.Dropdown>
                                 <Menu.Item
                                     color="red"
-                                    icon={<IconLogout size={14} stroke={1.5} />}
+                                    icon={<IconLogout size={18} stroke={2.5} />}
                                     onClick={startLogout}
                                 >
                                     Salir

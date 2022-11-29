@@ -75,7 +75,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::post('/pdf/exportacion/veedores', [PDFController::class, 'filterExportacion']);
 
+    Route::post('/excel/exportacion/veedores', [PDFController::class, 'filterExportacionExcel']);
+
 });
+
+
 
 Route::get('/pdf/veedores', [PDFController::class, 'getVeedores']);
 

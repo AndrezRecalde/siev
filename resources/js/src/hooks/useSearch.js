@@ -39,10 +39,21 @@ export const useSearch = () => {
         }
     }
 
+    const startExportExcel = async(values = {}) => {
+        try {
+            const response = await consejoApi.post('/excel/exportacion/veedores', values, {responseType:"blob"});
+            const url = window.URL.createObjectURL(new Blob([response.data],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;'}));
+            window.open(url, "_blank");
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     return {
         results,
 
         startSearch,
-        startExportFilter
+        startExportFilter,
+        startExportExcel
     };
 };

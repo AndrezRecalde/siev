@@ -6,11 +6,10 @@ import {
     Group,
     Paper,
     Select,
-    SimpleGrid,
     Text,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { IconDatabase, IconFileText } from "@tabler/icons";
+import { IconDatabase, IconDatabaseExport } from "@tabler/icons";
 import React, { useEffect } from "react";
 import { useAuthStore } from "../../../hooks/useAuthStore";
 import { useSearch } from "../../../hooks/useSearch";
@@ -29,7 +28,7 @@ export const SearchVeedor = () => {
         startLoadRecintos,
     } = useStatesStore();
 
-    const { startSearch, startExportFilter } = useSearch();
+    const { startSearch, startExportFilter, startExportExcel } = useSearch();
 
     const form = useForm({
         initialValues: {
@@ -67,6 +66,12 @@ export const SearchVeedor = () => {
         startExportFilter(form.values);
     };
 
+    const handleExportExcel = (e) => {
+        e.preventDefault();
+        console.log(form.values);
+        startExportExcel(form.values);
+    }
+
     return (
         <Container>
             <Card
@@ -89,16 +94,26 @@ export const SearchVeedor = () => {
                         >
                             Buscar Veedores
                         </Text>
+                        <Group>
                         <Button
+                            variant="subtle"
                             color="red"
-                            variant="light"
-                            radius="md"
-                            uppercase
+                            radius="lg"
                             onClick={handleExport}
-                            leftIcon={<IconFileText size={14} />}
+                            leftIcon={<IconDatabaseExport size={15} color="red" />}
                         >
-                            Exportar - PDF
+                            PDF
                         </Button>
+                        <Button
+                            variant="subtle"
+                            color="green"
+                            radius="lg"
+                            onClick={handleExportExcel}
+                            leftIcon={<IconDatabaseExport size={15} color="green" />}
+                        >
+                            Excel
+                        </Button>
+                        </Group>
                     </Group>
                 </Card.Section>
                 <Card.Section withBorder inheritPadding py="lg">

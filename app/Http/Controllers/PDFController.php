@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\VeedoresExport;
 use App\Models\Veedor;
 use PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PDFController extends Controller
 {
@@ -58,4 +60,15 @@ class PDFController extends Controller
         return $pdf->setPaper('a4', 'landscape')->download('veedores2023.pdf');
 
     }
+
+    public function filterExportacionExcel(Request $request)
+    {
+        return Excel::download(new VeedoresExport(
+            $request->canton_id,
+            $request->parroquia_id,
+            $request->recinto__id,
+            $request->user_id
+        ), 'veedores.xlsx');
+    }
+
 }
