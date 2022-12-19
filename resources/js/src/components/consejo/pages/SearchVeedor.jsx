@@ -26,9 +26,10 @@ export const SearchVeedor = () => {
         startLoadCantones,
         startLoadParroquias,
         startLoadRecintos,
+        startClearStates
     } = useStatesStore();
 
-    const { startSearch, startExportFilter, startExportExcel } = useSearch();
+    const { startSearch, startExportFilter, startExportExcel, startClearResults} = useSearch();
 
     const form = useForm({
         initialValues: {
@@ -41,6 +42,10 @@ export const SearchVeedor = () => {
 
     useEffect(() => {
         startLoadCantones();
+        return () => {
+            startClearStates();
+            startClearResults();
+        };
     }, []);
 
     const { canton_id, parroquia_id } = form.values;

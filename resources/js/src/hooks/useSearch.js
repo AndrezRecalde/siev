@@ -91,6 +91,10 @@ export const useSearch = () => {
         }
     }
 
+    const startClearResults = () => {
+        dispatch(onClearSearch());
+    }
+
     return {
         results,
 
@@ -99,6 +103,7 @@ export const useSearch = () => {
         startExportFilter,
         startExportExcel,
         startExportFilterCoords,
-        startExportExcelCoords
+        startExportExcelCoords,
+        startClearResults
     };
 };

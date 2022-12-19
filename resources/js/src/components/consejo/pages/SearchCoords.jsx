@@ -18,7 +18,6 @@ import { GridTableCoordsSearch } from "./ui/GridTableCoordsSearch";
 import { GridTableVeedSearch } from "./ui/GridTableSearch";
 
 export const SearchCoords = () => {
-    const { user, supervisores } = useAuthStore();
 
     const {
         cantones,
@@ -27,9 +26,10 @@ export const SearchCoords = () => {
         startLoadCantones,
         startLoadParroquias,
         startLoadRecintos,
+        startClearStates
     } = useStatesStore();
 
-    const { startSearchCoords, startExportFilterCoords, startExportExcelCoords } = useSearch();
+    const { startSearchCoords, startExportFilterCoords, startExportExcelCoords, startClearResults } = useSearch();
 
 
 
@@ -43,6 +43,10 @@ export const SearchCoords = () => {
 
     useEffect(() => {
         startLoadCantones();
+        return () => {
+            startClearStates();
+            startClearResults();
+        };
     }, []);
 
     const { canton_id, parroquia_id } = form.values;
