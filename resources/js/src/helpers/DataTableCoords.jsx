@@ -13,7 +13,7 @@ const TableCoordsSearch = (props) => {
             name: "Nombres",
             selector: (row) => row.nombres,
             sortable: true,
-            width: "200px"
+            width: "300px"
         },
         {
             name: "Cedula",
