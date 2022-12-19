@@ -73,10 +73,15 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::post('search', [VeedorController::class, 'search']);
 
+
     Route::post('/pdf/exportacion/veedores', [PDFController::class, 'filterExportacion']);
 
     Route::post('/excel/exportacion/veedores', [PDFController::class, 'filterExportacionExcel']);
 
+    Route::post('/search/coordinadores', [CoordinadorController::class, 'searchCoordinador']);
+
+    Route::post('/pdf/exportacion/coordinadores', [PDFController::class, 'filterExportacionCoords']);
+    Route::post('/excel/exportacion/coordinadores', [PDFController::class, 'filterExportacionExcelCoords']);
 });
 
 
@@ -87,9 +92,3 @@ Route::get('prueba3', [PruebaController::class, 'getSupersWithVeeds']);
 
 Route::get('getGraficoCantones', [EstadisticaController::class, 'getGraficoCantones']);
 Route::get('getGraficoParroquia', [EstadisticaController::class, 'getGraficoParroquia']);
-
-
-
-
-
-

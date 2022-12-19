@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\CoordsExport;
 use App\Exports\VeedoresExport;
+use App\Models\User;
 use App\Models\Veedor;
 use PDF;
 use Illuminate\Http\Request;
@@ -69,6 +71,37 @@ class PDFController extends Controller
             $request->recinto__id,
             $request->user_id
         ), 'veedores.xlsx');
+    }
+
+    public function filterExportacionCoords(Request $request)
+    {
+        $coordinadores = User::from('users as u')
+            ->select(DB::raw('u.id, u.dni, CONCAT(u.first_name, " ", u.last_name) as nombres,
+                                        u.phone, u.dni, r.name as role,
+                                        c.nombre_canton, p.nombre_parroquia, re.nombre_recinto '))
+            ->join('recinto_user as ru', 'ru.user_id', 'u.id')
+            ->join('recintos as re', 're.id', 'ru.recinto_id')
+            ->join('parroquias as p', 're.parroquia_id', 'p.id')
+            ->join('cantones as c', 'p.canton_id', 'c.id')
+            ->join('model_has_roles as mhr', 'mhr.model_id', 'u.id')
+            ->join('roles as r', 'r.id', 'mhr.role_id')
+            ->where('r.id','3')
+            ->canton($request->canton_id)
+            ->parroquia($request->parroquia_id)
+            ->recinto($request->recinto_id)
+            ->get();
+
+            $pdf = PDF::loadView('pdf.coords.search', ['coordinadores' => $coordinadores]);
+            return $pdf->setPaper('a4', 'landscape')->download('coordinadores.pdf');
+    }
+
+    public function filterExportacionExcelCoords(Request $request)
+    {
+        return Excel::download(new CoordsExport(
+            $request->canton_id,
+            $request->parroquia_id,
+            $request->recinto__id,
+        ), 'coordinadores.xlsx');
     }
 
 }

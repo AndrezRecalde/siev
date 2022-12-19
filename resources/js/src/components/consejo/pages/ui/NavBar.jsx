@@ -22,7 +22,16 @@ import {
     Avatar,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { IconCode, IconChevronDown, IconLogout, IconUser, IconChartDonut, IconChevronRight, IconUserCircle } from "@tabler/icons";
+import {
+    IconCode,
+    IconChevronDown,
+    IconLogout,
+    IconUser,
+    IconChartDonut,
+    IconChevronRight,
+    IconUserCircle,
+    IconFileSearch,
+} from "@tabler/icons";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -123,6 +132,22 @@ const mockdata = [
         to: "/graficos/parroquias",
         target: "",
     },
+
+    {
+        icon: IconFileSearch,
+        title: "Buscar Veedores",
+        description: "Filtrar la búsqueda de Veedores",
+        to: "/search/veedores",
+        target: "",
+    },
+
+    {
+        icon: IconFileSearch,
+        title: "Buscar Coordinadores",
+        description: "Filtrar la búsqueda de Coordinadores",
+        to: "/search/coordinadores",
+        target: "",
+    },
 ];
 
 export const NavBar = () => {
@@ -180,7 +205,7 @@ export const NavBar = () => {
                         className={classes.hiddenMobile}
                     >
                         <Link to="/" className={classes.link}>
-                            Home
+                            Inicio
                         </Link>
                         <HoverCard
                             width={600}
@@ -209,10 +234,6 @@ export const NavBar = () => {
                                 </SimpleGrid>
                             </HoverCard.Dropdown>
                         </HoverCard>
-
-                        <Link to="/search/veedores" className={classes.link}>
-                            Buscador
-                        </Link>
                     </Group>
 
                     <Group className={classes.hiddenMobile}>
@@ -224,7 +245,7 @@ export const NavBar = () => {
                             onOpen={() => setUserMenuOpened(true)}
                         >
                             <Menu.Target>
-                            <UnstyledButton
+                                <UnstyledButton
                                     className={cx(classes.user, {
                                         [classes.userActive]: userMenuOpened,
                                     })}
@@ -232,15 +253,20 @@ export const NavBar = () => {
                                     <Group>
                                         <IconUserCircle
                                             size={25}
-                                            stroke={1.5} />
+                                            stroke={1.5}
+                                        />
 
                                         <div style={{ flex: 1 }}>
                                             <Text size="sm" weight={500}>
-                                                {user.first_name + " " + user.last_name}
+                                                {user.first_name +
+                                                    " " +
+                                                    user.last_name}
                                             </Text>
 
                                             <Text color="dimmed" size="xs">
-                                                {user.roles[0] ? user.roles[0] : ""}
+                                                {user.roles[0]
+                                                    ? user.roles[0]
+                                                    : ""}
                                             </Text>
                                         </div>
                                         <IconChevronRight
@@ -306,7 +332,10 @@ export const NavBar = () => {
                     </UnstyledButton>
                     <Collapse in={linksOpened}>{links}</Collapse>
                     <Link to="/search/veedores" className={classes.link}>
-                        Buscador
+                        Buscador Veedores
+                    </Link>
+                    <Link to="/search/coordinadores" className={classes.link}>
+                        Buscador Coordinadores
                     </Link>
                     <Divider
                         my="sm"

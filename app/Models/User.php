@@ -101,6 +101,27 @@ class User extends Authenticatable
         return $this->hasMany(User::class);
     }
 
+    public function scopeCanton($query, $canton)
+    {
+        if ($canton > 0) {
+            return $query->where('c.id', $canton);
+        }
+    }
+
+    public function scopeParroquia($query, $parroquia)
+    {
+        if ($parroquia > 0) {
+            return $query->where('p.id', $parroquia);
+        }
+    }
+
+    public function scopeRecinto($query, $recinto)
+    {
+        if ($recinto > 0) {
+            return $query->where('re.id', $recinto);
+        }
+    }
+
     protected static function boot()
     {
         parent::boot();
