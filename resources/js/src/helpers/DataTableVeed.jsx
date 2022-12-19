@@ -35,7 +35,7 @@ const TableVeed = (props) => {
             name: "Nombres",
             selector: (row) => row.first_name + " " + row.last_name,
             sortable: true,
-            width: "200px"
+            width: "450px"
         },
         {
             name: "Telefono",
@@ -53,7 +53,7 @@ const TableVeed = (props) => {
             name: "Recinto Donde Cuida",
             selector: (row) => row.destino,
             sortable: true,
-            width: "400px"
+            width: "450px"
         },
         {
             name: "Responsable",
