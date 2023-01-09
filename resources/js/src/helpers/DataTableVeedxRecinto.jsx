@@ -59,13 +59,13 @@ const TableVeedxRecinto = (props) => {
             name: "Recinto Donde Cuida",
             selector: (row) => row.destino,
             sortable: true,
-            width: "450px"
+            width: "400px"
         },
         {
             name: "Responsable",
             selector: (row) => row.coordinador,
             sortable: true,
-            width: "150px"
+            width: "180px"
         },
         {
             name: "Acciones",

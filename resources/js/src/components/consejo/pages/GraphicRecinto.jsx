@@ -48,7 +48,7 @@ export const GraphicRecinto = () => {
                                 fontSize: 20,
                             }}
                         >
-                            Grafico por Parroquias
+                            Grafico por Recintos
                         </Text>
                     </Group>
                 </Card.Section>
