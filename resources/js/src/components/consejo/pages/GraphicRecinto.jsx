@@ -75,7 +75,15 @@ export const GraphicRecinto = () => {
                                         ml={15}
                                     >
                                         {gr.nombre_parroquia} -{" "}
-                                        {gr.nombre_recinto}
+                                        <NavLink
+                                            to={`/veedores/recinto/${gr.id}`}
+                                            style={{
+                                                textDecoration: "none",
+                                                color: "#868e96",
+                                            }}
+                                        >
+                                            {gr.nombre_recinto}
+                                        </NavLink>
                                     </Text>
                                     <Badge
                                         size="lg"
@@ -116,7 +124,9 @@ export const GraphicRecinto = () => {
                                                             color: "#868e96",
                                                         }}
                                                     >
-                                                    {`${totales.toFixed(2)}%`}
+                                                        {`${totales.toFixed(
+                                                            2
+                                                        )}%`}
                                                     </NavLink>
                                                 </Text>
                                             }
