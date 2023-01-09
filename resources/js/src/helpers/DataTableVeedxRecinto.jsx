@@ -35,7 +35,13 @@ const TableVeedxRecinto = (props) => {
             name: "Nombres",
             selector: (row) => row.first_name + " " + row.last_name,
             sortable: true,
-            width: "450px"
+            width: "300px"
+        },
+        {
+            name: "Cédula",
+            selector: (row) => row.dni,
+            sortable: true,
+            width: "150px"
         },
         {
             name: "Telefono",
@@ -61,7 +67,7 @@ const TableVeedxRecinto = (props) => {
             sortable: true,
             width: "150px"
         },
-        /* {
+        {
             name: "Acciones",
             button: true,
             cell: (row) => (
@@ -74,7 +80,7 @@ const TableVeedxRecinto = (props) => {
                     </ActionIcon>
                 </>
             ),
-        }, */
+        },
     ];
 
     const [filterText, setFilterText] = React.useState("");

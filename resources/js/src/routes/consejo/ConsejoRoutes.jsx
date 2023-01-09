@@ -10,6 +10,7 @@ import { SearchVeedor } from "../../components/consejo/pages/SearchVeedor";
 import { Footer } from "../../components/consejo/pages/ui/Footer";
 import { GridTableVeedxRecinto } from "../../components/consejo/pages/ui/GridTableVeedxRecinto";
 import { NavBar } from "../../components/consejo/pages/ui/NavBar";
+import { VeedoresxRecintoPage } from "../../components/consejo/pages/VeedoresxRecintoPage";
 
 export const ConsejoRoutes = () => {
     return (
@@ -25,7 +26,7 @@ export const ConsejoRoutes = () => {
                 <Route path="/graficos/parroquia/:canton_id" element={<GraphicParroquia />} />
                 <Route path="/graficos/recinto/:parroquia_id" element={<GraphicRecinto />} />
 
-                <Route path="/veedores/recinto/:recinto_id" element={<GridTableVeedxRecinto />} />
+                <Route path="/veedores/recinto/:recinto_id" element={<VeedoresxRecintoPage />} />
 
 
                 <Route path="/" element={<Navigate to="/home" />} />
