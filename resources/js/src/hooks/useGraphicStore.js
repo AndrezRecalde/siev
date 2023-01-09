@@ -44,9 +44,9 @@ export const useGraphicStore = () => {
     const startLoadGraphicRecinto = async(parroquia_id) => {
         try {
             const { data } = await consejoApi.post("/getGraficoRecinto", {parroquia_id});
-            const { sum_recintos } = data;
-            dispatch(onGraphicRecintos(sum_recintos));
-            //console.log(sum_parroquias);
+            const { sum_recintox } = data;
+            dispatch(onGraphicRecintos(sum_recintox));
+            console.log(sum_recintox);
         } catch (error) {
             console.log(error);
         }

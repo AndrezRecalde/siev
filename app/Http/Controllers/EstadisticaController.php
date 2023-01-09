@@ -31,9 +31,9 @@ class EstadisticaController extends Controller
 
     public function getGraficoRecinto(Request $request)
     {
-        $sum_recintos = DB::select('CALL getRecinto(?)', [$request->parroquia_id]);
+        $sum_recintox = DB::select('CALL getRecinto(?)', [$request->parroquia_id]);
 
-        return response()->json(['status' => 'success', 'sum_recintos' => $sum_recintos]);
+        return response()->json(['status' => 'success', 'sum_recintox' => $sum_recintox]);
 
     }
 }
