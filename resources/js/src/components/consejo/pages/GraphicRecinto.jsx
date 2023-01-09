@@ -11,19 +11,22 @@ import {
 } from "@mantine/core";
 import { IconCheck } from "@tabler/icons";
 import React, { useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import { useGraphicStore } from "../../../hooks/useGraphicStore";
 
-export const GraphicCantones = () => {
-    const { grCantones, startLoadGraphicCanton, startClearGraphicCanton } =
+export const GraphicRecinto = () => {
+    const { grRecintos, startLoadGraphicRecinto, startClearGraphicRecinto } =
         useGraphicStore();
 
+    const { parroquia_id } = useParams();
+
     useEffect(() => {
-        startLoadGraphicCanton();
+        startLoadGraphicRecinto(parroquia_id);
+
         return () => {
-            startClearGraphicCanton();
+            startClearGraphicRecinto();
         };
-    }, []);
+    }, [parroquia_id]);
 
     return (
         <Container>
@@ -45,13 +48,13 @@ export const GraphicCantones = () => {
                                 fontSize: 20,
                             }}
                         >
-                            Grafico por Cantón
+                            Grafico por Parroquias
                         </Text>
                     </Group>
                 </Card.Section>
                 <Card.Section>
                     <Grid>
-                        {grCantones?.map((gr) => {
+                        {grRecintos?.map((gr) => {
                             let totalJuntas = parseInt(gr.total_juntas);
                             let totalxVeedor =
                                 gr.total_veed !== null ? gr.total_veed : 0;
@@ -71,12 +74,8 @@ export const GraphicCantones = () => {
                                         mt={20}
                                         ml={15}
                                     >
-                                        <NavLink
-                                            to={`/graficos/parroquia/${gr.id}`}
-                                            style={{ textDecoration: "none", color: "#868e96" }}
-                                        >
-                                            {gr.nombre_canton}
-                                        </NavLink>
+                                        {gr.nombre_parroquia} -{" "}
+                                        {gr.nombre_recinto}
                                     </Text>
                                     <Badge
                                         size="lg"
@@ -110,16 +109,14 @@ export const GraphicCantones = () => {
                                                     size="xl"
                                                 >
                                                     <NavLink
-                                                        to="/"
+                                                        to={`/veedores/recinto/${gr.id}`}
                                                         style={{
                                                             textDecoration:
                                                                 "none",
-                                                            color: "#228be6"
+                                                            color: "#868e96",
                                                         }}
                                                     >
-                                                        {`${totales.toFixed(
-                                                            2
-                                                        )}%`}
+                                                    {`${totales.toFixed(2)}%`}
                                                     </NavLink>
                                                 </Text>
                                             }

@@ -92,3 +92,11 @@ Route::get('prueba3', [PruebaController::class, 'getSupersWithVeeds']);
 
 Route::get('getGraficoCantones', [EstadisticaController::class, 'getGraficoCantones']);
 Route::get('getGraficoParroquia', [EstadisticaController::class, 'getGraficoParroquia']);
+Route::post('getGraficoxParroquia', [EstadisticaController::class, 'getGraficoxParroquia']);
+Route::post('getGraficoRecinto', [EstadisticaController::class, 'getGraficoRecinto']);
+
+
+Route::post('getVeedoresxRecinto', [VeedorController::class, 'getVeedoresxRecinto']);
+
+
+

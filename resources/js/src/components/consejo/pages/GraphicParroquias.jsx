@@ -11,6 +11,7 @@ import {
 } from "@mantine/core";
 import { IconCheck } from "@tabler/icons";
 import React, { useEffect } from "react";
+import { NavLink } from "react-router-dom";
 import { useGraphicStore } from "../../../hooks/useGraphicStore";
 
 export const GraphicParroquias = () => {
@@ -55,11 +56,12 @@ export const GraphicParroquias = () => {
                     <Grid>
                         {grParroquias?.map((gr) => {
                             let totalJuntas = parseInt(gr.total_juntas);
-                            let totalxVeedor = gr.total_veed !== null ? gr.total_veed : 0;
+                            let totalxVeedor =
+                                gr.total_veed !== null ? gr.total_veed : 0;
                             let totales = (totalxVeedor * 100) / totalJuntas;
 
-                            if(totales > 100){
-                                totales = 100
+                            if (totales > 100) {
+                                totales = 100;
                             }
 
                             return (
@@ -72,7 +74,16 @@ export const GraphicParroquias = () => {
                                         mt={20}
                                         ml={15}
                                     >
-                                        {gr.nombre_canton} - {gr.nombre_parroquia}
+                                        {gr.nombre_canton} -{" "}
+                                        <NavLink
+                                            to={`/graficos/recinto/${gr.parroquia_id}`}
+                                            style={{
+                                                textDecoration: "none",
+                                                color: "#868e96",
+                                            }}
+                                        >
+                                            {gr.nombre_parroquia}
+                                        </NavLink>
                                     </Text>
                                     <Badge
                                         size="lg"
@@ -80,34 +91,48 @@ export const GraphicParroquias = () => {
                                         color="cyan"
                                         ml={15}
                                     >
-                                        {`${ gr.total_veed !== null
+                                        {`${
+                                            gr.total_veed !== null
                                                 ? gr.total_veed
-                                                : 0 } / ${gr.total_juntas}`}
+                                                : 0
+                                        } / ${gr.total_juntas}`}
                                     </Badge>
-                                    { totales !== 100 ?
+                                    {totales !== 100 ? (
                                         <RingProgress
-                                        sections={[
-                                            {
-                                                value: totales,
-                                                color:
-                                                    totales !== 100
-                                                        ? "blue"
-                                                        : "teal",
-                                                tooltip: totales.toFixed(2),
-                                            },
-                                        ]}
-                                        label={
-                                            <Text
-                                                color="blue"
-                                                weight={700}
-                                                align="center"
-                                                size="xl"
-                                            >
-                                                {`${totales.toFixed(2)}%`}
-                                            </Text>
-                                        }
-                                    /> :
-                                    <RingProgress
+                                            sections={[
+                                                {
+                                                    value: totales,
+                                                    color:
+                                                        totales !== 100
+                                                            ? "blue"
+                                                            : "teal",
+                                                    tooltip: totales.toFixed(2),
+                                                },
+                                            ]}
+                                            label={
+                                                <Text
+                                                    color="blue"
+                                                    weight={700}
+                                                    align="center"
+                                                    size="xl"
+                                                >
+                                                    <NavLink
+                                                        to={`/graficos/recinto/${gr.parroquia_id}`}
+                                                        style={{
+                                                            textDecoration:
+                                                                "none",
+                                                            color: "#868e96",
+                                                        }}
+                                                    >
+                                                        {`${totales.toFixed(
+                                                            2
+                                                        )}%`}
+                                                    </NavLink>
+                                                </Text>
+                                            }
+                                        />
+                                    ) : (
+                                        <RingProgress
                                             sections={[
                                                 { value: 100, color: "teal" },
                                             ]}
@@ -124,7 +149,7 @@ export const GraphicParroquias = () => {
                                                 </Center>
                                             }
                                         />
-                                    }
+                                    )}
                                 </Grid.Col>
                             );
                         })}

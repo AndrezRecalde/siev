@@ -19,6 +19,11 @@ export const ProfilePage = () => {
     const porcentajeJuntas = () => {
         let total;
         total = (veedores.length * 100) / juntas;
+
+        if(total > 100){
+            total = 100;
+        }
+
         return [
             {
                 value: total.toFixed(2),

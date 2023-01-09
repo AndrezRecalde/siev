@@ -20,4 +20,20 @@ class EstadisticaController extends Controller
 
         return response()->json(['status' => 'success', 'sum_parroquias' => $sum_parroquias]);
     }
+
+    public function getGraficoxParroquia(Request $request)
+    {
+        $sum_parroquias = DB::select('CALL getGraficoxParroquia(?)', [$request->canton_id]);
+
+        return response()->json(['status' => 'success', 'sum_parroquias' => $sum_parroquias]);
+
+    }
+
+    public function getGraficoRecinto(Request $request)
+    {
+        $sum_recintos = DB::select('CALL getRecinto(?)', [$request->parroquia_id]);
+
+        return response()->json(['status' => 'success', 'sum_recintos' => $sum_recintos]);
+
+    }
 }

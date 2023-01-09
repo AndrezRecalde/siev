@@ -1,11 +1,11 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import consejoApi from "../api/consejoApi";
-import { onClearGraphicCantones, onClearGraphicParroquias, onGraphicCantones, onGraphicParroquias } from "../store/graphic/graphicSlice";
+import { onClearGraphicCantones, onClearGraphicParroquias, onClearGraphicRecintos, onGraphicCantones, onGraphicParroquias, onGraphicRecintos } from "../store/graphic/graphicSlice";
 
 export const useGraphicStore = () => {
 
-    const { grCantones, grParroquias } = useSelector((state) => state.graphic);
+    const { grCantones, grParroquias, grRecintos } = useSelector((state) => state.graphic);
     const dispatch = useDispatch();
 
 
@@ -30,6 +30,28 @@ export const useGraphicStore = () => {
         }
     }
 
+    const startLoadGraphicParroquia = async(canton_id) => {
+        try {
+            const { data } = await consejoApi.post("/getGraficoxParroquia", {canton_id});
+            const { sum_parroquias } = data;
+            dispatch(onGraphicParroquias(sum_parroquias));
+            //console.log(sum_parroquias);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const startLoadGraphicRecinto = async(parroquia_id) => {
+        try {
+            const { data } = await consejoApi.post("/getGraficoRecinto", {parroquia_id});
+            const { sum_recintos } = data;
+            dispatch(onGraphicRecintos(sum_recintos));
+            //console.log(sum_parroquias);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     const startClearGraphicCanton = () => {
         dispatch(onClearGraphicCantones());
     }
@@ -38,14 +60,23 @@ export const useGraphicStore = () => {
         dispatch(onClearGraphicParroquias());
     }
 
+    const startClearGraphicRecinto = () => {
+        dispatch(onClearGraphicRecintos());
+    }
+
     return {
         grCantones,
         grParroquias,
+        grRecintos,
 
         startLoadGraphicCanton,
         startLoadGraphicParroquias,
+        startLoadGraphicParroquia,
+        startLoadGraphicRecinto,
 
         startClearGraphicCanton,
-        startClearGraphicParroquia
+        startClearGraphicParroquia,
+        startClearGraphicRecinto
+
     };
 };

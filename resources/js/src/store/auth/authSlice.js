@@ -10,6 +10,7 @@ export const authSlice = createSlice({
         supervisores: [],
         coordinadores: [],
         veedores: [],
+        veeds: [],
         juntas: null,
         count_veed: null,
 
@@ -59,6 +60,9 @@ export const authSlice = createSlice({
         },
         onVeedores: (state, action) => {
             state.veedores = action.payload;
+        },
+        onVeeds: (state, action) => {
+            state.veeds = action.payload;
         },
         onJuntas: (state, action) => {
             state.juntas = action.payload;
@@ -151,6 +155,10 @@ export const authSlice = createSlice({
                 state.administradores = state.administradores.filter( admin => admin.id !== state.activateUser.id );
                 state.activateUser = null;
             }
+        },
+
+        onClearVeedsxRecinto: (state) => {
+            state.veeds = [];
         }
 
     },
@@ -166,6 +174,7 @@ export const {
     onSupervisores,
     onCoordinadores,
     onVeedores,
+    onVeeds,
     onJuntas,
     onCountVeed,
 
@@ -184,7 +193,9 @@ export const {
     onDeleteAdmin,
     onDeleteSuper,
     onDeleteCoord,
-    onDeleteVeedor
+    onDeleteVeedor,
+
+    onClearVeedsxRecinto
 
 
 } = authSlice.actions;

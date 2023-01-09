@@ -1,11 +1,14 @@
 import React from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { GraphicCantones } from "../../components/consejo/pages/GraphicCantones";
+import { GraphicParroquia } from "../../components/consejo/pages/GraphicParroquia";
 import { GraphicParroquias } from "../../components/consejo/pages/GraphicParroquias";
+import { GraphicRecinto } from "../../components/consejo/pages/GraphicRecinto";
 import { HomePage } from "../../components/consejo/pages/HomePage";
 import { SearchCoords } from "../../components/consejo/pages/SearchCoords";
 import { SearchVeedor } from "../../components/consejo/pages/SearchVeedor";
 import { Footer } from "../../components/consejo/pages/ui/Footer";
+import { GridTableVeedxRecinto } from "../../components/consejo/pages/ui/GridTableVeedxRecinto";
 import { NavBar } from "../../components/consejo/pages/ui/NavBar";
 
 export const ConsejoRoutes = () => {
@@ -19,6 +22,10 @@ export const ConsejoRoutes = () => {
                 <Route path="search/coordinadores" element={<SearchCoords />} />
                 <Route path="graficos/cantones" element={<GraphicCantones />} />
                 <Route path="graficos/parroquias" element={<GraphicParroquias />} />
+                <Route path="/graficos/parroquia/:canton_id" element={<GraphicParroquia />} />
+                <Route path="/graficos/recinto/:parroquia_id" element={<GraphicRecinto />} />
+
+                <Route path="/veedores/recinto/:recinto_id" element={<GridTableVeedxRecinto />} />
 
 
                 <Route path="/" element={<Navigate to="/home" />} />

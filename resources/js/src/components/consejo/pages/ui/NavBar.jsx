@@ -207,33 +207,51 @@ export const NavBar = () => {
                         <Link to="/" className={classes.link}>
                             Inicio
                         </Link>
-                        <HoverCard
-                            width={600}
-                            position="bottom"
-                            radius="md"
-                            shadow="md"
-                            withinPortal
-                        >
-                            <HoverCard.Target>
-                                <a href="#" className={classes.link}>
-                                    <Center inline>
-                                        <Box component="span" mr={5}>
-                                            Gráficos
-                                        </Box>
-                                        <IconChevronDown
-                                            size={16}
-                                            color={theme.fn.primaryColor()}
-                                        />
-                                    </Center>
-                                </a>
-                            </HoverCard.Target>
+                        {user.roles.includes("Administrador") ? (
+                            <HoverCard
+                                width={600}
+                                position="bottom"
+                                radius="md"
+                                shadow="md"
+                                withinPortal
+                            >
+                                <HoverCard.Target>
+                                    <a href="#" className={classes.link}>
+                                        <Center inline>
+                                            <Box component="span" mr={5}>
+                                                Gráficos
+                                            </Box>
+                                            <IconChevronDown
+                                                size={16}
+                                                color={theme.fn.primaryColor()}
+                                            />
+                                        </Center>
+                                    </a>
+                                </HoverCard.Target>
 
-                            <HoverCard.Dropdown sx={{ overflow: "hidden" }}>
-                                <SimpleGrid cols={2} spacing={0}>
-                                    {links}
-                                </SimpleGrid>
-                            </HoverCard.Dropdown>
-                        </HoverCard>
+                                <HoverCard.Dropdown sx={{ overflow: "hidden" }}>
+                                    <SimpleGrid cols={2} spacing={0}>
+                                        {links}
+                                    </SimpleGrid>
+                                </HoverCard.Dropdown>
+                            </HoverCard>
+                        ) : (
+                            <>
+                                <Link
+                                    to="/search/veedores"
+                                    className={classes.link}
+                                >
+                                    Buscar Veedores
+                                </Link>
+                                <Link
+                                    to="/search/coordinadores"
+                                    className={classes.link}
+                                >
+                                    Buscar Coordinadores
+                                </Link>
+                            </>
+                        )}
+
                     </Group>
 
                     <Group className={classes.hiddenMobile}>
@@ -314,7 +332,7 @@ export const NavBar = () => {
                     />
 
                     <Link to="/" className={classes.link}>
-                        Home
+                        Inicio
                     </Link>
                     <UnstyledButton
                         className={classes.link}
@@ -330,13 +348,26 @@ export const NavBar = () => {
                             />
                         </Center>
                     </UnstyledButton>
-                    <Collapse in={linksOpened}>{links}</Collapse>
-                    <Link to="/search/veedores" className={classes.link}>
-                        Buscador Veedores
-                    </Link>
-                    <Link to="/search/coordinadores" className={classes.link}>
-                        Buscador Coordinadores
-                    </Link>
+
+                    {user.roles.includes("Administrador") ? (
+                        <Collapse in={linksOpened}>{links}</Collapse>
+                    ) : (
+                        <>
+                            <Link
+                                to="/search/veedores"
+                                className={classes.link}
+                            >
+                                Buscador Veedores
+                            </Link>
+                            <Link
+                                to="/search/coordinadores"
+                                className={classes.link}
+                            >
+                                Buscador Coordinadores
+                            </Link>
+                        </>
+                    )}
+
                     <Divider
                         my="sm"
                         color={

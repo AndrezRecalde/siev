@@ -188,4 +188,11 @@ class VeedorController extends Controller
             return response()->json(['status' => 'error', 'msg' => 'No existen veedores en esa zona']);
         }
     }
+
+    public function getVeedoresxRecinto(Request $request)
+    {
+        $veedores = DB::select('CALL getVeedoresxRecinto(?)', [$request->recinto_id]);
+
+        return response()->json(['status' => 'success', 'veedores' => $veedores]);
+    }
 }

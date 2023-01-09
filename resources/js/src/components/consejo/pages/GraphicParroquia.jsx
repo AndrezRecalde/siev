@@ -11,19 +11,25 @@ import {
 } from "@mantine/core";
 import { IconCheck } from "@tabler/icons";
 import React, { useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import { useGraphicStore } from "../../../hooks/useGraphicStore";
 
-export const GraphicCantones = () => {
-    const { grCantones, startLoadGraphicCanton, startClearGraphicCanton } =
-        useGraphicStore();
+export const GraphicParroquia = () => {
+    const {
+        grParroquias,
+        startLoadGraphicParroquia,
+        startClearGraphicParroquia,
+    } = useGraphicStore();
+
+    const { canton_id } = useParams();
 
     useEffect(() => {
-        startLoadGraphicCanton();
+        startLoadGraphicParroquia(canton_id);
+
         return () => {
-            startClearGraphicCanton();
+            startClearGraphicParroquia();
         };
-    }, []);
+    }, [canton_id]);
 
     return (
         <Container>
@@ -45,13 +51,13 @@ export const GraphicCantones = () => {
                                 fontSize: 20,
                             }}
                         >
-                            Grafico por Cantón
+                            Grafico por Parroquias
                         </Text>
                     </Group>
                 </Card.Section>
                 <Card.Section>
                     <Grid>
-                        {grCantones?.map((gr) => {
+                        {grParroquias?.map((gr) => {
                             let totalJuntas = parseInt(gr.total_juntas);
                             let totalxVeedor =
                                 gr.total_veed !== null ? gr.total_veed : 0;
@@ -62,7 +68,7 @@ export const GraphicCantones = () => {
                             }
 
                             return (
-                                <Grid.Col key={gr.id} span={4}>
+                                <Grid.Col key={gr.parroquia_id} span={4}>
                                     <Text
                                         size="xs"
                                         transform="uppercase"
@@ -71,11 +77,15 @@ export const GraphicCantones = () => {
                                         mt={20}
                                         ml={15}
                                     >
+                                        {gr.nombre_canton} - {" "}
                                         <NavLink
-                                            to={`/graficos/parroquia/${gr.id}`}
-                                            style={{ textDecoration: "none", color: "#868e96" }}
+                                            to={`/graficos/recinto/${gr.parroquia_id}`}
+                                            style={{
+                                                textDecoration: "none",
+                                                color: "#868e96",
+                                            }}
                                         >
-                                            {gr.nombre_canton}
+                                            {gr.nombre_parroquia}
                                         </NavLink>
                                     </Text>
                                     <Badge
@@ -110,11 +120,11 @@ export const GraphicCantones = () => {
                                                     size="xl"
                                                 >
                                                     <NavLink
-                                                        to="/"
+                                                        to={`/graficos/recinto/${gr.parroquia_id}`}
                                                         style={{
                                                             textDecoration:
                                                                 "none",
-                                                            color: "#228be6"
+                                                            color: "#868e96",
                                                         }}
                                                     >
                                                         {`${totales.toFixed(

@@ -6,6 +6,7 @@ export const graphicSlice = createSlice({
     initialState: {
         grCantones: [],
         grParroquias: [],
+        grRecintos: []
     },
     reducers: {
         onGraphicCantones: (state, action) => {
@@ -19,8 +20,14 @@ export const graphicSlice = createSlice({
         },
         onClearGraphicParroquias: (state) => {
             state.grParroquias = []
-        }
+        },
+        onGraphicRecintos: (state, action) => {
+            state.grRecintos = action.payload;
+        },
+        onClearGraphicRecintos: (state) => {
+            state.grRecintos = []
+        },
     },
 });
 
-export const { onGraphicCantones, onGraphicParroquias, onClearGraphicCantones, onClearGraphicParroquias } = graphicSlice.actions;
+export const { onGraphicCantones, onGraphicParroquias, onClearGraphicCantones, onClearGraphicParroquias, onGraphicRecintos, onClearGraphicRecintos } = graphicSlice.actions;

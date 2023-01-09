@@ -4,6 +4,7 @@ import {
     checking,
     clearErrorMessage,
     onAdministradores,
+    onClearVeedsxRecinto,
     onCoordinadores,
     onCountVeed,
     onJuntas,
@@ -12,6 +13,7 @@ import {
     onProfile,
     onSupervisores,
     onVeedores,
+    onVeeds,
 } from "../store/auth/authSlice";
 import { onClearStates } from "../store/states/statesSlice";
 
@@ -24,6 +26,7 @@ export const useAuthStore = () => {
         supervisores,
         coordinadores,
         veedores,
+        veeds,
         juntas,
         errorMessage,
     } = useSelector((state) => state.auth);
@@ -130,6 +133,21 @@ export const useAuthStore = () => {
         }
     };
 
+    const getVeedoresxRecinto = async(recinto_id) => {
+        try {
+            const { data } = await consejoApi.post("getVeedoresxRecinto", {recinto_id});
+            const { veedores } = data;
+            dispatch(onVeeds(veedores));
+            //console.log(veedores);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const clearVeedsxRecinto = () => {
+        dispatch(onClearVeedsxRecinto());
+    }
+
     const startLogout = () => {
         localStorage.clear();
         dispatch(onLogout());
@@ -143,6 +161,7 @@ export const useAuthStore = () => {
         supervisores,
         coordinadores,
         veedores,
+        veeds,
         juntas,
         profile,
         errorMessage,
@@ -151,5 +170,7 @@ export const useAuthStore = () => {
         startLogout,
         startProfile,
         checkAuthToken,
+        getVeedoresxRecinto,
+        clearVeedsxRecinto
     };
 };
