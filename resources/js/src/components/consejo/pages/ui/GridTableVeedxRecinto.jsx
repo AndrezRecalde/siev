@@ -12,9 +12,9 @@ export const GridTableVeedxRecinto = () => {
     useEffect(() => {
         getVeedoresxRecinto(recinto_id);
 
-        return () => {
+        /* return () => {
             clearVeedsxRecinto();
-        };
+        }; */
     }, []);
 
     return (

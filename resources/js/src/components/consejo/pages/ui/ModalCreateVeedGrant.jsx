@@ -7,6 +7,7 @@ import {
     IconPhonePlus,
 } from "@tabler/icons";
 import React, { useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { useAuthStore } from "../../../../hooks/useAuthStore";
 import { useConsejoStore } from "../../../../hooks/useConsejoStore";
 import { useStatesStore } from "../../../../hooks/useStatesStore";
@@ -26,7 +27,9 @@ export const ModalCreateVeedGrant = () => {
         startClearStates,
     } = useStatesStore();
 
-    const { startProfile, coordinadores } = useAuthStore();
+    const { startProfile, coordinadores, getVeedoresxRecinto } = useAuthStore();
+
+    const { recinto_id } = useParams();
 
     const form = useForm({
         initialValues: {
@@ -103,6 +106,7 @@ export const ModalCreateVeedGrant = () => {
             await startSavingVeedorGrant(form.values);
             modalActionVeedorGrant("close");
             await startProfile();
+            await getVeedoresxRecinto(recinto_id);
             form.reset();
         } else {
             console.log("Error");
