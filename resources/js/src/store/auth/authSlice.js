@@ -4,6 +4,7 @@ export const authSlice = createSlice({
     name: "auth",
     initialState: {
         status: "not-authenticated",
+        loading: false,
         user: {},
         profile: {},
         administradores: [],
@@ -24,6 +25,10 @@ export const authSlice = createSlice({
             state.user = {};
             state.errorMessage = undefined;
         },
+        onLoad: (state) => {
+            state.loading = true;
+            state.errorMessage = undefined;
+        },
         onLogin: (state, action) => {
             state.status = "authenticated";
             state.user = action.payload;
@@ -31,6 +36,7 @@ export const authSlice = createSlice({
         },
         onLogout: (state, action) => {
             state.status = "not-authenticated";
+            state.loading = false;
             state.user = {},
             state.profile = {},
             state.administradores = [];
@@ -48,6 +54,7 @@ export const authSlice = createSlice({
         },
         onProfile: (state, action) => {
             state.profile = action.payload;
+            state.loading = false;
         },
         onAdministradores: (state, action) => {
             state.administradores = action.payload;
@@ -166,6 +173,7 @@ export const authSlice = createSlice({
 
 export const {
     checking,
+    onLoad,
     onLogin,
     onLogout,
     clearErrorMessage,

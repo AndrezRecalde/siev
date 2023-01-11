@@ -1,4 +1,4 @@
-import { Container } from "@mantine/core";
+import { Container, Skeleton } from "@mantine/core";
 import React, { useEffect } from "react";
 import { Paper, Tabs } from "@mantine/core";
 import { ProfilePage } from "./ProfilePage";
@@ -10,9 +10,13 @@ import { useAuthStore } from "../../../hooks/useAuthStore";
 import { useStatesStore } from "../../../hooks/useStatesStore";
 
 export const HomePage = () => {
-    const { status, user, startProfile } = useAuthStore();
-    const { startLoadCantones, startLoadAllParroquias, startLoadAllRecintos, startLoadRoles } = useStatesStore();
-
+    const { status, loading, user, startProfile } = useAuthStore();
+    const {
+        startLoadCantones,
+        startLoadAllParroquias,
+        startLoadAllRecintos,
+        startLoadRoles,
+    } = useStatesStore();
 
     useEffect(() => {
         startProfile();
@@ -23,8 +27,7 @@ export const HomePage = () => {
         startLoadAllParroquias();
         startLoadAllRecintos();
         startLoadRoles();
-    }, [status])
-
+    }, [status]);
 
     return (
         <Container>
@@ -72,25 +75,25 @@ export const HomePage = () => {
                             </>
                         ) : null}
                     </Tabs.List>
-
-                    <Tabs.Panel value="profile" pt="xs">
-                        <ProfilePage />
-                    </Tabs.Panel>
-                    <Tabs.Panel value="administradores" pt="xs">
-                        <TableAdminsPage />
-                    </Tabs.Panel>
-                    <Tabs.Panel value="supervisores" pt="xs">
-                        <TableSupersPage />
-                    </Tabs.Panel>
-                    <Tabs.Panel value="coordinadores" pt="xs">
-                        <TableCoordsPage />
-                    </Tabs.Panel>
-                    <Tabs.Panel value="veedores" pt="xs">
-                        <TableVeedsPage />
-                    </Tabs.Panel>
+                    <Skeleton visible={loading}>
+                        <Tabs.Panel value="profile" pt="xs">
+                            <ProfilePage />
+                        </Tabs.Panel>
+                        <Tabs.Panel value="administradores" pt="xs">
+                            <TableAdminsPage />
+                        </Tabs.Panel>
+                        <Tabs.Panel value="supervisores" pt="xs">
+                            <TableSupersPage />
+                        </Tabs.Panel>
+                        <Tabs.Panel value="coordinadores" pt="xs">
+                            <TableCoordsPage />
+                        </Tabs.Panel>
+                        <Tabs.Panel value="veedores" pt="xs">
+                            <TableVeedsPage />
+                        </Tabs.Panel>
+                    </Skeleton>
                 </Tabs>
             </Paper>
-
         </Container>
     );
 };

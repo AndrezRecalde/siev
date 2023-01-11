@@ -8,6 +8,7 @@ import {
     onCoordinadores,
     onCountVeed,
     onJuntas,
+    onLoad,
     onLogin,
     onLogout,
     onProfile,
@@ -20,6 +21,7 @@ import { onClearStates } from "../store/states/statesSlice";
 export const useAuthStore = () => {
     const {
         status,
+        loading,
         user,
         profile,
         administradores,
@@ -62,6 +64,7 @@ export const useAuthStore = () => {
     };
 
     const startProfile = async () => {
+        dispatch(onLoad());
         try {
             const { data } = await consejoApi.get("/profile");
             dispatch(
@@ -156,6 +159,7 @@ export const useAuthStore = () => {
 
     return {
         status,
+        loading,
         user,
         administradores,
         supervisores,
