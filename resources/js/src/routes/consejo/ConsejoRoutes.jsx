@@ -30,7 +30,7 @@ export const ConsejoRoutes = () => {
 
                 <Route path="/veedores/recinto/:recinto_id" element={<VeedoresxRecintoPage />} />
 
-                {/* <Route path="/home/*" element={<Navigate to="/home" />} /> */}
+                <Route path="/*" element={<Navigate to="/home" />} />
                 <Route path="/search/veedores/*" element={<Navigate to="/search/veedores" />} />
                 <Route path="/search/supervisores/*" element={<Navigate to="/search/supervisores" />} />
                 <Route path="/search/coordinadores/*" element={<Navigate to="/search/coordinadores" />} />
