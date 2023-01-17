@@ -47,4 +47,27 @@ class SupervisorController extends Controller
 
         return response()->json(['status' => 'success', 'supervisor' => $supervisor, 'coordinadores' => $coordinadores]);
     }
+
+    public function searchSupervisor(Request $request)
+    {
+        $supervisores = User::from('users as u')
+            ->select(DB::raw('u.id, u.dni, CONCAT(u.first_name, " ", u.last_name) as nombres,
+                                        u.phone, r.name as role,
+                                        c.nombre_canton, p.nombre_parroquia'))
+            ->join('cantones as c', 'c.id', 'u.canton_id')
+            ->join('parroquia_user as pu', 'pu.user_id', 'u.id')
+            ->join('parroquias as p', 'p.id', 'pu.parroquia_id')
+            ->join('model_has_roles as mhr', 'mhr.model_id', 'u.id')
+            ->join('roles as r', 'r.id', 'mhr.role_id')
+            ->where('r.id','2')
+            ->canton($request->canton_id)
+            ->parroquia($request->parroquia_id)
+            ->get();
+
+        if (sizeof($supervisores) >= 1) {
+            return response()->json(['status' => 'success', 'supervisores' => $supervisores]);
+        } else {
+            return response()->json(['status' => 'error', 'msg' => 'No existen supervisores en esa zona']);
+        }
+    }
 }

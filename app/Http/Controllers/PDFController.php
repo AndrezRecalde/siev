@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\CoordsExport;
+use App\Exports\SupersExport;
 use App\Exports\VeedoresExport;
 use App\Models\User;
 use App\Models\Veedor;
@@ -102,6 +103,34 @@ class PDFController extends Controller
             $request->parroquia_id,
             $request->recinto__id,
         ), 'coordinadores.xlsx');
+    }
+
+    public function filterExportacionSupers(Request $request)
+    {
+        $supervisores = User::from('users as u')
+            ->select(DB::raw('u.id, u.dni, CONCAT(u.first_name, " ", u.last_name) as nombres,
+                                        u.phone, r.name as role,
+                                        c.nombre_canton, p.nombre_parroquia'))
+            ->join('cantones as c', 'c.id', 'u.canton_id')
+            ->join('parroquia_user as pu', 'pu.user_id', 'u.id')
+            ->join('parroquias as p', 'p.id', 'pu.parroquia_id')
+            ->join('model_has_roles as mhr', 'mhr.model_id', 'u.id')
+            ->join('roles as r', 'r.id', 'mhr.role_id')
+            ->where('r.id','2')
+            ->canton($request->canton_id)
+            ->parroquia($request->parroquia_id)
+            ->get();
+
+            $pdf = PDF::loadView('pdf.supers.search', ['supervisores' => $supervisores]);
+            return $pdf->setPaper('a4', 'landscape')->download('supervisores.pdf');
+    }
+
+    public function filterExportacionExcelSupers(Request $request)
+    {
+        return Excel::download(new SupersExport(
+            $request->canton_id,
+            $request->parroquia_id,
+        ), 'supervisores.xlsx');
     }
 
 }

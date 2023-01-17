@@ -60,6 +60,11 @@ const TableCoord = (props) => {
                 let total = totalJuntas?.reduce((a, b) => a + b, 0);
 
                 let totales = (totalxVeedor * 100) / total;
+
+                if(totales > 100){
+                    totales = 100;
+                }
+
                 return (
                     <RingProgress
                         size={90}

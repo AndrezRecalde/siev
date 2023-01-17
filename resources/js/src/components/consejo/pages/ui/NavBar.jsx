@@ -8,7 +8,6 @@ import {
     Text,
     SimpleGrid,
     ThemeIcon,
-    Anchor,
     Divider,
     Center,
     Box,
@@ -18,19 +17,18 @@ import {
     ScrollArea,
     Image,
     Menu,
-    Badge,
-    Avatar,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import {
-    IconCode,
     IconChevronDown,
     IconLogout,
-    IconUser,
-    IconChartDonut,
     IconChevronRight,
     IconUserCircle,
     IconFileSearch,
+    IconUsers,
+    IconUserSearch,
+    IconChartArcs,
+    IconChartArcs3,
 } from "@tabler/icons";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -112,35 +110,29 @@ const useStyles = createStyles((theme) => ({
 
 const mockdata = [
     {
-        icon: IconCode,
-        title: "Exportar Veedores",
-        description: "Exportar todos los veedores",
-        to: "/api/pdf/veedores",
-        target: "_blank",
-    },
-    {
-        icon: IconChartDonut,
+        icon: IconChartArcs,
         title: "Gráficos por Cantones",
-        description: "Muestra el porcentaje completado por cada cantón",
+        description: "Porcentaje completado por cada cantón",
         to: "/graficos/cantones",
         target: "",
     },
     {
-        icon: IconChartDonut,
+        icon: IconChartArcs3,
         title: "Gráficos por Parroquias",
-        description: "Muestra el porcentaje completado por cada parroquia",
+        description: "Porcentaje completado por cada parroquia",
         to: "/graficos/parroquias",
         target: "",
     },
+];
 
+const searchdata = [
     {
         icon: IconFileSearch,
-        title: "Buscar Veedores",
-        description: "Filtrar la búsqueda de Veedores",
-        to: "/search/veedores",
+        title: "Buscar Supervisores",
+        description: "Filtrar la búsqueda de Supervisores",
+        to: "search/supervisores",
         target: "",
     },
-
     {
         icon: IconFileSearch,
         title: "Buscar Coordinadores",
@@ -148,6 +140,20 @@ const mockdata = [
         to: "/search/coordinadores",
         target: "",
     },
+    {
+        icon: IconUsers,
+        title: "Exportar Veedores",
+        description: "Exportar todos los veedores",
+        to: "/api/pdf/veedores",
+        target: "_blank",
+    },
+    {
+        icon: IconUserSearch,
+        title: "Buscar Veedores",
+        description: "Filtrar la búsqueda de Veedores",
+        to: "/search/veedores",
+        target: "",
+    }
 ];
 
 export const NavBar = () => {
@@ -168,27 +174,50 @@ export const NavBar = () => {
         exportPDF();
     };
 
-    const links = mockdata.map((item) => (
+    const graphicLinks = mockdata.map((item) => (
         <UnstyledButton className={classes.subLink} key={item.title}>
             <Group noWrap align="flex-start">
                 <ThemeIcon size={34} variant="default" radius="md">
                     <item.icon size={22} color={theme.fn.primaryColor()} />
                 </ThemeIcon>
-                <div>
-                    <Link
-                        to={item.to}
-                        target={item.target}
-                        className={classes.link}
-                    >
+                <Link
+                    to={item.to}
+                    target={item.target}
+                    className={classes.link}
+                >
+                    <SimpleGrid cols={1}>
                         <Text size="sm" weight={500}>
                             {item.title}
                         </Text>
-                    </Link>
+                        <Text size="xs" color="dimmed">
+                            {item.description}
+                        </Text>
+                    </SimpleGrid>
+                </Link>
+            </Group>
+        </UnstyledButton>
+    ));
 
-                    <Text size="xs" color="dimmed">
-                        {item.description}
-                    </Text>
-                </div>
+    const search = searchdata.map((item) => (
+        <UnstyledButton className={classes.subLink} key={item.title}>
+            <Group noWrap align="flex-start">
+                <ThemeIcon size={34} variant="default" radius="md">
+                    <item.icon size={22} color={theme.fn.primaryColor()} />
+                </ThemeIcon>
+                <Link
+                    to={item.to}
+                    target={item.target}
+                    className={classes.link}
+                >
+                    <SimpleGrid cols={1}>
+                        <Text size="sm" weight={500}>
+                            {item.title}
+                        </Text>
+                        <Text size="xs" color="dimmed">
+                            {item.description}
+                        </Text>
+                    </SimpleGrid>
+                </Link>
             </Group>
         </UnstyledButton>
     ));
@@ -208,33 +237,66 @@ export const NavBar = () => {
                             Inicio
                         </Link>
                         {user.roles.includes("Administrador") ? (
-                            <HoverCard
-                                width={600}
-                                position="bottom"
-                                radius="md"
-                                shadow="md"
-                                withinPortal
-                            >
-                                <HoverCard.Target>
-                                    <a href="#" className={classes.link}>
-                                        <Center inline>
-                                            <Box component="span" mr={5}>
-                                                Gráficos
-                                            </Box>
-                                            <IconChevronDown
-                                                size={16}
-                                                color={theme.fn.primaryColor()}
-                                            />
-                                        </Center>
-                                    </a>
-                                </HoverCard.Target>
+                            <>
+                                <HoverCard
+                                    width={600}
+                                    position="bottom"
+                                    radius="md"
+                                    shadow="md"
+                                    withinPortal
+                                >
+                                    <HoverCard.Target>
+                                        <a href="#" className={classes.link}>
+                                            <Center inline>
+                                                <Box component="span" mr={5}>
+                                                    Gráficos
+                                                </Box>
+                                                <IconChevronDown
+                                                    size={16}
+                                                    color={theme.fn.primaryColor()}
+                                                />
+                                            </Center>
+                                        </a>
+                                    </HoverCard.Target>
 
-                                <HoverCard.Dropdown sx={{ overflow: "hidden" }}>
-                                    <SimpleGrid cols={2} spacing={0}>
-                                        {links}
-                                    </SimpleGrid>
-                                </HoverCard.Dropdown>
-                            </HoverCard>
+                                    <HoverCard.Dropdown
+                                        sx={{ overflow: "hidden" }}
+                                    >
+                                        <SimpleGrid cols={2} spacing={0}>
+                                            {graphicLinks}
+                                        </SimpleGrid>
+                                    </HoverCard.Dropdown>
+                                </HoverCard>
+                                <HoverCard
+                                    width={600}
+                                    position="bottom"
+                                    radius="md"
+                                    shadow="md"
+                                    withinPortal
+                                >
+                                    <HoverCard.Target>
+                                        <a href="#" className={classes.link}>
+                                            <Center inline>
+                                                <Box component="span" mr={5}>
+                                                    Buscador
+                                                </Box>
+                                                <IconChevronDown
+                                                    size={16}
+                                                    color={theme.fn.primaryColor()}
+                                                />
+                                            </Center>
+                                        </a>
+                                    </HoverCard.Target>
+
+                                    <HoverCard.Dropdown
+                                        sx={{ overflow: "hidden" }}
+                                    >
+                                        <SimpleGrid cols={2} spacing={0}>
+                                            {search}
+                                        </SimpleGrid>
+                                    </HoverCard.Dropdown>
+                                </HoverCard>
+                            </>
                         ) : (
                             <>
                                 <Link
@@ -251,7 +313,6 @@ export const NavBar = () => {
                                 </Link>
                             </>
                         )}
-
                     </Group>
 
                     <Group className={classes.hiddenMobile}>
@@ -350,7 +411,7 @@ export const NavBar = () => {
                     </UnstyledButton>
 
                     {user.roles.includes("Administrador") ? (
-                        <Collapse in={linksOpened}>{links}</Collapse>
+                        <Collapse in={linksOpened}>{graphicLinks}</Collapse>
                     ) : (
                         <>
                             <Link

@@ -78,25 +78,37 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::post('/excel/exportacion/veedores', [PDFController::class, 'filterExportacionExcel']);
 
+    Route::post('/search/supervisores', [SupervisorController::class, 'searchSupervisor']);
+
     Route::post('/search/coordinadores', [CoordinadorController::class, 'searchCoordinador']);
 
     Route::post('/pdf/exportacion/coordinadores', [PDFController::class, 'filterExportacionCoords']);
+
     Route::post('/excel/exportacion/coordinadores', [PDFController::class, 'filterExportacionExcelCoords']);
+
+    Route::post('/pdf/exportacion/supervisores', [PDFController::class, 'filterExportacionSupers']);
+
+    Route::post('/excel/exportacion/supervisores', [PDFController::class, 'filterExportacionExcelSupers']);
+
+    Route::get('getGraficoCantones', [EstadisticaController::class, 'getGraficoCantones']);
+
+    Route::get('getGraficoParroquia', [EstadisticaController::class, 'getGraficoParroquia']);
+
+    Route::post('getGraficoxParroquia', [EstadisticaController::class, 'getGraficoxParroquia']);
+
+    Route::post('getGraficoRecinto', [EstadisticaController::class, 'getGraficoRecinto']);
+
+    Route::get('/pdf/veedores', [PDFController::class, 'getVeedores']);
+
+    Route::post('getVeedoresxRecinto', [VeedorController::class, 'getVeedoresxRecinto']);
 });
 
 
 
-Route::get('/pdf/veedores', [PDFController::class, 'getVeedores']);
-
-Route::get('prueba3', [PruebaController::class, 'getSupersWithVeeds']);
-
-Route::get('getGraficoCantones', [EstadisticaController::class, 'getGraficoCantones']);
-Route::get('getGraficoParroquia', [EstadisticaController::class, 'getGraficoParroquia']);
-Route::post('getGraficoxParroquia', [EstadisticaController::class, 'getGraficoxParroquia']);
-Route::post('getGraficoRecinto', [EstadisticaController::class, 'getGraficoRecinto']);
 
 
-Route::post('getVeedoresxRecinto', [VeedorController::class, 'getVeedoresxRecinto']);
+
+
 
 
 

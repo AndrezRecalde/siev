@@ -14,14 +14,13 @@ use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
 
 
-class CoordsExport implements FromCollection, WithHeadings, WithColumnWidths, WithStyles, WithColumnFormatting
+class SupersExport implements FromCollection, WithHeadings, WithColumnWidths, WithStyles, WithColumnFormatting
 {
-    protected $canton_id, $parroquia_id, $recinto_id;
+    protected $canton_id, $parroquia_id;
 
-    public function __construct(int $canton_id, int $parroquia_id, int $recinto_id) {
+    public function __construct(int $canton_id, int $parroquia_id) {
         $this->canton_id = $canton_id;
         $this->parroquia_id = $parroquia_id;
-        $this->recinto_id = $recinto_id;
 
     }
 
@@ -68,29 +67,25 @@ class CoordsExport implements FromCollection, WithHeadings, WithColumnWidths, Wi
             'Telefono',
             'Cantón',
             'Parroquia',
-            'Recinto',
         ];
     }
 
     public function collection()
     {
 
-        $coordinadores = User::from('users as u')
+        $supervisores = User::from('users as u')
             ->select(DB::raw('u.dni, CONCAT(u.first_name, " ", u.last_name) as nombres,
-                                        u.phone, u.dni,
-                                        c.nombre_canton, p.nombre_parroquia, re.nombre_recinto '))
-            ->join('recinto_user as ru', 'ru.user_id', 'u.id')
-            ->join('recintos as re', 're.id', 'ru.recinto_id')
-            ->join('parroquias as p', 're.parroquia_id', 'p.id')
-            ->join('cantones as c', 'p.canton_id', 'c.id')
+                                        u.phone, c.nombre_canton,p.nombre_parroquia'))
+            ->join('cantones as c', 'c.id', 'u.canton_id')
+            ->join('parroquia_user as pu', 'pu.user_id', 'u.id')
+            ->join('parroquias as p', 'p.id', 'pu.parroquia_id')
             ->join('model_has_roles as mhr', 'mhr.model_id', 'u.id')
             ->join('roles as r', 'r.id', 'mhr.role_id')
-            ->where('r.id','3')
+            ->where('r.id','2')
             ->canton($this->canton_id)
             ->parroquia($this->parroquia_id)
-            ->recinto($this->recinto_id)
             ->get();
 
-        return $coordinadores;
+        return $supervisores;
     }
 }

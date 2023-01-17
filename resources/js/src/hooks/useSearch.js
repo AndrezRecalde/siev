@@ -91,6 +91,46 @@ export const useSearch = () => {
         }
     }
 
+    //StartSearchCoords
+    const startSearchSuper = async(values = {}) => {
+        dispatch(onClearSearch());
+        try {
+            const { data } = await consejoApi.post('/search/supervisores', values);
+            const { supervisores } = data;
+            dispatch(onSearch(supervisores));
+            if(data.status === "error"){
+                Swal.fire({
+                    icon: "error",
+                    title: "No hay datos en esa zona de busqueda!",
+                    showConfirmButton: false,
+                    timer: 1200,
+                });
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const startExportFilterSupers = async(values = {}) => {
+        try {
+            const response = await consejoApi.post('/pdf/exportacion/supervisores', values, {responseType:"blob"});
+            const url = window.URL.createObjectURL(new Blob([response.data],{type:'application/pdf'}));
+            window.open(url, "_blank");
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const startExportExcelSupers = async(values = {}) => {
+        try {
+            const response = await consejoApi.post('/excel/exportacion/supervisores', values, {responseType:"blob"});
+            const url = window.URL.createObjectURL(new Blob([response.data],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;'}));
+            window.open(url, "_blank");
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     const startClearResults = () => {
         dispatch(onClearSearch());
     }
@@ -100,10 +140,13 @@ export const useSearch = () => {
 
         startSearch,
         startSearchCoords,
+        startSearchSuper,
         startExportFilter,
         startExportExcel,
         startExportFilterCoords,
         startExportExcelCoords,
+        startExportFilterSupers,
+        startExportExcelSupers,
         startClearResults
     };
 };

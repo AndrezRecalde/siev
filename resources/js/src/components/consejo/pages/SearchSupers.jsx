@@ -13,23 +13,21 @@ import { IconDatabase, IconDatabaseExport } from "@tabler/icons";
 import React, { useEffect } from "react";
 import { useSearch } from "../../../hooks/useSearch";
 import { useStatesStore } from "../../../hooks/useStatesStore";
-import { GridTableCoordsSearch } from "./ui/GridTableCoordsSearch";
+import { GridTableSupersSearch } from "./ui/GridTableSupersSearch";
 
-export const SearchCoords = () => {
+export const SearchSupers = () => {
     const {
         cantones,
         parroquias,
-        recintos,
         startLoadCantones,
         startLoadParroquias,
-        startLoadRecintos,
         startClearStates,
     } = useStatesStore();
 
     const {
-        startSearchCoords,
-        startExportFilterCoords,
-        startExportExcelCoords,
+        startSearchSuper,
+        startExportFilterSupers,
+        startExportExcelSupers,
         startClearResults,
     } = useSearch();
 
@@ -37,7 +35,6 @@ export const SearchCoords = () => {
         initialValues: {
             canton_id: 0,
             parroquia_id: 0,
-            recinto__id: 0,
         },
     });
 
@@ -49,33 +46,28 @@ export const SearchCoords = () => {
         };
     }, []);
 
-    const { canton_id, parroquia_id } = form.values;
+    const { canton_id } = form.values;
 
     useEffect(() => {
         form.setFieldValue("parroquia_id", 0);
         startLoadParroquias({ canton_id });
     }, [canton_id]);
 
-    useEffect(() => {
-        form.setFieldValue("recinto__id", 0);
-        startLoadRecintos({ parroquia_id });
-    }, [parroquia_id]);
-
     const handleSearch = (e) => {
         e.preventDefault();
-        startSearchCoords(form.values);
+        startSearchSuper(form.values);
         /* console.log(form.values) */
     };
 
     const handleExport = (e) => {
         e.preventDefault();
-        startExportFilterCoords(form.values);
+        startExportFilterSupers(form.values);
     };
 
     const handleExportExcel = (e) => {
         e.preventDefault();
         console.log(form.values);
-        startExportExcelCoords(form.values);
+        startExportExcelSupers(form.values);
     };
 
     return (
@@ -85,7 +77,7 @@ export const SearchCoords = () => {
                     withBorder
                     shadow="sm"
                     radius="md"
-                    mt="lg"
+                    mt="md"
                     mb="lg"
                     sx={{ position: "static", width: "auto" }}
                 >
@@ -99,7 +91,7 @@ export const SearchCoords = () => {
                                     fontSize: 20,
                                 }}
                             >
-                                Buscar Coordinadores
+                                Buscar Supervisores
                             </Text>
                             <Group>
                                 <Button
@@ -168,22 +160,6 @@ export const SearchCoords = () => {
                                         })}
                                     />
                                 </Grid.Col>
-                                <Grid.Col xs={6} md={6} lg={3}>
-                                    <Select
-                                        label="Selecciona el Recinto"
-                                        placeholder="Recinto"
-                                        searchable
-                                        clearable
-                                        nothingFound="No options"
-                                        {...form.getInputProps("recinto__id")}
-                                        data={recintos.map((recinto) => {
-                                            return {
-                                                value: recinto.id,
-                                                label: recinto.nombre_recinto,
-                                            };
-                                        })}
-                                    />
-                                </Grid.Col>
                             </Grid>
                             <Card.Section inheritPadding py="lg">
                                 <Button
@@ -204,7 +180,7 @@ export const SearchCoords = () => {
             </Container>
             <Container size={1200}>
                 <Paper mb={30}>
-                    <GridTableCoordsSearch />
+                    <GridTableSupersSearch />
                 </Paper>
             </Container>
         </>
