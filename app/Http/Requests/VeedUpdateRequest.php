@@ -27,7 +27,7 @@ class VeedUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'dni'           =>  'required',
+            'dni'           =>  ['required', Rule::unique('veedores')->ignore($this->request->get('id'))],
             'first_name'    =>  'required',
             'last_name'     =>  'required',
             'phone'         =>  'required',

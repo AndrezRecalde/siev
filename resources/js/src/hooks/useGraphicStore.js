@@ -22,7 +22,6 @@ export const useGraphicStore = () => {
     const startLoadGraphicParroquias = async() => {
         try {
             const { data } = await consejoApi.get("/getGraficoParroquia");
-            console.log(data)
             const { sum_parroquias } = data;
             dispatch(onGraphicParroquias(sum_parroquias));
         } catch (error) {
@@ -46,7 +45,6 @@ export const useGraphicStore = () => {
             const { data } = await consejoApi.post("/getGraficoRecinto", {parroquia_id});
             const { sum_recintox } = data;
             dispatch(onGraphicRecintos(sum_recintox));
-            console.log(sum_recintox);
         } catch (error) {
             console.log(error);
         }
