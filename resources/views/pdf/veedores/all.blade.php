@@ -20,7 +20,7 @@
     <div class="header-horizontal">
         <div class="container-fluid" style="background-color: #ffd700">
             <a class="d-flex flex-row-reverse" href="#"></a>
-            <img src="{{ public_path('/assets/media/logos/favicon.png') }}" alt="logo" width="65px" height="50px">
+            <img src="{{ public_path('/assets/logos/favicon.png') }}" alt="logo" width="65px" height="50px">
         </div>
     </div>
 

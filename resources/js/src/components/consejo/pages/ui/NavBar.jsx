@@ -145,7 +145,7 @@ const searchdata = [
         title: "Exportar Veedores",
         description: "Exportar todos los veedores",
         to: "/api/pdf/veedores",
-        target: "_blank",
+        target: "",
     },
     {
         icon: IconUserSearch,
