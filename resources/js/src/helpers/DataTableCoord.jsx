@@ -35,7 +35,7 @@ const TableCoord = (props) => {
             name: "Nombres",
             selector: (row) => row.first_name + " " + row.last_name,
             sortable: true,
-            width: "200px"
+            width: "350px"
         },
         {
             name: "Telefono",

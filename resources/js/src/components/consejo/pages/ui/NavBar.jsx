@@ -165,6 +165,9 @@ export const NavBar = () => {
 
     const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
 
+    const [linksOpenedSearch, { toggle: toggleLinksSearch }] = useDisclosure(false);
+
+
     const { classes, theme, cx } = useStyles();
 
     const [userMenuOpened, setUserMenuOpened] = useState(false);
@@ -233,7 +236,7 @@ export const NavBar = () => {
                         spacing={0}
                         className={classes.hiddenMobile}
                     >
-                        <Link to="/" className={classes.link}>
+                        <Link to="/home" className={classes.link}>
                             Inicio
                         </Link>
                         {user.roles.includes("Administrador") ? (
@@ -401,7 +404,7 @@ export const NavBar = () => {
                     >
                         <Center inline>
                             <Box component="span" mr={5}>
-                                Exportar
+                                Gráficos
                             </Box>
                             <IconChevronDown
                                 size={16}
@@ -426,6 +429,28 @@ export const NavBar = () => {
                             >
                                 Buscador Coordinadores
                             </Link>
+                        </>
+                    )}
+
+                    <UnstyledButton
+                        className={classes.link}
+                        onClick={toggleLinksSearch}
+                    >
+                        <Center inline>
+                            <Box component="span" mr={5}>
+                                Buscador
+                            </Box>
+                            <IconChevronDown
+                                size={16}
+                                color={theme.fn.primaryColor()}
+                            />
+                        </Center>
+                    </UnstyledButton>
+
+                    {user.roles.includes("Administrador") ? (
+                        <Collapse in={linksOpenedSearch}>{search}</Collapse>
+                    ): (
+                        <>
                         </>
                     )}
 

@@ -13,14 +13,14 @@ import { useAuthStore } from "../../../hooks/useAuthStore";
 import { useConsejoStore } from "../../../hooks/useConsejoStore";
 
 export const ProfilePage = () => {
-    const { profile, veedores } = useAuthStore();
+    const { profile, veedores, user } = useAuthStore();
     const { juntas } = useConsejoStore();
 
     const porcentajeJuntas = () => {
         let total;
         total = (veedores.length * 100) / juntas;
 
-        if(total > 100){
+        if (total > 100) {
             total = 100;
         }
 
@@ -114,24 +114,23 @@ export const ProfilePage = () => {
                                 {profile.canton}
                             </Text>
                         </Grid.Col>
-                        <Grid.Col span={6}>
-                            <Text
-                                size="xs"
-                                transform="uppercase"
-                                weight={700}
-                                color="dimmed"
-                                mt={12}
-                            >
-                                Parroquia
-                            </Text>
-                            <Text size="lg" weight={500}>
-                                {profile.parroquias?.map((parr) => parr)}
-                            </Text>
-                        </Grid.Col>
+                            <Grid.Col span={6}>
+                                <Text
+                                    size="xs"
+                                    transform="uppercase"
+                                    weight={700}
+                                    color="dimmed"
+                                    mt={12}
+                                >
+                                    Parroquia
+                                </Text>
+                                <Text size="lg" weight={500}>
+                                    {profile.parroquias?.map((parr) => parr)}
+                                </Text>
+                            </Grid.Col>
                     </Grid>
 
                     {profile.recintos?.map((rec) => {
-                        console.log(rec)
                         return (
                             <>
                                 <Text

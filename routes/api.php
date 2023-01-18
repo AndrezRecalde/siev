@@ -98,10 +98,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::post('getGraficoRecinto', [EstadisticaController::class, 'getGraficoRecinto']);
 
-    Route::get('/pdf/veedores', [PDFController::class, 'getVeedores']);
 
     Route::post('getVeedoresxRecinto', [VeedorController::class, 'getVeedoresxRecinto']);
 });
+
+    Route::get('/pdf/veedores', [PDFController::class, 'getVeedores']);
 
 
 
