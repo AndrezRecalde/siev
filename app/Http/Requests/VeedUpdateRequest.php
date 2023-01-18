@@ -26,7 +26,7 @@ class VeedUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'dni'           =>  'required',
+            'dni'           =>  'required|unique:veedores',
             'first_name'    =>  'required',
             'last_name'     =>  'required',
             'phone'         =>  'required',
@@ -36,6 +36,13 @@ class VeedUpdateRequest extends FormRequest
             'parroquia_id'  =>  'required',
             'recinto_id'    =>  'required',
             'recinto__id'   =>  'required',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'dni.unique'  => 'La cedula ya se encuentra registrada',
         ];
     }
 
