@@ -44,6 +44,13 @@ const TableVeedSearch = (props) => {
             width: "200px"
 
         },
+        {
+            name: "Coordinador",
+            selector: (row) => row.coordinador,
+            sortable: true,
+            width: "200px"
+
+        },
 
     ];
 

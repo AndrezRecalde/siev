@@ -17,7 +17,7 @@ import { useStatesStore } from "../../../hooks/useStatesStore";
 import { GridTableVeedSearch } from "./ui/GridTableSearch";
 
 export const SearchVeedor = () => {
-    const { user, supervisores } = useAuthStore();
+    const { user, supervisores, coordinadores } = useAuthStore();
 
     const {
         cantones,
@@ -37,6 +37,7 @@ export const SearchVeedor = () => {
             parroquia_id: 0,
             recinto__id: 0,
             user_id: 0,
+            user__id: 0
         },
     });
 
@@ -48,7 +49,7 @@ export const SearchVeedor = () => {
         };
     }, []);
 
-    const { canton_id, parroquia_id } = form.values;
+    const { canton_id, parroquia_id, user_id, user__id } = form.values;
 
     useEffect(() => {
         form.setFieldValue("parroquia_id", 0);
@@ -174,9 +175,10 @@ export const SearchVeedor = () => {
                             </Grid.Col>
 
                             {user.roles.includes("Administrador") ? (
+                                <>
                                 <Grid.Col xs={6} md={6} lg={3}>
                                     <Select
-                                        label="Selecciona el Responsable"
+                                        label="Selecciona el Supervisor"
                                         placeholder="Responsable"
                                         searchable
                                         clearable
@@ -186,12 +188,31 @@ export const SearchVeedor = () => {
                                             return {
                                                 value: supervisor.id,
                                                 label:
-                                                    supervisor.first_name +
+                                                    supervisor.first_name + " " +
                                                     supervisor.last_name,
                                             };
                                         })}
                                     />
                                 </Grid.Col>
+                                <Grid.Col xs={6} md={6} lg={3}>
+                                <Select
+                                    label="Selecciona el Coordinador"
+                                    placeholder="Responsable"
+                                    searchable
+                                    clearable
+                                    nothingFound="No options"
+                                    {...form.getInputProps("user__id")}
+                                    data={coordinadores.map((coordinador) => {
+                                        return {
+                                            value: coordinador.id,
+                                            label:
+                                                coordinador.first_name + " " +
+                                                coordinador.last_name,
+                                        };
+                                    })}
+                                />
+                            </Grid.Col>
+                            </>
                             ) : (
                                 <></>
                             )}
