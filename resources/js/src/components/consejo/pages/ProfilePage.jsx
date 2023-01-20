@@ -114,6 +114,7 @@ export const ProfilePage = () => {
                                 {profile.canton}
                             </Text>
                         </Grid.Col>
+                        {profile.roles?.includes("Supervisor") || profile.roles?.includes("Coordinador") ? (
                             <Grid.Col span={6}>
                                 <Text
                                     size="xs"
@@ -128,6 +129,9 @@ export const ProfilePage = () => {
                                     {profile.parroquias?.map((parr) => parr)}
                                 </Text>
                             </Grid.Col>
+                        ) : (
+                            <></>
+                        )}
                     </Grid>
 
                     {profile.recintos?.map((rec) => {

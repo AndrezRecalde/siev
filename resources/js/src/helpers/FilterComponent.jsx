@@ -5,16 +5,9 @@ import React from "react";
 
 const FilterComponent = ({ filterText, onFilter, onClear }) => (
   <>
-    {/* <Input
-      id="search"
-      type="text"
-      placeholder="Filter table data..."
-      value={filterText}
-      onChange={onFilter}
-    /> */}
     <Input
       icon={<IconSearch />}
-      placeholder="Filter table data..."
+      placeholder="Filtrar por campos"
       value={filterText}
       onChange={onFilter}
     />

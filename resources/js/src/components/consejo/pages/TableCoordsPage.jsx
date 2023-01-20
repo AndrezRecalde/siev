@@ -4,8 +4,6 @@ import React from "react";
 import { useUiStore } from "../../../hooks/useUiStore";
 import { ModalCreateCoord } from "./ui/ModalCreateCoord";
 import { GridTableCoord } from "./ui/GridTableCoord";
-import { useStatesStore } from "../../../hooks/useStatesStore";
-import { useConsejoStore } from "../../../hooks/useConsejoStore";
 import { useAuthStore } from "../../../hooks/useAuthStore";
 import { ModalCreateCoordxAdmin } from "./ui/ModalCreateCoordxAdmin";
 
@@ -32,7 +30,7 @@ export const TableCoordsPage = () => {
                     radius="md"
                     mt="lg"
                     mb="lg"
-                    sx={{ position: "static", width: 800 }}
+                    sx={{ position: "static", width: 1200 }}
                 >
                     <Card.Section withBorder inheritPadding py="lg">
                         <Group position="apart">

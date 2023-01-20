@@ -74,7 +74,7 @@ const TableSupersSearch = (props) => {
 
     return (
         <DataTable
-            title="Supervisores"
+            title="Lista de Supervisores"
             columns={columns}
             data={filteredItems}
             defaultSortField="Nombres"

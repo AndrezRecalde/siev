@@ -1,4 +1,4 @@
-import { ActionIcon, Button, Card } from "@mantine/core";
+import { ActionIcon, Button, Card, Table } from "@mantine/core";
 import { IconEdit, IconTrash } from "@tabler/icons";
 import React, { useMemo } from "react";
 
@@ -50,13 +50,23 @@ const TableVeedxRecinto = (props) => {
             name: "Nombres",
             selector: (row) => row.first_name + " " + row.last_name,
             sortable: true,
-            width: "300px",
+            wrap: true,
         },
         {
             name: "Cédula",
-            selector: (row) => row.dni,
             sortable: true,
             width: "150px",
+            cell: (row) => (
+                <>
+                    <Button
+                        onClick={() => handleSelect(row)}
+                        color="dark"
+                        variant="subtle"
+                    >
+                        {row.dni}
+                    </Button>
+                </>
+            ),
         },
         {
             name: "Telefono",
@@ -65,36 +75,17 @@ const TableVeedxRecinto = (props) => {
             width: "150px",
         },
         {
-            name: "Parroquia",
-            selector: (row) => row.parroquia,
-            sortable: true,
-            width: "150px",
-        },
-        {
             name: "Recinto Donde Cuida",
             selector: (row) => row.destino,
             sortable: true,
-            width: "400px",
-        },
-        {
-            name: "Responsable",
-            selector: (row) => row.coordinador,
-            sortable: true,
-            width: "180px",
+            width: "300px",
+            wrap: true,
         },
         {
             name: "Acciones",
             button: true,
             cell: (row) => (
                 <>
-                    <ActionIcon
-                        onClick={() => handleSelect(row)}
-                        color="cyan"
-                        variant="light"
-                        sx={{ marginRight: 5 }}
-                    >
-                        <IconEdit size={20} />
-                    </ActionIcon>
                     <ActionIcon
                         onClick={() => handleSelectDelete(row)}
                         color="red"
@@ -110,9 +101,6 @@ const TableVeedxRecinto = (props) => {
     const [filterText, setFilterText] = React.useState("");
     const [resetPaginationToggle, setResetPaginationToggle] =
         React.useState(false);
-    // const filteredItems = data.filter(
-    //   item => item.name && item.name.includes(filterText)
-    // );
     const filteredItems = props.data?.filter(
         (item) =>
             JSON.stringify(item)
@@ -137,10 +125,30 @@ const TableVeedxRecinto = (props) => {
         );
     }, [filterText, resetPaginationToggle]);
 
+    const ExpandedComponent = ({ data }) => (
+        <Table withColumnBorders>
+            <thead>
+                <tr>
+                    <th>Parroquia</th>
+                    <th>Recinto donde Vota</th>
+                    <th>Recinto donde cuida voto</th>
+                    <th>Responsable</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr key={data.id}>
+                    <td>{data.parroquia}</td>
+                    <td>{data.origen}</td>
+                    <td>{data.destino}</td>
+                    <td>{data.coordinador}</td>
+                </tr>
+            </tbody>
+        </Table>
+    );
+
     return (
         <Card
             withBorder
-            shadow="sm"
             radius="md"
             mt="lg"
             mb="lg"
@@ -157,7 +165,7 @@ const TableVeedxRecinto = (props) => {
             </Card.Section>
 
             <DataTable
-                title="Veedores"
+                title="Lista de Veedores"
                 columns={columns}
                 data={filteredItems}
                 defaultSortField="Nombres"
@@ -165,6 +173,8 @@ const TableVeedxRecinto = (props) => {
                 pagination
                 subHeader
                 subHeaderComponent={subHeaderComponent}
+                expandableRows
+                expandableRowsComponent={ExpandedComponent}
             />
         </Card>
     );

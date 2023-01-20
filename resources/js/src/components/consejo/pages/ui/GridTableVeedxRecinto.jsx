@@ -18,7 +18,7 @@ export const GridTableVeedxRecinto = () => {
     }, []);
 
     return (
-        <Container size={1500} px={2}>
+        <Container size={1200} px={2}>
             <TableVeedxRecinto data={veeds} />
         </Container>
     );

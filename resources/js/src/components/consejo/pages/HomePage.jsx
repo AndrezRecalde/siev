@@ -30,7 +30,7 @@ export const HomePage = () => {
     }, [status]);
 
     return (
-        <Container>
+        <Container size={1200}>
             <Paper
                 sx={{ height: "auto", width: "auto" }}
                 shadow="sm"

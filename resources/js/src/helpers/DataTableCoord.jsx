@@ -1,11 +1,11 @@
-import { ActionIcon, RingProgress, Text } from "@mantine/core";
+import { ActionIcon, Button, RingProgress, Text } from "@mantine/core";
 import { IconEdit, IconTrash } from "@tabler/icons";
+import { wrap } from "lodash";
 import React, { useMemo } from "react";
 
 import DataTable from "react-data-table-component";
 import { useAuthStore } from "../hooks/useAuthStore";
 import { useConsejoStore } from "../hooks/useConsejoStore";
-import { useStatesStore } from "../hooks/useStatesStore";
 import { useUiStore } from "../hooks/useUiStore";
 import FilterComponent from "./FilterComponent";
 
@@ -35,7 +35,14 @@ const TableCoord = (props) => {
             name: "Nombres",
             selector: (row) => row.first_name + " " + row.last_name,
             sortable: true,
-            width: "350px"
+            width: "250px",
+            wrap: true
+        },
+        {
+            name: "Cédula",
+            selector: (row) => row.dni,
+            sortable: true,
+            width: "150px"
         },
         {
             name: "Telefono",
@@ -43,12 +50,6 @@ const TableCoord = (props) => {
             sortable: true,
             width: "150px"
         },
-        /* {
-            name: "Cantón",
-            selector: (row) => row.canton?.nombre_canton,
-            sortable: true,
-            hide: "sm",
-        }, */
         {
             name: "Progreso",
             button: true,
@@ -83,18 +84,12 @@ const TableCoord = (props) => {
                 );
             },
         },
-        /* {
-            name: "Parroquia",
-            selector: (row) =>
-                row.parroquias?.map((parr) => parr.nombre_parroquia),
-            sortable: true,
-            hide: "sm",
-        }, */
         {
             name: "Recinto",
-            selector: (row) => row.recintos?.map((rec) => rec.nombre_recinto),
             sortable: true,
-            width: "400px"
+            width: "300px",
+            wrap: true,
+            selector: (row) => row.recintos[0].nombre_recinto
         },
         {
             name: "Acciones",

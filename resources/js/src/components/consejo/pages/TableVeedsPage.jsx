@@ -2,7 +2,6 @@ import { Button, Card, Group, Text } from "@mantine/core";
 import { IconPencilPlus } from "@tabler/icons";
 import React from "react";
 import { useAuthStore } from "../../../hooks/useAuthStore";
-import { useStatesStore } from "../../../hooks/useStatesStore";
 import { useUiStore } from "../../../hooks/useUiStore";
 import { GridTableVeed } from "./ui/GridTableVeed";
 import { ModalCreateVeed } from "./ui/ModalCreateVeed";
@@ -29,11 +28,10 @@ export const TableVeedsPage = () => {
         <Group position="center">
             <Card
                 withBorder
-                shadow="sm"
                 radius="md"
                 mt="lg"
                 mb="lg"
-                sx={{ position: "static", width: 800 }}
+                sx={{ position: "static", width: 1200 }}
             >
                 <Card.Section withBorder inheritPadding py="lg">
                     <Group position="apart">
