@@ -180,6 +180,7 @@ class VeedorController extends Controller
             ->parroquia($request->parroquia_id)
             ->recinto($request->recinto__id)
             ->usuario($request->user_id)
+            ->coordinador($request->user__id)
             ->get();
 
         if (sizeof($search) >= 1) {

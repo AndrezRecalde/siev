@@ -74,4 +74,11 @@ class Veedor extends Model
             return $query->where('us.id', $usuario);
         }
     }
+
+    public function scopeCoordinador($query, $coordinador)
+    {
+        if ($coordinador > 0) {
+            return $query->where('u.id', $coordinador);
+        }
+    }
 }

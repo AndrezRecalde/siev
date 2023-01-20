@@ -32,10 +32,12 @@
                     <th style="padding-right:10px; padding-left:10px">Cédula <br>(10 Dígitos)</th>
                     <th style="padding-right:10px; padding-left:10px">Apellidos y Nombres</th>
                     <th style="padding-right:10px; padding-left:10px">Cantón</th>
-                    <th style="padding-right:10px; padding-left:10px">Lugar de Votación</th>
+                    {{-- <th style="padding-right:10px; padding-left:10px">Lugar de Votación</th> --}}
                     <th style="padding-right:10px; padding-left:10px">Recinto Electoral <br>Donde va a cuidar el voto</th>
                     <th style="padding-right:10px; padding-left:10px">Celular</th>
+                    <th style="padding-right:10px; padding-left:10px">Coordinador</th>
                     <th style="padding-right:10px; padding-left:10px">Supervisor</th>
+
                 </tr>
             </thead>
             <tbody>
@@ -44,10 +46,12 @@
                         <td style="padding-right:10px; padding-left:10px">{{ $value->dni }}</td>
                         <td style="padding-right:10px; padding-left:10px">{{ $value->nombres }}</td>
                         <td style="padding-right:10px; padding-left:10px">{{ Str::title(Str::of($value->canton)->lower()) }}</td>
-                        <td style="padding-right:10px; padding-left:10px">{{ Str::title(Str::of($value->origen)->lower()) }}</td>
+                        {{-- <td style="padding-right:10px; padding-left:10px">{{ Str::title(Str::of($value->origen)->lower()) }}</td> --}}
                         <td style="padding-right:10px; padding-left:10px">{{ Str::title(Str::of($value->destino)->lower()) }}</td>
                         <td style="padding-right:10px; padding-left:10px">{{ $value->phone }}</td>
+                        <td style="padding-right:10px; padding-left:10px">{{ $value->coordinador }}</td>
                         <td style="padding-right:10px; padding-left:10px">{{ $value->supervisor }}</td>
+
                     </tr>
                 @endforeach
             </tbody>

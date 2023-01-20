@@ -46,6 +46,7 @@ class PDFController extends Controller
                     re.nombre_recinto as destino,
                     p.nombre_parroquia as parroquia,
                     c.nombre_canton as canton,
+                    CONCAT(u.first_name, " ", u.last_name) as coordinador,
                     CONCAT(us.first_name, " ", us.last_name) as supervisor'))
             ->join('recintos as r', 'v.recinto_id', 'r.id')
             ->join('recintos as re', 're.id', 'v.recinto__id')
@@ -57,6 +58,7 @@ class PDFController extends Controller
             ->parroquia($request->parroquia_id)
             ->recinto($request->recinto__id)
             ->usuario($request->user_id)
+            ->coordinador($request->user__id)
             ->orderBy('c.id', 'ASC')
             ->get();
         $pdf = PDF::loadView('pdf.veedores.search', ['veedores' => $veedores]);
