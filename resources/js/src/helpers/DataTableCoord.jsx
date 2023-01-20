@@ -42,7 +42,18 @@ const TableCoord = (props) => {
             name: "Cédula",
             selector: (row) => row.dni,
             sortable: true,
-            width: "150px"
+            width: "150px",
+            cell: (row) => (
+                <>
+                    <Button
+                        onClick={() => handleSelect(row)}
+                        color="dark"
+                        variant="subtle"
+                    >
+                        {row.dni}
+                    </Button>
+                </>
+            ),
         },
         {
             name: "Telefono",
@@ -85,9 +96,16 @@ const TableCoord = (props) => {
             },
         },
         {
+            name: "Parroquia",
+            sortable: true,
+            width: "200px",
+            wrap: true,
+            selector: (row) => row.parroquias[0].nombre_parroquia
+        },
+        {
             name: "Recinto",
             sortable: true,
-            width: "300px",
+            width: "250px",
             wrap: true,
             selector: (row) => row.recintos[0].nombre_recinto
         },
@@ -96,14 +114,6 @@ const TableCoord = (props) => {
             button: true,
             cell: (row) => (
                 <>
-                    <ActionIcon
-                        color="cyan"
-                        variant="light"
-                        sx={{ marginRight: 5 }}
-                        onClick={() => handleSelect(row)}
-                    >
-                        <IconEdit size={20} />
-                    </ActionIcon>
                     <ActionIcon
                         onClick={() => handleSelectDelete(row)}
                         color="red"
