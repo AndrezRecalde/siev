@@ -37,7 +37,7 @@ class CoordinadorUpdateRequest extends FormRequest
             'canton_id'     =>  'required',
             'parroquia_id'  =>  'required',
             'recinto_id'    =>  '',
-            'roles'         =>  'required'
+            'roles'         =>  ['required' , Rule::unique('users')->ignore($this->request->get('id'))]
 
         ];
     }
