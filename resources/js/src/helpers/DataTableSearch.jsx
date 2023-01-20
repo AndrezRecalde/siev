@@ -27,7 +27,7 @@ const TableVeedSearch = (props) => {
         },
         {
             name: "Parroquia",
-            selector: (row) => row.nombre_canton,
+            selector: (row) => row.nombre_parroquia,
             sortable: true,
             width: "200px"
         },
