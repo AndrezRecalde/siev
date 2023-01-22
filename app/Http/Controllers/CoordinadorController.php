@@ -64,12 +64,14 @@ class CoordinadorController extends Controller
     public function update(CoordinadorUpdateRequest $request, $id)
     {
         $coordinador = Coordinador::find($id);
+        $user = User::find($id);
+
         if ($coordinador) {
             $coordinador->update($request->validated());
 
             if ($request->has('roles')) {
-                $coordinador->roles()->detach();
-                $coordinador->assignRole($request->roles);
+                $user->roles()->detach();
+                $user->assignRole($request->roles);
             }
 
             $coordinador->parroquias()->sync($request->parroquia_id);
