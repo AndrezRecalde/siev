@@ -1,6 +1,5 @@
 import { ActionIcon, Button, RingProgress, Text } from "@mantine/core";
-import { IconEdit, IconTrash } from "@tabler/icons";
-import { wrap } from "lodash";
+import { IconTrash } from "@tabler/icons";
 import React, { useMemo } from "react";
 
 import DataTable from "react-data-table-component";
@@ -14,6 +13,7 @@ const TableCoord = (props) => {
 
     const { setActiveUser, startDeleteUser, setActiveCoordxAdmin } =
         useConsejoStore();
+
     const { user } = useAuthStore();
 
     const handleSelect = (selected) => {
@@ -100,14 +100,14 @@ const TableCoord = (props) => {
             sortable: true,
             width: "200px",
             wrap: true,
-            selector: (row) => row.parroquias[0].nombre_parroquia
+            selector: (row) => row.parroquias?.map(parr => parr.nombre_parroquia)
         },
         {
             name: "Recinto",
             sortable: true,
             width: "250px",
             wrap: true,
-            selector: (row) => row.recintos[0].nombre_recinto
+            selector: (row) => row.recintos?.map(recinto => recinto.nombre_recinto)
         },
         {
             name: "Acciones",

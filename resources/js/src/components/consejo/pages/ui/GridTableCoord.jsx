@@ -8,6 +8,6 @@ export const GridTableCoord = () => {
 
 
   return (
-    <TableCoord data={coordinadores} />
+    <TableCoord data={coordinadores ? coordinadores: []} />
   )
 }

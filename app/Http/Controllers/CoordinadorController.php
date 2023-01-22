@@ -67,14 +67,14 @@ class CoordinadorController extends Controller
         if ($coordinador) {
             $coordinador->update($request->validated());
 
-            if ($request->filled('roles')) {
+            if ($request->has('roles')) {
                 $coordinador->roles()->detach();
                 $coordinador->assignRole($request->roles);
             }
 
             $coordinador->parroquias()->sync($request->parroquia_id);
 
-            if ($request->filled('recinto_id')) {
+            if ($request->has('recinto_id')) {
                 $coordinador->recintos()->sync($request->recinto_id);
             }
 
