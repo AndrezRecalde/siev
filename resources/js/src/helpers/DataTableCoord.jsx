@@ -3,6 +3,7 @@ import { IconTrash } from "@tabler/icons";
 import React, { useMemo } from "react";
 
 import DataTable from "react-data-table-component";
+import { NavLink } from "react-router-dom";
 import { useAuthStore } from "../hooks/useAuthStore";
 import { useConsejoStore } from "../hooks/useConsejoStore";
 import { useUiStore } from "../hooks/useUiStore";
@@ -21,7 +22,7 @@ const TableCoord = (props) => {
             setActiveCoordxAdmin(selected);
             modalActionCoordxAdmin("open");
         } else {
-            setActiveCoordxAdmin(selected);         //Revisar
+            setActiveCoordxAdmin(selected); //Revisar
             modalActionCoord("open");
         }
     };
@@ -36,7 +37,7 @@ const TableCoord = (props) => {
             selector: (row) => row.first_name + " " + row.last_name,
             sortable: true,
             width: "250px",
-            wrap: true
+            wrap: true,
         },
         {
             name: "Cédula",
@@ -59,12 +60,13 @@ const TableCoord = (props) => {
             name: "Telefono",
             selector: (row) => row.phone,
             sortable: true,
-            width: "150px"
+            width: "150px",
         },
         {
             name: "Progreso",
             button: true,
             cell: (row) => {
+                let recinto_id = row.recintos?.map(r => r.id);
                 let totalJuntas = row.recintos?.map((r) => r.num_juntas);
                 let totalxVeedor = row.veedores?.length
                     ? row.veedores?.length
@@ -73,7 +75,7 @@ const TableCoord = (props) => {
 
                 let totales = (totalxVeedor * 100) / total;
 
-                if(totales > 100){
+                if (totales > 100) {
                     totales = 100;
                 }
 
@@ -82,14 +84,24 @@ const TableCoord = (props) => {
                         size={90}
                         sections={[{ value: totales, color: "cyan" }]}
                         label={
-                            <Text
-                                color="blue"
-                                weight={30}
-                                align="center"
-                                size="xs"
+                            <NavLink
+                                to={`/veedores/recinto/${recinto_id}`}
+                                style={{
+                                    textDecoration: "none",
+                                    color: "#868e96",
+                                }}
                             >
-                                {totales ? `${totales.toFixed(1)}%` : `${0}%`}
-                            </Text>
+                                <Text
+                                    color="blue"
+                                    weight={30}
+                                    align="center"
+                                    size="xs"
+                                >
+                                    {totales
+                                        ? `${totales.toFixed(1)}%`
+                                        : `${0}%`}
+                                </Text>
+                            </NavLink>
                         }
                     />
                 );
@@ -100,14 +112,16 @@ const TableCoord = (props) => {
             sortable: true,
             width: "200px",
             wrap: true,
-            selector: (row) => row.parroquias?.map(parr => parr.nombre_parroquia)
+            selector: (row) =>
+                row.parroquias?.map((parr) => parr.nombre_parroquia),
         },
         {
             name: "Recinto",
             sortable: true,
             width: "250px",
             wrap: true,
-            selector: (row) => row.recintos?.map(recinto => recinto.nombre_recinto)
+            selector: (row) =>
+                row.recintos?.map((recinto) => recinto.nombre_recinto),
         },
         {
             name: "Acciones",
