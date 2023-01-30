@@ -57,7 +57,7 @@ export const GraphicCantones = () => {
                                 gr.total_veed !== null ? gr.total_veed : 0;
                             let totales = (totalxVeedor * 100) / totalJuntas;
 
-                            if (totales > 100) {
+                            if ( totales > 100 || totales < 100 ) {  //Borrar el menor despues
                                 totales = 100;
                             }
 
