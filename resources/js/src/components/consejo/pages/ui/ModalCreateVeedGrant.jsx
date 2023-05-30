@@ -74,7 +74,7 @@ export const ModalCreateVeedGrant = () => {
     const { parroquia_id } = form.values;
 
     useEffect(() => {
-        form.setFieldValue("recinto_id", 0);
+        form.setFieldValue("recinto_id", activateVeedor?.recinto_id ?? 0);
         startLoadRecintos({ parroquia_id });
     }, [parroquia_id]);
 
@@ -206,6 +206,7 @@ export const ModalCreateVeedGrant = () => {
                     placeholder="Parroquia de residencia del veedor"
                     searchable
                     withAsterisk
+                    defaultValue="0"
                     mt={16}
                     {...form.getInputProps("parroquia_id")}
                     data={allParroquias.map((parroquia) => {
@@ -220,6 +221,7 @@ export const ModalCreateVeedGrant = () => {
                     placeholder="Recinto donde vota"
                     searchable
                     withAsterisk
+                    defaultValue="0"
                     mt={16}
                     {...form.getInputProps("recinto_id")}
                     data={recintos.map((recinto) => {
@@ -234,6 +236,7 @@ export const ModalCreateVeedGrant = () => {
                     placeholder="Recinto donde cuidará el voto"
                     searchable
                     withAsterisk
+                    defaultValue="0"
                     mt={16}
                     {...form.getInputProps("recinto__id")}
                     data={allRecintos.map((recinto) => {

@@ -1,4 +1,12 @@
-import { Button, Divider, Grid, Modal, MultiSelect, Select, TextInput } from "@mantine/core";
+import {
+    Button,
+    Divider,
+    Grid,
+    Modal,
+    MultiSelect,
+    Select,
+    TextInput,
+} from "@mantine/core";
 import { useForm } from "@mantine/form";
 import {
     Icon123,
@@ -42,11 +50,17 @@ export const ModalCreateSuper = () => {
             last_name: (value) =>
                 value.length < 3 ? "El apellido es requerido" : null,
             dni: (value) =>
-                value.length < 9 ? "Ingrese la cédula correctamente (deben ser 10 dígitos)" :
-                value.length > 10 ? "Ingrese el número correctamente (deben ser 10 dígitos)": null,
+                value.length < 9
+                    ? "Ingrese la cédula correctamente (deben ser 10 dígitos)"
+                    : value.length > 10
+                    ? "Ingrese el número correctamente (deben ser 10 dígitos)"
+                    : null,
             phone: (value) =>
-                value.length < 10 ? "Ingrese el telefono correctamente (deben ser 10 dígitos)" :
-                value.length > 10 ? "Ingrese el número correctamente (deben ser 10 dígitos)": null,
+                value.length < 10
+                    ? "Ingrese el telefono correctamente (deben ser 10 dígitos)"
+                    : value.length > 10
+                    ? "Ingrese el número correctamente (deben ser 10 dígitos)"
+                    : null,
             email: (value) =>
                 /^\S+@\S+$/.test(value) ? null : "Invalid email",
             canton_id: (value) => (value === 0 ? "Ingrese el cantón" : null),
@@ -58,8 +72,10 @@ export const ModalCreateSuper = () => {
     const { canton_id } = form.values;
 
     useEffect(() => {
-        form.setFieldValue("parroquia_id", 0);
+
+        form.setFieldValue("parroquia_id", activateUser?.parroquia_id ? activateUser.parroquia_id : 0);
         startLoadParroquias({ canton_id });
+
     }, [canton_id]);
 
     useEffect(() => {
@@ -153,7 +169,7 @@ export const ModalCreateSuper = () => {
                 readOnly
                 variant="filled"
                 {...form.getInputProps("roles")}
-                data={ roles.map((role) => {
+                data={roles.map((role) => {
                     return {
                         value: role.id,
                         label: role.name,
@@ -173,6 +189,7 @@ export const ModalCreateSuper = () => {
                 placeholder="Cantón"
                 mt={16}
                 withAsterisk
+                nothingFound="No options"
                 {...form.getInputProps("canton_id")}
                 data={cantones.map((canton) => {
                     return {
@@ -186,11 +203,12 @@ export const ModalCreateSuper = () => {
                 placeholder="Parroquia"
                 mt={16}
                 withAsterisk
+                nothingFound="No options"
                 {...form.getInputProps("parroquia_id")}
-                data={parroquias.map((parroquia) => {
+                data={parroquias?.map((parroquia) => {
                     return {
-                        value: parroquia.id,
-                        label: parroquia.nombre_parroquia,
+                        value: parroquia?.id,
+                        label: parroquia?.nombre_parroquia,
                     };
                 })}
             />
